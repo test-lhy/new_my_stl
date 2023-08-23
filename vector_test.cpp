@@ -48,6 +48,7 @@ int main() {
   assert(*it == 4);
 
   std::cout << "all test passed" << std::endl;
-
+  std::less<int>();
+  sort(vec.begin(),vec.end(),std::less<int>());
   return 0;
 }
