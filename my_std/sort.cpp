@@ -1,15 +1,17 @@
 //
 // Created by lhy31 on 2023/8/22.
 //
-#include <cmath>
-#include <functional>
-#include <list>
-#include <stdexcept>
-#include "algorithm.h"
 #include "../basic.h"
 #include "priority_queue.h"
 #include "random.cpp"
 #include "vector.h"
+#include <cmath>
+#include <functional>
+#include <list>
+#include <stdexcept>
+
+
+
 namespace lhy {
 enum SortType { QUICK_SORT, INSERT_SORT, MERGE_SORT, COUNT_SORT, BUCKET_SORT, HEAP_SORT, INTRO_SORT, RADIX_SORT };
 template <typename T>
@@ -94,7 +96,7 @@ void QuickSort(T* start, T* end, CmpType compare_function, int64_t depth, int64_
   if (depth == 0) {
     randomize(start, end);
   }
-  T pivot = GetKthElement(start,end,(end-start)/2,compare_function);
+  T pivot = GetKthElement(start, end, (end - start) / 2, compare_function);
   T *smaller = start, *now = start, *bigger = end - 1;
   while (now < bigger) {
     if (compare_function(*now, pivot)) {
@@ -210,6 +212,46 @@ void RadixSort(std::tuple<T...>* start, std::tuple<T...>* end, SortType sort_typ
   }
   for (Index i = 0; i < end - start; ++i) {
     *(start + i) = *(temp_array + i).first;
+  }
+}
+template <typename T, typename CmpType>
+T GetApproximateMedian(
+    T* start, T* end, CmpType compare_function = [](const T& a, const T& b) -> bool { return a < b; },
+    size_t median_split_length = 5) {
+  for (Index i = 0; i < end - start; i += median_split_length) {
+    Sort(start + i, start + min(i + median_split_length, end - start), SortType::INSERT_SORT, compare_function);
+    std::swap(*(start + i / median_split_length), *(start + min(i + median_split_length / 2, end - start)));
+  }
+  if ((end - start) <= median_split_length) {
+    return *start;
+  } else {
+    return GetApproximateMedian(start, start + (end - start) / median_split_length + 1, compare_function,
+                                median_split_length);
+  }
+}
+template <typename T, typename CmpType>
+T GetKthElement(
+    T* start, T* end, Index k, CmpType compare_function = [](const T& a, const T& b) -> bool { return a < b; }) {
+  T pivot = GetApproximateMedian(start, end, compare_function);
+  T *smaller = start, *now = start, *bigger = end - 1;
+  while (now < bigger) {
+    if (compare_function(*now, pivot)) {
+      std::swap(*now, *smaller);
+      smaller++;
+      now++;
+    } else if (compare_function(pivot, *now)) {
+      std::swap(*now, *bigger);
+      bigger--;
+    } else {
+      now++;
+    }
+  }
+  if (k <= (smaller - start)) {
+    return GetKthElement(start, smaller, k, compare_function);
+  } else if (k > (bigger - start + 1)) {
+    return GetKthElement(bigger + 1, end, k - (bigger - start + 1), compare_function);
+  } else {
+    return pivot;
   }
 }
 }  // namespace lhy
