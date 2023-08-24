@@ -48,6 +48,9 @@ public:
   const T* cend() const;
 
   const T* cbegin() const;
+  void pop();
+  T& front() const;
+  T& back() const;
 
 private:
   using size_T = int64_t;
@@ -62,6 +65,27 @@ private:
   void check_index(const size_t&) const;
 };
 
+template <typename T>
+T& vector<T>::back() const {
+  if (empty()) {
+    throw std::range_error("no element in vector");
+  }
+  return *(end_ - 1);
+}
+template <typename T>
+T& vector<T>::front() const {
+  if (empty()) {
+    throw std::range_error("no element in vector");
+  }
+  return *start_;
+}
+template <typename T>
+void vector<T>::pop() {
+  if (size() == 0) {
+    throw std::range_error("nothing left to pop");
+  }
+  end_--;
+}
 template <typename T>
 T& vector<T>::operator[](const size_t& index) {
   return At(index);
