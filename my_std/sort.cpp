@@ -1,11 +1,11 @@
 //
 // Created by lhy31 on 2023/8/22.
 //
+#include <cmath>
 #include <functional>
 #include <list>
 #include <stdexcept>
-#include <cmath>
-
+#include "algorithm.h"
 #include "../basic.h"
 #include "priority_queue.h"
 #include "random.cpp"
@@ -27,7 +27,7 @@ void Sort(T* start, T* end, SortType sort_type) {
 template <typename T, typename CmpType>
 void Sort(const T* start, const T* end, SortType sort_type, CmpType compare_function) {
   if (sort_type == SortType::QUICK_SORT) {
-    QuickSort(start, end, compare_function, 0,-1);
+    QuickSort(start, end, compare_function, 0, -1);
   } else if (sort_type == SortType::INSERT_SORT) {
     InsertSort(start, end, compare_function);
   } else if (sort_type == SortType::MERGE_SORT) {
@@ -41,7 +41,7 @@ void Sort(const T* start, const T* end, SortType sort_type, CmpType compare_func
   } else if (sort_type == SortType::HEAP_SORT) {
     HeapSort(start, end, compare_function);
   } else if (sort_type == SortType::INTRO_SORT) {
-    QuickSort(start,end,compare_function,0,std::log2(end-start));
+    QuickSort(start, end, compare_function, 0, std::log2(end - start));
   } else if (sort_type == SortType::BUCKET_SORT) {
     if (typeid(T) == typeid(int) || typeid(T) == typeid(char)) {
       BucketSort(start, end);
@@ -83,40 +83,33 @@ void InsertSort(T* start, T* end, CmpType compare_function) {
   }
 }
 template <typename T, typename CmpType>
-void QuickSort(T* start, T* end, CmpType compare_function, int64_t depth,int64_t limit_depth) {
-  if (limit_depth!=-1&&depth>=limit_depth){
-    HeapSort(start,end,compare_function);
-    return ;
+void QuickSort(T* start, T* end, CmpType compare_function, int64_t depth, int64_t limit_depth) {
+  if (limit_depth != -1 && depth >= limit_depth) {
+    HeapSort(start, end, compare_function);
+    return;
   }
   if (end - start == 1) {
     return;
   }
-  if (depth==0) {
+  if (depth == 0) {
     randomize(start, end);
   }
-  auto* temp_array = new std::pair<T, Index>[end - start];
-  auto* temp_array_iterator = temp_array;
-  for (auto element = start; element != end; element++) {
-    *temp_array_iterator = {*element, static_cast<Index>(element - start)};
-  }
-  std::nth_element(temp_array, temp_array + (end - start) / 2, temp_array + (end - start));
-  T pivot = (temp_array + (end - start) / 2)->first;
-  T pivot_pos = (temp_array + (end - start) / 2)->second;
-  delete[] temp_array;
-  T *left = start, right = end - 2;
-  std::swap(start + pivot_pos, end - 1);
-  while (left < right) {
-    while (left < right && (!compare_function(pivot, *left))) {
-      left++;
+  T pivot = GetKthElement(start,end,(end-start)/2,compare_function);
+  T *smaller = start, *now = start, *bigger = end - 1;
+  while (now < bigger) {
+    if (compare_function(*now, pivot)) {
+      std::swap(*now, *smaller);
+      smaller++;
+      now++;
+    } else if (compare_function(pivot, *now)) {
+      std::swap(*now, *bigger);
+      bigger--;
+    } else {
+      now++;
     }
-    while (left < right && compare_function(pivot, *right)) {
-      right--;
-    }
-    std::swap(*left, *right);
   }
-  std::swap(left, end - 1);
-  QuickSort(start, start + left, compare_function, depth+1,limit_depth);
-  QuickSort(start + left + 1, end, compare_function, depth+1,limit_depth);
+  QuickSort(start, smaller, compare_function, depth + 1, limit_depth);
+  QuickSort(bigger + 1, end, compare_function, depth + 1, limit_depth);
 }
 template <typename T, typename CmpType>
 void MergeSort(T* start, T* end, CmpType compare_function) {

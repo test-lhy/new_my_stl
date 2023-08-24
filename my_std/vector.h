@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <stdexcept>
+#include"../basic.h"
 namespace lhy {
 template <typename T>
 class vector {
@@ -18,8 +19,8 @@ class vector {
   ~vector();
   vector<T>& operator=(const std::initializer_list<T>&);
   void push_back(const T&);
-  T& operator[](const size_t&);
-  T& At(const size_t&);
+  T& operator[](const Index&);
+  T& At(const Index&);
   void clear();
   size_t size() const;
   bool empty() const;
@@ -32,12 +33,11 @@ class vector {
   T& back() const;
 
  private:
-  using size_T = int64_t;
   T* start_;
   T* end_;
   T* volume_;
   void check_volume();
-  void check_index(const size_t&) const;
+  void check_index(const Index&) const;
 };
 template <typename T>
 T& vector<T>::back() const {
@@ -61,17 +61,17 @@ void vector<T>::pop() {
   end_--;
 }
 template <typename T>
-T& vector<T>::operator[](const size_t& index) {
+T& vector<T>::operator[](const Index& index) {
   return At(index);
 }
 template <typename T>
-void vector<T>::check_index(const size_t& index) const {
+void vector<T>::check_index(const Index& index) const {
   if (index < 0 || index >= size()) {
     throw std::logic_error("out of range");
   }
 }
 template <typename T>
-T& vector<T>::At(const size_t& index) {
+T& vector<T>::At(const Index& index) {
   check_index(index);
   return *(start_ + index);
 }
