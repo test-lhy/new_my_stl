@@ -1,19 +1,28 @@
 //
 // Created by lhy31 on 2023/8/22.
 //
-#include "../basic.h"
-#include "priority_queue.h"
-#include "random.cpp"
-#include "vector.h"
 #include <cmath>
 #include <functional>
 #include <list>
 #include <stdexcept>
 
-
+#include "../basic.h"
+#include "priority_queue.h"
+#include "random.cpp"
+#include "vector.h"
 
 namespace lhy {
-enum SortType { QUICK_SORT, INSERT_SORT, MERGE_SORT, COUNT_SORT, BUCKET_SORT, HEAP_SORT, INTRO_SORT, RADIX_SORT };
+enum SortType {
+  QUICK_SORT,
+  INSERT_SORT,
+  MERGE_SORT,
+  COUNT_SORT,
+  BUCKET_SORT,
+  HEAP_SORT,
+  INTRO_SORT,
+  SHELL_SORT,
+  RADIX_SORT
+};
 template <typename T>
 void Sort(T* start, T* end) {
   Sort(start, end, SortType::QUICK_SORT);
@@ -26,7 +35,21 @@ template <typename T>
 void Sort(T* start, T* end, SortType sort_type) {
   Sort(start, end, SortType::QUICK_SORT, std::less<T>());
 }
-template <typename T, typename CmpType>
+struct ShellNormalGapGeneration {
+  static Index number;
+  ShellNormalGapGeneration() { number = 1; }
+  static Index Get() { return number; }
+  static void Up() { number = number * 3 + 1; }
+  static bool DownIf() {
+    if (number >= 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  static void Down() { number = (number - 1) / 3; }
+};
+template <typename T, typename CmpType, typename GapGeneration = ShellNormalGapGeneration>
 void Sort(const T* start, const T* end, SortType sort_type, CmpType compare_function) {
   if (sort_type == SortType::QUICK_SORT) {
     QuickSort(start, end, compare_function, 0, -1);
@@ -50,9 +73,27 @@ void Sort(const T* start, const T* end, SortType sort_type, CmpType compare_func
     } else {
       throw std::logic_error("this type can't use Count_Sort");
     }
+  } else if (sort_type == SortType::SHELL_SORT) {
+    ShellSort(start, end, compare_function, GapGeneration());
   }
 }
-
+// 感觉可以把GapGenerationType作为一个基类
+template <typename T, typename CmpType, typename GapGenerationType>
+void ShellSort(T* start, T* end, CmpType compare_function, GapGenerationType gap_generation) {
+  while (gap_generation.Get() < end - start) {
+    gap_generation.Up();
+  }
+  gap_generation.Down();
+  while (gap_generation.DownIf()) {
+    const auto gap_now = gap_generation.Get();
+    for (Index i = gap_now; i < end - start; ++i) {
+      for (Index j = i; j >= gap_now && compare_function(*(start + j), *(start + j - gap_now)); j -= gap_now) {
+        std::swap(*(start + j), *(start + j - gap_now));
+      }
+    }
+    gap_generation.Down();
+  }
+}
 template <typename T, typename CmpType>
 void HeapSort(T* start, T* end, CmpType compare_function) {
   struct compare_function_type {
