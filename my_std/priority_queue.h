@@ -74,11 +74,11 @@ bool priority_queue<T, CmpType>::CheckRange(Index index) const {
 }
 template <typename T, typename CmpType>
 Index priority_queue<T, CmpType>::GetRightChild(Index index) const {
-  return 2 * index + 1;
+  return 2 * index + 2;
 }
 template <typename T, typename CmpType>
 Index priority_queue<T, CmpType>::GetLeftChild(Index index) const {
-  return 2 * index;
+  return 2 * index+1;
 }
 template <typename T, typename CmpType>
 size_t priority_queue<T, CmpType>::size() const {
