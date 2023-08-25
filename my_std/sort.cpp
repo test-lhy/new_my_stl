@@ -21,6 +21,7 @@ enum SortType {
   HEAP_SORT,
   INTRO_SORT,
   SHELL_SORT,
+  TOURNAMENT_SORT,
   RADIX_SORT
 };
 template <typename T>
@@ -85,11 +86,54 @@ void Sort(const T* start, const T* end, SortType sort_type, CmpType compare_func
     }
   } else if (sort_type == SortType::SHELL_SORT) {
     GapGeneration gap_generation;
-    ShellGapGenerationBase *gap_generation_base=&gap_generation;
-    ShellSort(start, end, compare_function, gap_generation_base);
+    ShellSort(start, end, compare_function, &gap_generation);
+  } else if (sort_type == SortType::TOURNAMENT_SORT) {
+    try {
+      T::INF;
+    } catch (...) {
+      throw std::logic_error("no INF for tournament_sort");
+    }
+    TournamentSort(start, end, compare_function);
   }
 }
-// 感觉可以把GapGenerationType作为一个基类
+template<typename T,typename CmpType>
+void GetWinner(T* temp_array,Index index,size_t size,CmpType compare_function){
+  *(temp_array + index).first = T::INF;
+  if (temp_array+index * 2 + 1 < size) {
+    if (*(temp_array+index).first==T::INF||compare_function(*(temp_array+index * 2 + 1).first, *(temp_array + index).first)) {
+      *(temp_array + index) = *(temp_array+index * 2 + 1);
+    }
+  }
+  if (temp_array +index * 2 + 2 < size) {
+    if (*(temp_array+index).first==T::INF||compare_function(*(temp_array +index * 2 + 2).first, *(temp_array + index).first)) {
+      *(temp_array + index) = *(temp_array +index * 2 + 2);
+    }
+  }
+}
+template <typename T, typename CmpType>
+void TournamentSort(T* start, T* end, CmpType compare_function, const T INF) {
+  size_t front_size = pow(2, ceil(log2(end - start))) - 1;
+  auto* temp_array = new std::pair<T, int>[front_size + end - start];
+  for (Index i = 0; i < end - start; ++i) {
+    *(temp_array + front_size + i) = {*(start + i), i};
+  }
+  for (Index i = front_size - 1; i >= 0; --i) {
+    GetWinner(temp_array,i,front_size+end-start,compare_function);
+  }
+  *start = (*temp_array).first;
+  Index refresh_index=(*temp_array).second;
+  for (int i = 1; i < end-start; ++i) {
+    refresh_index=(refresh_index-1)/2;
+    while(refresh_index!=0){
+      GetWinner(temp_array,refresh_index,front_size+end-start,compare_function);
+      refresh_index= (refresh_index-1)/2;
+    }
+    GetWinner(temp_array,refresh_index,front_size+end-start,compare_function);
+    *(start+i)=(*temp_array).first;
+    refresh_index=(*temp_array).second;
+    (*temp_array+refresh_index).first=T::INF;
+  }
+}
 template <typename T, typename CmpType>
 void ShellSort(T* start, T* end, CmpType compare_function, ShellGapGenerationBase* gap_generation) {
   while (gap_generation->Get() < end - start) {
