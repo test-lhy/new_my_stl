@@ -91,7 +91,7 @@ void Sort(const T* start, const T* end, SortType sort_type, CmpType compare_func
 }
 // 感觉可以把GapGenerationType作为一个基类
 template <typename T, typename CmpType>
-void ShellSort(T* start, T* end, CmpType compare_function, ShellGapGenerationBase* gap_generation=&ShellNormalGapGeneration()) {
+void ShellSort(T* start, T* end, CmpType compare_function, ShellGapGenerationBase* gap_generation) {
   while (gap_generation->Get() < end - start) {
     gap_generation->Up();
   }
