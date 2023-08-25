@@ -18,7 +18,7 @@ class priority_queue {
   T &front() const;
 
  private:
-  const Index root = 1;
+  const Index root = 0;
   vector<T> priority_queue_;
   CmpType compare_function_;
   void Up(Index);
@@ -33,11 +33,11 @@ class priority_queue {
 };
 template <typename T, typename CmpType>
 T &priority_queue<T, CmpType>::front() const {
-  return priority_queue_[1];
+  return priority_queue_.front();
 }
 template <typename T, typename CmpType>
 void priority_queue<T, CmpType>::CreateHeap() {
-  for (int i = size() >> 1; i >= 1; --i) {
+  for (int i = size() >> 1; i >= 0; --i) {
     Down(i);
   }
 }
@@ -49,7 +49,7 @@ priority_queue<T, CmpType>::priority_queue(T *start, T *end) {
 }
 template <typename T, typename CmpType>
 bool priority_queue<T, CmpType>::empty() const {
-  return priority_queue_.size()<=1;
+  return priority_queue_.empty();
 }
 template <typename T, typename CmpType>
 void priority_queue<T, CmpType>::pop() {
@@ -58,7 +58,7 @@ void priority_queue<T, CmpType>::pop() {
   }
   std::swap(priority_queue_.back(), priority_queue_.front());
   priority_queue_.pop();
-  Down(1);
+  Down(0);
 }
 template <typename T, typename CmpType>
 void priority_queue<T, CmpType>::push(T element) {
@@ -68,25 +68,22 @@ void priority_queue<T, CmpType>::push(T element) {
 template <typename T, typename CmpType>
 priority_queue<T, CmpType>::~priority_queue() = default;
 template <typename T, typename CmpType>
-priority_queue<T, CmpType>::priority_queue() {
-  T place_holder;
-  priority_queue_.push_back(place_holder);
-};
+priority_queue<T, CmpType>::priority_queue() = default;
 template <typename T, typename CmpType>
 bool priority_queue<T, CmpType>::CheckRange(Index index) const {
-  return index < size()+1 && index >= 1;
+  return index < size() && index >= 0;
 }
 template <typename T, typename CmpType>
 Index priority_queue<T, CmpType>::GetRightChild(Index index) const {
-  return 2 * index + 1;
+  return 2 * index + 2;
 }
 template <typename T, typename CmpType>
 Index priority_queue<T, CmpType>::GetLeftChild(Index index) const {
-  return 2 * index;
+  return 2 * index + 1;
 }
 template <typename T, typename CmpType>
 size_t priority_queue<T, CmpType>::size() const {
-  return priority_queue_.size() - 1;
+  return priority_queue_.size();
 }
 template <typename T, typename CmpType>
 void priority_queue<T, CmpType>::Down(Index index) {
@@ -126,7 +123,7 @@ void priority_queue<T, CmpType>::Up(Index index) {
 }
 template <typename T, typename CmpType>
 Index priority_queue<T, CmpType>::GetFather(Index index) const {
-  return index / 2;
+  return (index - 1) / 2;
 }
 
 }  // namespace lhy
