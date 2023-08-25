@@ -25,7 +25,8 @@ enum SortType {
   INTRO_SORT,
   SHELL_SORT,
   TOURNAMENT_SORT,
-  RADIX_SORT
+  RADIX_SORT,
+  TIM_SORT
 };
 class ShellGapGenerationBase {
  public:

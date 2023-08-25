@@ -52,7 +52,15 @@ void Sort(const T* start, const T* end, SortType sort_type, CmpType compare_func
       throw std::logic_error("no INF for tournament_sort");
     }
     TournamentSort(start, end, compare_function);
+  }else if (sort_type==SortType::TIM_SORT){
+    TimSort(start,end,compare_function);
+  }else{
+    throw std::logic_error("no such sort algorithm");
   }
+}
+template<typename T,typename CmpType>
+void TimSort(T* start, T* end, CmpType compare_function){
+  //未实现，懒得实现
 }
 template <typename T, typename CmpType>
 void GetWinner(T* temp_array, Index index, size_t size, CmpType compare_function) {
