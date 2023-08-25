@@ -1,8 +1,7 @@
-#include <cstdint>
 //
 // Created by lhy31 on 2023/8/22.
 //
-#include <random>
+#include "random.h"
 namespace lhy {
 int64_t rand(int64_t a, int64_t b) {
   std::mt19937 ran(time(nullptr));

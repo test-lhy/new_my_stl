@@ -1,29 +1,10 @@
 //
 // Created by lhy31 on 2023/8/22.
 //
-#include <cmath>
-#include <functional>
-#include <list>
-#include <stdexcept>
-
-#include "../basic.h"
-#include "priority_queue.h"
-#include "random.cpp"
-#include "vector.h"
-
-namespace lhy {
-enum SortType {
-  QUICK_SORT,
-  INSERT_SORT,
-  MERGE_SORT,
-  COUNT_SORT,
-  BUCKET_SORT,
-  HEAP_SORT,
-  INTRO_SORT,
-  SHELL_SORT,
-  TOURNAMENT_SORT,
-  RADIX_SORT
-};
+#ifndef MY_STL_SORT_CPP
+#define MY_STL_SORT_CPP
+#include "sort.h"
+namespace lhy{
 template <typename T>
 void Sort(T* start, T* end) {
   Sort(start, end, SortType::QUICK_SORT);
@@ -36,30 +17,7 @@ template <typename T>
 void Sort(T* start, T* end, SortType sort_type) {
   Sort(start, end, SortType::QUICK_SORT, std::less<T>());
 }
-class ShellGapGenerationBase {
- public:
-  ShellGapGenerationBase() = default;
-  virtual ~ShellGapGenerationBase() = default;
-  virtual Index Get() = 0;
-  virtual void Up() = 0;
-  virtual void Down() = 0;
-  virtual bool DownIf() = 0;
-};
-class ShellNormalGapGeneration : public ShellGapGenerationBase {
- public:
-  static Index number;
-  ShellNormalGapGeneration() { number = 1; }
-  Index Get() override { return number; }
-  void Up() override { number = number * 3 + 1; }
-  void Down() override { number = (number - 1) / 3; }
-  bool DownIf() override {
-    if (number >= 1) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-};
+
 template <typename T, typename CmpType, typename GapGeneration = ShellNormalGapGeneration>
 void Sort(const T* start, const T* end, SortType sort_type, CmpType compare_function) {
   if (sort_type == SortType::QUICK_SORT) {
@@ -96,17 +54,19 @@ void Sort(const T* start, const T* end, SortType sort_type, CmpType compare_func
     TournamentSort(start, end, compare_function);
   }
 }
-template<typename T,typename CmpType>
-void GetWinner(T* temp_array,Index index,size_t size,CmpType compare_function){
+template <typename T, typename CmpType>
+void GetWinner(T* temp_array, Index index, size_t size, CmpType compare_function) {
   *(temp_array + index).first = T::INF;
-  if (temp_array+index * 2 + 1 < size) {
-    if (*(temp_array+index).first==T::INF||compare_function(*(temp_array+index * 2 + 1).first, *(temp_array + index).first)) {
-      *(temp_array + index) = *(temp_array+index * 2 + 1);
+  if (temp_array + index * 2 + 1 < size) {
+    if (*(temp_array + index).first == T::INF ||
+        compare_function(*(temp_array + index * 2 + 1).first, *(temp_array + index).first)) {
+      *(temp_array + index) = *(temp_array + index * 2 + 1);
     }
   }
-  if (temp_array +index * 2 + 2 < size) {
-    if (*(temp_array+index).first==T::INF||compare_function(*(temp_array +index * 2 + 2).first, *(temp_array + index).first)) {
-      *(temp_array + index) = *(temp_array +index * 2 + 2);
+  if (temp_array + index * 2 + 2 < size) {
+    if (*(temp_array + index).first == T::INF ||
+        compare_function(*(temp_array + index * 2 + 2).first, *(temp_array + index).first)) {
+      *(temp_array + index) = *(temp_array + index * 2 + 2);
     }
   }
 }
@@ -118,20 +78,20 @@ void TournamentSort(T* start, T* end, CmpType compare_function, const T INF) {
     *(temp_array + front_size + i) = {*(start + i), i};
   }
   for (Index i = front_size - 1; i >= 0; --i) {
-    GetWinner(temp_array,i,front_size+end-start,compare_function);
+    GetWinner(temp_array, i, front_size + end - start, compare_function);
   }
   *start = (*temp_array).first;
-  Index refresh_index=(*temp_array).second;
-  for (int i = 1; i < end-start; ++i) {
-    refresh_index=(refresh_index-1)/2;
-    while(refresh_index!=0){
-      GetWinner(temp_array,refresh_index,front_size+end-start,compare_function);
-      refresh_index= (refresh_index-1)/2;
+  Index refresh_index = (*temp_array).second;
+  for (int i = 1; i < end - start; ++i) {
+    refresh_index = (refresh_index - 1) / 2;
+    while (refresh_index != 0) {
+      GetWinner(temp_array, refresh_index, front_size + end - start, compare_function);
+      refresh_index = (refresh_index - 1) / 2;
     }
-    GetWinner(temp_array,refresh_index,front_size+end-start,compare_function);
-    *(start+i)=(*temp_array).first;
-    refresh_index=(*temp_array).second;
-    (*temp_array+refresh_index).first=T::INF;
+    GetWinner(temp_array, refresh_index, front_size + end - start, compare_function);
+    *(start + i) = (*temp_array).first;
+    refresh_index = (*temp_array).second;
+    (*temp_array + refresh_index).first = T::INF;
   }
 }
 template <typename T, typename CmpType>
@@ -352,3 +312,4 @@ T GetKthElement(
   }
 }
 }  // namespace lhy
+#endif
