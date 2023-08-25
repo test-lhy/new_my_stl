@@ -35,19 +35,29 @@ template <typename T>
 void Sort(T* start, T* end, SortType sort_type) {
   Sort(start, end, SortType::QUICK_SORT, std::less<T>());
 }
-struct ShellNormalGapGeneration {
+class ShellGapGenerationBase {
+ public:
+  ShellGapGenerationBase() = default;
+  virtual ~ShellGapGenerationBase() = default;
+  virtual Index Get() = 0;
+  virtual void Up() = 0;
+  virtual void Down() = 0;
+  virtual bool DownIf() = 0;
+};
+class ShellNormalGapGeneration : public ShellGapGenerationBase {
+ public:
   static Index number;
   ShellNormalGapGeneration() { number = 1; }
-  static Index Get() { return number; }
-  static void Up() { number = number * 3 + 1; }
-  static bool DownIf() {
+  Index Get() override { return number; }
+  void Up() override { number = number * 3 + 1; }
+  void Down() override { number = (number - 1) / 3; }
+  bool DownIf() override {
     if (number >= 1) {
       return true;
     } else {
       return false;
     }
   }
-  static void Down() { number = (number - 1) / 3; }
 };
 template <typename T, typename CmpType, typename GapGeneration = ShellNormalGapGeneration>
 void Sort(const T* start, const T* end, SortType sort_type, CmpType compare_function) {
@@ -74,24 +84,26 @@ void Sort(const T* start, const T* end, SortType sort_type, CmpType compare_func
       throw std::logic_error("this type can't use Count_Sort");
     }
   } else if (sort_type == SortType::SHELL_SORT) {
-    ShellSort(start, end, compare_function, GapGeneration());
+    GapGeneration gap_generation;
+    ShellGapGenerationBase *gap_generation_base=&gap_generation;
+    ShellSort(start, end, compare_function, gap_generation_base);
   }
 }
 // 感觉可以把GapGenerationType作为一个基类
-template <typename T, typename CmpType, typename GapGenerationType>
-void ShellSort(T* start, T* end, CmpType compare_function, GapGenerationType gap_generation) {
-  while (gap_generation.Get() < end - start) {
-    gap_generation.Up();
+template <typename T, typename CmpType>
+void ShellSort(T* start, T* end, CmpType compare_function, ShellGapGenerationBase* gap_generation=&ShellNormalGapGeneration()) {
+  while (gap_generation->Get() < end - start) {
+    gap_generation->Up();
   }
-  gap_generation.Down();
-  while (gap_generation.DownIf()) {
-    const auto gap_now = gap_generation.Get();
+  gap_generation->Down();
+  while (gap_generation->DownIf()) {
+    const auto gap_now = gap_generation->Get();
     for (Index i = gap_now; i < end - start; ++i) {
       for (Index j = i; j >= gap_now && compare_function(*(start + j), *(start + j - gap_now)); j -= gap_now) {
         std::swap(*(start + j), *(start + j - gap_now));
       }
     }
-    gap_generation.Down();
+    gap_generation->Down();
   }
 }
 template <typename T, typename CmpType>
