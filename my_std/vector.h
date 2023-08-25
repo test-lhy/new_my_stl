@@ -25,6 +25,8 @@ class vector {
   size_t size() const;
   bool empty() const;
   T* begin() const;
+  T* rbegin() const;
+  T* rend() const;
   T* end() const;
   const T* cend() const;
   const T* cbegin() const;
@@ -39,6 +41,14 @@ class vector {
   void check_volume();
   void check_index(const Index&) const;
 };
+template <typename T>
+T* vector<T>::rend() const {
+  return start_-1;
+}
+template <typename T>
+T* vector<T>::rbegin() const {
+  return end_-1;
+}
 template <typename T>
 T& vector<T>::back() const {
   if (empty()) {

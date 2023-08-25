@@ -28,6 +28,7 @@ enum SortType {
   RADIX_SORT,
   TIM_SORT
 };
+size_t GetMinRun(size_t size);
 class ShellGapGenerationBase {
  public:
   ShellGapGenerationBase() = default;

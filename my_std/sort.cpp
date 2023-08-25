@@ -4,7 +4,7 @@
 #ifndef MY_STL_SORT_CPP
 #define MY_STL_SORT_CPP
 #include "sort.h"
-namespace lhy{
+namespace lhy {
 template <typename T>
 void Sort(T* start, T* end) {
   Sort(start, end, SortType::QUICK_SORT);
@@ -52,15 +52,44 @@ void Sort(const T* start, const T* end, SortType sort_type, CmpType compare_func
       throw std::logic_error("no INF for tournament_sort");
     }
     TournamentSort(start, end, compare_function);
-  }else if (sort_type==SortType::TIM_SORT){
-    TimSort(start,end,compare_function);
-  }else{
+  } else if (sort_type == SortType::TIM_SORT) {
+    TimSort(start, end, compare_function);
+  } else {
     throw std::logic_error("no such sort algorithm");
   }
 }
-template<typename T,typename CmpType>
-void TimSort(T* start, T* end, CmpType compare_function){
-  //未实现，懒得实现
+size_t GetMinRun(size_t size) {
+  vector<int64_t> binary_size;
+  while (size > 0ll) {
+    binary_size.push_back(size & 1ll);
+    size >>= 1;
+  }
+  vector<int64_t> binary_minrun;
+  bool whether_one_in_behind_array = false;
+  for (auto* element = binary_size.rbegin(); element != binary_size.rbegin() - 6; element--) {
+    binary_minrun.push_back(*element);
+  }
+  for (auto* element = binary_size.rbegin()-6; element !=binary_size.rend() ; --element) {
+    if (*element==1ll){
+      whether_one_in_behind_array= true;
+    }
+  }
+  size_t minrun = 0;
+  for (auto* element = binary_minrun.rbegin(); element != binary_minrun.rend(); --element) {
+    minrun += (*element);
+    minrun *= 2;
+  }
+  minrun+=whether_one_in_behind_array;
+  return minrun;
+}
+template <typename T, typename CmpType>
+void TimSort(T* start, T* end, CmpType compare_function) {
+  if (end-start<=64){
+    Sort(start,end,SortType::INSERT_SORT,compare_function);
+    return ;
+  }
+  size_t minrun=GetMinRun(end - start);
+  //todo:实现双向列表，进行insertsort的替换，并继续完成timsort
 }
 template <typename T, typename CmpType>
 void GetWinner(T* temp_array, Index index, size_t size, CmpType compare_function) {
