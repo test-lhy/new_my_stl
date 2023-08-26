@@ -19,7 +19,6 @@ class list {
       next_ = nullptr;
       last_ = nullptr;
     }
-    T& operator*() { return content_; }
     ListNode* operator++() {
       if (this->next_ == nullptr) {
         throw std::logic_error("the iterator is the last one");
@@ -40,12 +39,14 @@ class list {
  public:
   list();
   list(T*, T*);
+  ~list();
   void push_back(const T&);
   ListNode* begin() const;
   ListNode* end() const;
   ListNode* rbegin() const;
   ListNode* rend() const;
   size_t size() const;
+  bool empty() const;
   void insert(ListNode*, const T&);
   void pop();
   ListNode* erase(ListNode*);
@@ -55,6 +56,16 @@ class list {
   ListNode* end_;
   size_t size_;
 };
+template <typename T>
+bool list<T>::empty() const {
+  return size_==0;
+}
+template <typename T>
+list<T>::~list() {
+  while(!empty()){
+    pop();
+  }
+}
 template <typename T>
 list<T>::list(T* start, T* end) {
   for (auto element = start; element != end; ++element) {

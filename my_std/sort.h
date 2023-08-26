@@ -9,13 +9,13 @@
 #include <list>
 #include <stdexcept>
 
+#include "algorithm.h"
 #include "basic.h"
 #include "list.h"
 #include "mmath.h"
 #include "priority_queue.h"
 #include "random.h"
 #include "vector.h"
-#include "algorithm.h"
 
 namespace lhy {
 enum SortType {
@@ -110,6 +110,24 @@ void Sort(const T* start, const T* end, SortType sort_type, CmpType compare_func
   }
 }
 template <typename T, typename CmpType>
+void TimSortUpdate(T* start, list<std::pair<Index, Index>> &runs, CmpType compare_function,bool forced) {
+  auto *last_iterator=runs.rbegin();
+  size_t size=runs.size();
+  for (int i = 0; i < size-1; ++i) {
+    auto *last_second_iterator=last_iterator->last_;
+    size_t last_second_size=last_second_iterator->content_.second-last_second_iterator->content_.first;
+    size_t last_size=last_iterator->content_.second-last_iterator->content_.first;
+    if (last_second_size<=last_size||forced){
+      Merge(start+last_second_iterator->content_.first,start+last_second_iterator->content_.second,start+last_iterator->content_.second,compare_function);
+      std::pair<Index,Index> new_pair=std::make_pair(last_second_iterator->content_.first,last_iterator->content_.second);
+      runs.erase(last_second_iterator);
+      auto *temp_iterator=runs.erase(last_iterator);
+      runs.insert(temp_iterator,new_pair);
+    }
+    last_iterator--;
+  }
+}
+template <typename T, typename CmpType>
 void TimSort(T* start, T* end, CmpType compare_function) {
   if (end - start <= 64) {
     Sort(start, end, SortType::INSERT_SORT, compare_function);
@@ -128,19 +146,26 @@ void TimSort(T* start, T* end, CmpType compare_function) {
     }
     if ((now_index > start_index + 1) && ((up && compare_function(*(start + now_index), *(start + now_index - 1))) ||
                                           (!up && !compare_function(*(start + now_index), *(start + now_index - 1))))) {
-      while(now_index<end-start&&(now_index-start_index)<=minrun){
+      while (now_index < end - start && (now_index - start_index) <= minrun) {
         now_index++;
       }
-      if (up){
-        Sort(start+start_index,start+now_index,SortType::INSERT_SORT,compare_function);
-      }else{
-        Sort(start+start_index,start+now_index,SortType::INSERT_SORT,[compare_function](const T& a,const T& b)->bool{return !compare_function(a,b);});
-        reverse(start+start_index,start+now_index);
+      if (up) {
+        Sort(start + start_index, start + now_index, SortType::INSERT_SORT, compare_function);
+      } else {
+        Sort(start + start_index, start + now_index, SortType::INSERT_SORT,
+             [compare_function](const T& a, const T& b) -> bool { return !compare_function(a, b); });
+        reverse(start + start_index, start + now_index);
       }
-      runs.push_back({start_index,now_index});
-      start_index=now_index;
+      runs.push_back({start_index, now_index});
+      if (runs.size()>=2){
+        TimSortUpdate(start, runs, compare_function, false);
+      }
+      start_index = now_index;
     }
     now_index++;
+  }
+  if (runs.size()>=2){
+    TimSortUpdate(start, runs, compare_function, true);
   }
 }
 template <typename T, typename CmpType>
@@ -259,6 +284,37 @@ void QuickSort(T* start, T* end, CmpType compare_function, int64_t depth, int64_
   QuickSort(start, smaller, compare_function, depth + 1, limit_depth);
   QuickSort(bigger + 1, end, compare_function, depth + 1, limit_depth);
 }
+template<typename T,typename CmpType>
+void Merge(T* start,T* other_start,T* end,CmpType compare_function){
+  auto * temp_array=new T[end-start];
+  for(Index i=0;i<end-start;++i){
+    *(temp_array+i)=*(start+i);
+  }
+  Index i1 = 0, i2 = other_start-start;
+  Index i3 = 0,i4=i2;
+  while (i1 < i4 && i2 < end - start) {
+    if (compare_function(*(temp_array + i1), *(temp_array + i2))) {
+      *(start + i3) = *(temp_array + i1);
+      i3++;
+      i1++;
+    } else {
+      *(start + i3) = *(temp_array + i2);
+      i3++;
+      i2++;
+    }
+  }
+  while (i1 < i4) {
+    *(start + i3) = *(temp_array + i1);
+    i3++;
+    i1++;
+  }
+  while (i2 < end - start) {
+    *(start + i3) = *(temp_array + i2);
+    i3++;
+    i2++;
+  }
+  delete[]temp_array;
+}
 template <typename T, typename CmpType>
 void MergeSort(T* start, T* end, CmpType compare_function) {
   T* temp_array = new T[end - start];
@@ -269,7 +325,7 @@ void MergeSort(T* start, T* end, CmpType compare_function) {
     for (Index j = 0; j < end - start; j += i * 2) {
       Index i1 = j, i2 = j + i;
       Index i3 = j;
-      while (i1 < j + i && i2 < std::min(j + 2 * i, end - start)) {
+      while (i1 < i2 && i2 < std::min(j + 2 * i, end - start)) {
         if (compare_function(*(temp_array + i1), *(temp_array + i2))) {
           *(start + i3) = *(temp_array + i1);
           i3++;
@@ -400,5 +456,5 @@ T GetKthElement(
     return pivot;
   }
 }
-}
+}  // namespace lhy
 #endif  // MY_STL_SORT_H
