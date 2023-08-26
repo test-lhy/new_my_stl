@@ -286,6 +286,7 @@ void QuickSort(T* start, T* end, CmpType compare_function, int64_t depth, int64_
 }
 template<typename T,typename CmpType>
 void Merge(T* start,T* other_start,T* end,CmpType compare_function){
+  //todo:更改为vector
   auto * temp_array=new T[end-start];
   for(Index i=0;i<end-start;++i){
     *(temp_array+i)=*(start+i);
