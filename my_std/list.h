@@ -19,6 +19,7 @@ class list {
       next_ = nullptr;
       last_ = nullptr;
     }
+    T& operator*() { return content_; }
     ListNode* operator++() {
       if (this->next_ == nullptr) {
         throw std::logic_error("the iterator is the last one");
@@ -38,7 +39,7 @@ class list {
 
  public:
   list();
-  list(T*,T*);
+  list(T*, T*);
   void push_back(const T&);
   ListNode* begin() const;
   ListNode* end() const;
@@ -48,6 +49,7 @@ class list {
   void insert(ListNode*, const T&);
   void pop();
   ListNode* erase(ListNode*);
+
  private:
   ListNode* rend_;
   ListNode* end_;
@@ -55,10 +57,10 @@ class list {
 };
 template <typename T>
 list<T>::list(T* start, T* end) {
-  for (auto element = start; element !=end ; ++element) {
+  for (auto element = start; element != end; ++element) {
     push_back(*element);
   }
-  size_=end-start;
+  size_ = end - start;
 }
 template <typename T>
 void list<T>::pop() {
@@ -66,17 +68,17 @@ void list<T>::pop() {
 }
 template <typename T>
 typename list<T>::ListNode* list<T>::erase(list::ListNode* node) {
-  if (node==rend_||node==end_){
+  if (node == rend_ || node == end_) {
     throw std::logic_error("end iterator can not be erased");
   }
-  if (size_==0){
+  if (size_ == 0) {
     throw std::logic_error("nothing left to erase");
   }
-  auto* node_behind=node->next_;
-  auto* node_before=node->last_;
+  auto* node_behind = node->next_;
+  auto* node_before = node->last_;
   delete node;
-  node_behind->last_=node_before;
-  node_before->next_=node_behind;
+  node_behind->last_ = node_before;
+  node_before->next_ = node_behind;
   size_--;
   return node_behind;
 }
