@@ -4,7 +4,7 @@
 
 #ifndef MY_STL_PRIORITY_QUEUE_H
 #define MY_STL_PRIORITY_QUEUE_H
-#include "../basic.h"
+#include "basic.h"
 #include "vector.h"
 namespace lhy {
 template <typename T, typename CmpType = std::less<T>>
@@ -16,6 +16,7 @@ class priority_queue {
   void push(T);
   void pop();
   T &front() const;
+  bool empty() const;
 
  private:
   const Index root = 0;
@@ -25,7 +26,6 @@ class priority_queue {
   void Down(Index);
   Index GetFather(Index) const;
   size_t size() const;
-  bool empty() const;
   Index GetLeftChild(Index) const;
   Index GetRightChild(Index) const;
   bool CheckRange(Index) const;

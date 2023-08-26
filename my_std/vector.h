@@ -8,7 +8,8 @@
 #include <algorithm>
 #include <cstdint>
 #include <stdexcept>
-#include"../basic.h"
+
+#include "basic.h"
 namespace lhy {
 template <typename T>
 class vector {
