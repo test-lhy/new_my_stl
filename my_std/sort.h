@@ -13,6 +13,7 @@
 #include "priority_queue.h"
 #include "random.h"
 #include "vector.h"
+#include "list.h"
 
 namespace lhy {
 enum SortType {

@@ -164,7 +164,7 @@ void Sort(std::tuple<T...>* start, std::tuple<T...>* end, SortType sort_type = S
 }
 template <typename T, typename CmpType>
 void InsertSort(T* start, T* end, CmpType compare_function) {
-  std::list<T> temp_list;
+  list<T> temp_list;
   for (auto element = start; element != end; ++element) {
     auto temp_list_iterator = temp_list.begin();
     while (temp_list_iterator != temp_list.end() && compare_function(*temp_list_iterator, *element)) {
