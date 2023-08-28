@@ -44,7 +44,7 @@ void priority_queue<T, CmpType>::CreateHeap() {
 template <typename T, typename CmpType>
 priority_queue<T, CmpType>::priority_queue(T *start, T *end) {
   for (auto &element = start; element != end; element++) {
-    priority_queue_.push_back(element);
+    priority_queue_.push_back(*element);
   }
 }
 template <typename T, typename CmpType>
