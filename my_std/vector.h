@@ -91,7 +91,7 @@ void vector<T>::check_index(const Index& index) const {
 template <typename T>
 T& vector<T>::At(const Index& index) {
   check_index(index);
-  return *(start_ + index);
+  return start_[index];
 }
 
 template <typename T>
@@ -153,7 +153,7 @@ void vector<T>::check_volume() {
     end_ = start_substitute + size;
     volume_ = start_substitute + size * 2;
     for (int i = 0; i < size; ++i) {
-      *(start_substitute + i) = std::move(*(start_ + i));
+      start_substitute[i] = std::move(start_[i]);
     }
     delete[] start_;
     start_ = start_substitute;

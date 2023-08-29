@@ -140,12 +140,12 @@ void TimSort(T* start, T* end, CmpType compare_function) {
   list<std::pair<Index, Index>> runs;
   while (now_index < end - start) {
     if (now_index - start_index == 1) {
-      if (compare_function(*(start + now_index), *(start + start_index))) {
+      if (compare_function(start[now_index], start[start_index])) {
         up = false;
       }
     }
-    if ((now_index > start_index + 1) && ((up && compare_function(*(start + now_index), *(start + now_index - 1))) ||
-                                          (!up && !compare_function(*(start + now_index), *(start + now_index - 1))))) {
+    if ((now_index > start_index + 1) && ((up && compare_function(start[now_index], start[now_index])) ||
+                                          (!up && !compare_function(start[now_index], start[now_index])))) {
       while (now_index < end - start && (now_index - start_index) <= minrun) {
         now_index++;
       }
@@ -170,17 +170,17 @@ void TimSort(T* start, T* end, CmpType compare_function) {
 }
 template <typename T, typename CmpType>
 void GetWinner(T* temp_array, Index index, size_t size, CmpType compare_function) {
-  *(temp_array + index).first = T::INF;
+  temp_array[index].first = T::INF;
   if (temp_array + index * 2 + 1 < size) {
-    if (*(temp_array + index).first == T::INF ||
-        compare_function(*(temp_array + index * 2 + 1).first, *(temp_array + index).first)) {
-      *(temp_array + index) = *(temp_array + index * 2 + 1);
+    if (temp_array[index].first == T::INF ||
+        compare_function(temp_array[index * 2 + 1].first, temp_array[index].first)) {
+      temp_array[index] = temp_array[index * 2 + 1];
     }
   }
   if (temp_array + index * 2 + 2 < size) {
-    if (*(temp_array + index).first == T::INF ||
-        compare_function(*(temp_array + index * 2 + 2).first, *(temp_array + index).first)) {
-      *(temp_array + index) = *(temp_array + index * 2 + 2);
+    if (temp_array[index].first == T::INF ||
+        compare_function(temp_array[index * 2 + 2].first, temp_array[index].first)) {
+      temp_array[index] = temp_array[index * 2 + 2];
     }
   }
 }
@@ -189,13 +189,13 @@ void TournamentSort(T* start, T* end, CmpType compare_function, const T INF) {
   size_t front_size = pow(2, ceil(log2(end - start))) - 1;
   auto* temp_array = new std::pair<T, int>[front_size + end - start];
   for (Index i = 0; i < end - start; ++i) {
-    *(temp_array + front_size + i) = {*(start + i), i};
+    temp_array[front_size + i] = {start[i], i};
   }
   for (Index i = front_size - 1; i >= 0; --i) {
     GetWinner(temp_array, i, front_size + end - start, compare_function);
   }
-  *start = (*temp_array).first;
-  Index refresh_index = (*temp_array).second;
+  start[0] = temp_array[0].first;
+  Index refresh_index = temp_array[0].second;
   for (int i = 1; i < end - start; ++i) {
     refresh_index = (refresh_index - 1) / 2;
     while (refresh_index != 0) {
@@ -203,9 +203,9 @@ void TournamentSort(T* start, T* end, CmpType compare_function, const T INF) {
       refresh_index = (refresh_index - 1) / 2;
     }
     GetWinner(temp_array, refresh_index, front_size + end - start, compare_function);
-    *(start + i) = (*temp_array).first;
-    refresh_index = (*temp_array).second;
-    (*temp_array + refresh_index).first = T::INF;
+    start[i] = temp_array[0].first;
+    refresh_index = temp_array[0].second;
+    temp_array[refresh_index].first = T::INF;
   }
 }
 template <typename T, typename CmpType>
@@ -217,8 +217,8 @@ void ShellSort(T* start, T* end, CmpType compare_function, ShellGapGenerationBas
   while (gap_generation->DownIf()) {
     const auto gap_now = gap_generation->Get();
     for (Index i = gap_now; i < end - start; ++i) {
-      for (Index j = i; j >= gap_now && compare_function(*(start + j), *(start + j - gap_now)); j -= gap_now) {
-        std::swap(*(start + j), *(start + j - gap_now));
+      for (Index j = i; j >= gap_now && compare_function(start[j], start[j - gap_now]); j -= gap_now) {
+        std::swap(start[j], start[j - gap_now]);
       }
     }
     gap_generation->Down();
@@ -231,7 +231,7 @@ void ShellSort(T* start, T* end, CmpType compare_function, ShellGapGenerationBas
 //  };
 //  priority_queue<T, compare_function_type> priority_queue_temp(start, end);
 //  for (int i = 0; i < end - start; ++i) {
-//    *(start + i) = priority_queue_temp.top();
+//    start[i] = priority_queue_temp.top();
 //    priority_queue_temp.pop();
 //  }
 //}
@@ -251,7 +251,7 @@ void InsertSort(T* start, T* end, CmpType compare_function) {
   }
   auto temp_list_iterator = temp_list.begin();
   for (Index i = 0; i < end - start; i++) {
-    *(start + i) = *(*temp_list_iterator);
+    start[i] = *(*temp_list_iterator);
     temp_list_iterator++;
   }
 }
@@ -286,31 +286,30 @@ void QuickSort(T* start, T* end, CmpType compare_function, int64_t depth, int64_
 }
 template<typename T,typename CmpType>
 void Merge(T* start,T* other_start,T* end,CmpType compare_function){
-  //todo:更改为vector
   auto * temp_array=new T[end-start];
   for(Index i=0;i<end-start;++i){
-    *(temp_array+i)=*(start+i);
+    temp_array[i]=start[i];
   }
   Index i1 = 0, i2 = other_start-start;
   Index i3 = 0,i4=i2;
   while (i1 < i4 && i2 < end - start) {
-    if (compare_function(*(temp_array + i1), *(temp_array + i2))) {
-      *(start + i3) = *(temp_array + i1);
+    if (compare_function(temp_array[i1], temp_array[i2])) {
+      start[i3] = temp_array[i1];
       i3++;
       i1++;
     } else {
-      *(start + i3) = *(temp_array + i2);
+      start[i3] = temp_array[i2];
       i3++;
       i2++;
     }
   }
   while (i1 < i4) {
-    *(start + i3) = *(temp_array + i1);
+    start[i3] = temp_array[i1];
     i3++;
     i1++;
   }
   while (i2 < end - start) {
-    *(start + i3) = *(temp_array + i2);
+    start[i3] = temp_array[i2];
     i3++;
     i2++;
   }
@@ -321,29 +320,29 @@ void MergeSort(T* start, T* end, CmpType compare_function) {
   T* temp_array = new T[end - start];
   for (Index i = 1; i < end - start; i <<= 1) {
     for (Index j = 0; j < end - start; ++j) {
-      *(temp_array + j) = *(start + j);
+      temp_array[j] = start[j];
     }
     for (Index j = 0; j < end - start; j += i * 2) {
       Index i1 = j, i2 = j + i;
       Index i3 = j;
       while (i1 < i2 && i2 < std::min(j + 2 * i, end - start)) {
-        if (compare_function(*(temp_array + i1), *(temp_array + i2))) {
-          *(start + i3) = *(temp_array + i1);
+        if (compare_function(temp_array[i1], temp_array[i2])) {
+          start[i3] = temp_array[i1];
           i3++;
           i1++;
         } else {
-          *(start + i3) = *(temp_array + i2);
+          start[i3] = temp_array[i2];
           i3++;
           i2++;
         }
       }
       while (i1 < j + i) {
-        *(start + i3) = *(temp_array + i1);
+        start[i3] = temp_array[i1];
         i3++;
         i1++;
       }
       while (i2 < std::min(j + 2 * i, end - start)) {
-        *(start + i3) = *(temp_array + i2);
+        start[i3] = temp_array[i2];
         i3++;
         i2++;
       }
@@ -367,11 +366,11 @@ void CountSort(T* start, T* end) {
     cnt[i] += cnt[i - 1];
   }
   for (Index i = end - start - 1; i >= 0; --i) {
-    *(temp_array + i) = cnt[*(start + i) - minT];
-    cnt[*(start + i) - minT]--;
+    temp_array[i] = cnt[start[i] - minT];
+    cnt[start[i] - minT]--;
   }
   for (Index i = 0; i < start - end; ++i) {
-    *(start + i) = *(temp_array + i);
+    start[i] = temp_array[i];
   }
   delete[] temp_array;
 }
@@ -389,7 +388,7 @@ void BucketSort(T* start, T* end) {
   int count = 0;
   for (Index i = 0; i < maxT - minT + 1; ++i) {
     for (Index j = 0; j < cnt[i]; ++j) {
-      *(start + count) = i;
+      start[count] = i;
       count++;
     }
   }
@@ -399,11 +398,11 @@ void RadixSort(std::tuple<T...>* start, std::tuple<T...>* end, SortType sort_typ
   using TupleWithIndex = std::pair<std::tuple<T...>, Index>;
   auto* temp_array = new TupleWithIndex[end - start];
   for (Index i = 0; i < end - start; ++i) {
-    *(temp_array + i) = {*(start + i), i};
+    temp_array[i] = {start[i], i};
   }
-  for (Index i = 0; i < (*start).size(); ++i) {
+  for (Index i = 0; i < start->size(); ++i) {
     for (Index j = 0; j < end - start; ++j) {
-      *(temp_array + j).second = j;
+      temp_array[j].second = j;
     }
     Sort(start, end, sort_type, [i](const TupleWithIndex& a, const TupleWithIndex& b) -> bool {
       if (std::get<i>(a.first) == std::get<i>(b.first)) {
@@ -414,7 +413,7 @@ void RadixSort(std::tuple<T...>* start, std::tuple<T...>* end, SortType sort_typ
     });
   }
   for (Index i = 0; i < end - start; ++i) {
-    *(start + i) = *(temp_array + i).first;
+    start[i] = temp_array[i].first;
   }
 }
 template <typename T, typename CmpType>
@@ -423,10 +422,10 @@ T GetApproximateMedian(
     size_t median_split_length = 5) {
   for (Index i = 0; i < end - start; i += median_split_length) {
     Sort(start + i, start + std::min(i + median_split_length, end - start), SortType::INSERT_SORT, compare_function);
-    std::swap(*(start + i / median_split_length), *(start + std::min(i + median_split_length / 2, end - start)));
+    std::swap(start[i / median_split_length], start[std::min(i + median_split_length / 2, end - start)]);
   }
   if ((end - start) <= median_split_length) {
-    return *start;
+    return start[0];
   } else {
     return GetApproximateMedian(start, start + (end - start) / median_split_length + 1, compare_function,
                                 median_split_length);
