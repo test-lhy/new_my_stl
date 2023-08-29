@@ -231,7 +231,7 @@ void HeapSort(T* start, T* end, CmpType compare_function) {
   };
   priority_queue<T, compare_function_type> priority_queue_temp(start, end);
   for (int i = 0; i < end - start; ++i) {
-    *(start + i) = priority_queue_temp.front();
+    *(start + i) = priority_queue_temp.top();
     priority_queue_temp.pop();
   }
 }

@@ -13,7 +13,7 @@ int main() {
     pq.push(4);
 
     while (!pq.empty()) {
-        std::cout << pq.front() << " ";
+        std::cout << pq.top() << " ";
         pq.pop();
     }
 
@@ -23,7 +23,7 @@ int main() {
     lhy::priority_queue<int> pq2(arr.begin(), arr.end());
 
     while (!pq2.empty()) {
-        std::cout << pq2.front() << " ";
+        std::cout << pq2.top() << " ";
         pq2.pop();
     }
 

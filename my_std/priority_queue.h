@@ -15,7 +15,7 @@ class priority_queue {
   ~priority_queue();
   void push(T);
   void pop();
-  T &front() const;
+  T &top() const;
   bool empty() const;
 
  private:
@@ -32,7 +32,7 @@ class priority_queue {
   void CreateHeap();
 };
 template <typename T, typename CmpType>
-T &priority_queue<T, CmpType>::front() const {
+T &priority_queue<T, CmpType>::top() const {
   return priority_queue_.front();
 }
 template <typename T, typename CmpType>
@@ -44,7 +44,7 @@ void priority_queue<T, CmpType>::CreateHeap() {
 template <typename T, typename CmpType>
 priority_queue<T, CmpType>::priority_queue(T *start, T *end) {
   for (auto &element = start; element != end; element++) {
-    priority_queue_.push_back(*element);
+    push(*element);
   }
 }
 template <typename T, typename CmpType>
