@@ -19,6 +19,7 @@ class list {
       next_ = nullptr;
       last_ = nullptr;
     }
+    T& operator*() { return content_; }
     ListNode* operator++() {
       if (this->next_ == nullptr) {
         throw std::logic_error("the iterator is the last one");
@@ -58,11 +59,11 @@ class list {
 };
 template <typename T>
 bool list<T>::empty() const {
-  return size_==0;
+  return size_ == 0;
 }
 template <typename T>
 list<T>::~list() {
-  while(!empty()){
+  while (!empty()) {
     pop();
   }
 }

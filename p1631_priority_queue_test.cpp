@@ -344,6 +344,7 @@ struct NODE{
 using std::cin;
 using std::cout;
 int main(){
+    cout<<"ÄãºÃ";
     int n;
     cin >> n;
     for (int i = 0; i < n; i++)
