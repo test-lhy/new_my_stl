@@ -6,9 +6,11 @@
 #define MY_STL_BASIC_H
 
 #include <cstdint>
-namespace lhy{
+namespace lhy {
 
-using Index=int64_t;
-using size_t=int64_t;
-}
+using Index = int64_t;
+using size_t = int64_t;
+template <typename T>
+using CmpType = std::function<bool(const T&, const T&)>;
+}  // namespace lhy
 #endif  // MY_STL_BASIC_H

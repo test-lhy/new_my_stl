@@ -7,11 +7,11 @@
 #include "basic.h"
 #include "vector.h"
 namespace lhy {
-template <typename T, typename CmpType = std::less<T>>
+template <typename T>
 class priority_queue {
  public:
-  priority_queue();
-  priority_queue(T *, T *);
+  explicit priority_queue(const CmpType<T>& cmp=std::less<T>());
+  priority_queue(T *, T *,const CmpType<T>& cmp=std::less<T>());
   ~priority_queue();
   void push(T);
   void pop();
@@ -21,7 +21,7 @@ class priority_queue {
  private:
   const Index root = 0;
   vector<T> priority_queue_;
-  CmpType compare_function_;
+  CmpType<T> compare_function_;
   void Up(Index);
   void Down(Index);
   Index GetFather(Index) const;
@@ -31,28 +31,33 @@ class priority_queue {
   bool CheckRange(Index) const;
   void CreateHeap();
 };
-template <typename T, typename CmpType>
-T &priority_queue<T, CmpType>::top() const {
+template <typename T>
+priority_queue<T>::priority_queue(const CmpType<T>& cmp){
+  compare_function_ = cmp;
+}
+template <typename T>
+T &priority_queue<T>::top() const {
   return priority_queue_.front();
 }
-template <typename T, typename CmpType>
-void priority_queue<T, CmpType>::CreateHeap() {
+template <typename T>
+void priority_queue<T>::CreateHeap() {
   for (int i = size() >> 1; i >= 0; --i) {
     Down(i);
   }
 }
-template <typename T, typename CmpType>
-priority_queue<T, CmpType>::priority_queue(T *start, T *end) {
+template <typename T>
+priority_queue<T>::priority_queue(T *start, T *end,const CmpType<T>& cmp) {
+  compare_function_ = cmp;
   for (auto &element = start; element != end; element++) {
     push(*element);
   }
 }
-template <typename T, typename CmpType>
-bool priority_queue<T, CmpType>::empty() const {
+template <typename T>
+bool priority_queue<T>::empty() const {
   return priority_queue_.empty();
 }
-template <typename T, typename CmpType>
-void priority_queue<T, CmpType>::pop() {
+template <typename T>
+void priority_queue<T>::pop() {
   if (empty()) {
     throw std::range_error("nothing left to pop");
   }
@@ -60,33 +65,31 @@ void priority_queue<T, CmpType>::pop() {
   priority_queue_.pop();
   Down(0);
 }
-template <typename T, typename CmpType>
-void priority_queue<T, CmpType>::push(T element) {
+template <typename T>
+void priority_queue<T>::push(T element) {
   priority_queue_.push_back(element);
   Up(size() - 1);
 }
-template <typename T, typename CmpType>
-priority_queue<T, CmpType>::~priority_queue() = default;
-template <typename T, typename CmpType>
-priority_queue<T, CmpType>::priority_queue() = default;
-template <typename T, typename CmpType>
-bool priority_queue<T, CmpType>::CheckRange(Index index) const {
+template <typename T>
+priority_queue<T>::~priority_queue() = default;
+template <typename T>
+bool priority_queue<T>::CheckRange(Index index) const {
   return index < size() && index >= 0;
 }
-template <typename T, typename CmpType>
-Index priority_queue<T, CmpType>::GetRightChild(Index index) const {
+template <typename T>
+Index priority_queue<T>::GetRightChild(Index index) const {
   return 2 * index + 2;
 }
-template <typename T, typename CmpType>
-Index priority_queue<T, CmpType>::GetLeftChild(Index index) const {
+template <typename T>
+Index priority_queue<T>::GetLeftChild(Index index) const {
   return 2 * index + 1;
 }
-template <typename T, typename CmpType>
-size_t priority_queue<T, CmpType>::size() const {
+template <typename T>
+size_t priority_queue<T>::size() const {
   return priority_queue_.size();
 }
-template <typename T, typename CmpType>
-void priority_queue<T, CmpType>::Down(Index index) {
+template <typename T>
+void priority_queue<T>::Down(Index index) {
   Index left_child_index = GetLeftChild(index);
   Index right_child_index = GetRightChild(index);
   if (!CheckRange(left_child_index) && !CheckRange(right_child_index)) {
@@ -110,8 +113,8 @@ void priority_queue<T, CmpType>::Down(Index index) {
     }
   }
 }
-template <typename T, typename CmpType>
-void priority_queue<T, CmpType>::Up(Index index) {
+template <typename T>
+void priority_queue<T>::Up(Index index) {
   if (index == root) {
     return;
   }
@@ -121,8 +124,8 @@ void priority_queue<T, CmpType>::Up(Index index) {
     Up(father_index);
   }
 }
-template <typename T, typename CmpType>
-Index priority_queue<T, CmpType>::GetFather(Index index) const {
+template <typename T>
+Index priority_queue<T>::GetFather(Index index) const {
   return (index - 1) / 2;
 }
 
