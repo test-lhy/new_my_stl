@@ -11,7 +11,7 @@ int main() {
   for (int i = 0; i < 10000; ++i) {
     test.push_back(rand(-10000, 10000));
   }
-  Sort(test.begin(), test.end(), lhy::SortType::COUNT_SORT);
+  Sort(test.begin(), test.end(), lhy::SortType::BUCKET_SORT);
   for (int i = 0; i < test.size() - 1; i++) {
     std::cerr << test[i] << " ";
     if (test[i] > test[i + 1]) {

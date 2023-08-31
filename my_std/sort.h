@@ -412,13 +412,16 @@ void BucketSort(T* start, T* end) {
     minT = std::min(*element, minT);
   }
   int* cnt = new int[maxT - minT + 1];
+  for (Index i = minT; i <= maxT; ++i) {
+    cnt[i - minT] = 0;
+  }
   for (auto element = start; element != end; ++element) {
     cnt[*element - minT]++;
   }
   int count = 0;
   for (Index i = 0; i < maxT - minT + 1; ++i) {
     for (Index j = 0; j < cnt[i]; ++j) {
-      start[count] = i;
+      start[count] = i+minT;
       count++;
     }
   }
