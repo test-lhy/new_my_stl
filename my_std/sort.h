@@ -75,13 +75,13 @@ void Sort(T* start, T* end, SortType sort_type, const UnknownCmpType& compare_fu
   const CmpType<T>& compare_function_known = compare_function;
   Sort(start, end, sort_type, compare_function_known);
 }
-template <typename T,typename = ShellNormalGapGeneration>
-void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_function){
+template <typename T, typename = ShellNormalGapGeneration>
+void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_function) {
   typename TypeTraits<T>::WhetherInterger whether_Integer;
-  Sort(start,end,sort_type,compare_function,whether_Integer);
+  Sort(start, end, sort_type, compare_function, whether_Integer);
 }
-template <typename T,typename GapGeneration = ShellNormalGapGeneration>
-void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_function,IsInteger whether_integer) {
+template <typename T, typename GapGeneration = ShellNormalGapGeneration>
+void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_function, IsInteger whether_integer) {
   if (sort_type == SortType::QUICK_SORT) {
     QuickSort(start, end, compare_function, 0, -1);
   } else if (sort_type == SortType::INSERT_SORT) {
@@ -108,8 +108,8 @@ void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_functi
     throw std::logic_error("no such sort algorithm");
   }
 }
-template <typename T,typename GapGeneration = ShellNormalGapGeneration>
-void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_function,IsNotInteger whether_integer) {
+template <typename T, typename GapGeneration = ShellNormalGapGeneration>
+void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_function, IsNotInteger whether_integer) {
   if (sort_type == SortType::QUICK_SORT) {
     QuickSort(start, end, compare_function, 0, -1);
   } else if (sort_type == SortType::INSERT_SORT) {

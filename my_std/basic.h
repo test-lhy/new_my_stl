@@ -6,6 +6,7 @@
 #define MY_STL_BASIC_H
 
 #include <cstdint>
+#include <functional>
 namespace lhy {
 using Index = int64_t;
 using size_t = int64_t;
