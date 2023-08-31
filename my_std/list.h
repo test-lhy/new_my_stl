@@ -4,6 +4,7 @@
 
 #ifndef MY_STL_LIST_H
 #define MY_STL_LIST_H
+#include <iostream>
 #include <stdexcept>
 namespace lhy {
 template <typename T>
@@ -24,13 +25,15 @@ class list {
       if (this->next_ == nullptr) {
         throw std::logic_error("the iterator is the last one");
       }
-      return this->next_;
+      this = this->next_;
+      return this;
     }
     ListNode* operator--() {
       if (this->last_ == nullptr) {
         throw std::logic_error("the iterator is the last one");
       }
-      return this->last_;
+      this = this->last_;
+      return this;
     }
     T content_;
     ListNode* next_;
@@ -55,7 +58,7 @@ class list {
  private:
   ListNode* rend_;
   ListNode* end_;
-  size_t size_;
+  size_t size_{};
 };
 template <typename T>
 bool list<T>::empty() const {
@@ -68,11 +71,10 @@ list<T>::~list() {
   }
 }
 template <typename T>
-list<T>::list(T* start, T* end) {
+list<T>::list(T* start, T* end) : list() {
   for (auto element = start; element != end; ++element) {
     push_back(*element);
   }
-  size_ = end - start;
 }
 template <typename T>
 void list<T>::pop() {
@@ -130,6 +132,10 @@ void list<T>::push_back(const T& content) {
 }
 template <typename T>
 list<T>::list() {
+  rend_ = new ListNode();
+  end_ = new ListNode();
+  rend_->next_ = end_;
+  end_->last_ = rend_;
   size_ = 0;
 }
 

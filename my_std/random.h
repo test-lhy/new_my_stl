@@ -10,7 +10,7 @@ namespace lhy {
 template <typename T>
 void randomize(T *start, T *end) {
   for (int i = 0; i < end - start; ++i) {
-    int ran = rand(-1, end - start - 1);
+    int ran = rand(0, end - start - 1);
     if (ran != i) {
       std::swap(start[i], start[ran]);
     }

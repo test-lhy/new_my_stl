@@ -245,14 +245,14 @@ void InsertSort(T* start, T* end, const CmpType<T>& compare_function) {
   for (auto element = start; element != end; ++element) {
     auto temp_list_iterator = temp_list.begin();
     while (temp_list_iterator != temp_list.end() && compare_function(*(*temp_list_iterator), *element)) {
-      temp_list_iterator++;
+      temp_list_iterator = temp_list_iterator->next_;
     }
     temp_list.insert(temp_list_iterator, *element);
   }
   auto temp_list_iterator = temp_list.begin();
   for (Index i = 0; i < end - start; i++) {
     start[i] = *(*temp_list_iterator);
-    temp_list_iterator++;
+    temp_list_iterator = temp_list_iterator->next_;
   }
 }
 template <typename T>
@@ -261,28 +261,28 @@ void QuickSort(T* start, T* end, const CmpType<T>& compare_function, int64_t dep
     HeapSort(start, end, compare_function);
     return;
   }
-  if (end - start == 1) {
+  if (end - start == 0) {
     return;
   }
   if (depth == 0) {
     randomize(start, end);
   }
-  T pivot = GetKthElement(start, end, (end - start) / 2, compare_function);
-  T *smaller = start, *now = start, *bigger = end - 1;
+  T pivot = GetKthElement(start, end, (end - start + 1) / 2, compare_function);
+  T *smaller = start, *now = start, *bigger = end;
   while (now < bigger) {
     if (compare_function(*now, pivot)) {
       std::swap(*now, *smaller);
       smaller++;
       now++;
     } else if (compare_function(pivot, *now)) {
-      std::swap(*now, *bigger);
       bigger--;
+      std::swap(*now, *bigger);
     } else {
       now++;
     }
   }
   QuickSort(start, smaller, compare_function, depth + 1, limit_depth);
-  QuickSort(bigger + 1, end, compare_function, depth + 1, limit_depth);
+  QuickSort(bigger, end, compare_function, depth + 1, limit_depth);
 }
 template <typename T>
 void Merge(T* start, T* other_start, T* end, const CmpType<T>& compare_function) {
@@ -422,7 +422,7 @@ T GetApproximateMedian(
     size_t median_split_length = 5) {
   for (Index i = 0; i < end - start; i += median_split_length) {
     Sort(start + i, start + std::min(i + median_split_length, end - start), SortType::INSERT_SORT, compare_function);
-    std::swap(start[i / median_split_length], start[std::min(i + median_split_length / 2, end - start)]);
+    std::swap(start[i / median_split_length], start[std::min(i + median_split_length / 2, end - start - 1)]);
   }
   if ((end - start) <= median_split_length) {
     return start[0];
@@ -434,15 +434,15 @@ T GetApproximateMedian(
 template <typename T>
 T GetKthElement(T* start, T* end, Index k, const CmpType<T>& compare_function) {
   T pivot = GetApproximateMedian(start, end, compare_function);
-  T *smaller = start, *now = start, *bigger = end - 1;
+  T *smaller = start, *now = start, *bigger = end;
   while (now < bigger) {
     if (compare_function(*now, pivot)) {
       std::swap(*now, *smaller);
       smaller++;
       now++;
     } else if (compare_function(pivot, *now)) {
-      std::swap(*now, *bigger);
       bigger--;
+      std::swap(*now, *bigger);
     } else {
       now++;
     }
