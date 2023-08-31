@@ -386,6 +386,9 @@ void CountSort(T* start, T* end) {
     minT = std::min(*element, minT);
   }
   int* cnt = new int[maxT - minT + 1];
+  for (Index i = minT; i <= maxT; ++i) {
+    cnt[i - minT] = 0;
+  }
   for (auto element = start; element != end; ++element) {
     cnt[*element - minT]++;
   }
@@ -393,10 +396,10 @@ void CountSort(T* start, T* end) {
     cnt[i] += cnt[i - 1];
   }
   for (Index i = end - start - 1; i >= 0; --i) {
-    temp_array[i] = cnt[start[i] - minT];
+    temp_array[cnt[start[i]-minT]-1] = start[i];
     cnt[start[i] - minT]--;
   }
-  for (Index i = 0; i < start - end; ++i) {
+  for (Index i = 0; i < end-start; ++i) {
     start[i] = temp_array[i];
   }
   delete[] temp_array;
