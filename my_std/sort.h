@@ -75,8 +75,13 @@ void Sort(T* start, T* end, SortType sort_type, const UnknownCmpType& compare_fu
   const CmpType<T>& compare_function_known = compare_function;
   Sort(start, end, sort_type, compare_function_known);
 }
-template <typename T, typename GapGeneration = ShellNormalGapGeneration>
-void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_function) {
+template <typename T,typename = ShellNormalGapGeneration>
+void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_function){
+  typename TypeTraits<T>::WhetherInterger whether_Integer;
+  Sort(start,end,sort_type,compare_function,whether_Integer);
+}
+template <typename T,typename GapGeneration = ShellNormalGapGeneration>
+void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_function,IsInteger whether_integer) {
   if (sort_type == SortType::QUICK_SORT) {
     QuickSort(start, end, compare_function, 0, -1);
   } else if (sort_type == SortType::INSERT_SORT) {
@@ -84,21 +89,41 @@ void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_functi
   } else if (sort_type == SortType::MERGE_SORT) {
     MergeSort(start, end, compare_function);
   } else if (sort_type == SortType::COUNT_SORT) {
-    //    if (typeid(T) == typeid(int) || typeid(T) == typeid(char)) {
-    //      CountSort(start, end);
-    //    } else {
-    //      throw std::logic_error("this type can't use Count_Sort");
-    //    }
+    CountSort(start, end);
   } else if (sort_type == SortType::HEAP_SORT) {
     HeapSort(start, end, compare_function);
   } else if (sort_type == SortType::INTRO_SORT) {
     QuickSort(start, end, compare_function, 0, std::log2(end - start));
   } else if (sort_type == SortType::BUCKET_SORT) {
-    //    if (typeid(T) == typeid(int) || typeid(T) == typeid(char)) {
-    //      BucketSort(start, end);
-    //    } else {
-    //      throw std::logic_error("this type can't use Count_Sort");
-    //    }
+    BucketSort(start, end);
+  } else if (sort_type == SortType::SHELL_SORT) {
+    GapGeneration gap_generation;
+    ShellSort(start, end, compare_function, &gap_generation);
+  } else if (sort_type == SortType::TOURNAMENT_SORT) {
+    T max_value = *std::max_element(start, end, compare_function);
+    TournamentSort(start, end, compare_function, max_value);
+  } else if (sort_type == SortType::TIM_SORT) {
+    TimSort(start, end, compare_function);
+  } else {
+    throw std::logic_error("no such sort algorithm");
+  }
+}
+template <typename T,typename GapGeneration = ShellNormalGapGeneration>
+void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_function,IsNotInteger whether_integer) {
+  if (sort_type == SortType::QUICK_SORT) {
+    QuickSort(start, end, compare_function, 0, -1);
+  } else if (sort_type == SortType::INSERT_SORT) {
+    InsertSort(start, end, compare_function);
+  } else if (sort_type == SortType::MERGE_SORT) {
+    MergeSort(start, end, compare_function);
+  } else if (sort_type == SortType::COUNT_SORT) {
+    throw std::logic_error("this type can't use Count_Sort");
+  } else if (sort_type == SortType::HEAP_SORT) {
+    HeapSort(start, end, compare_function);
+  } else if (sort_type == SortType::INTRO_SORT) {
+    QuickSort(start, end, compare_function, 0, std::log2(end - start));
+  } else if (sort_type == SortType::BUCKET_SORT) {
+    throw std::logic_error("this type can't use Bucket_Sort");
   } else if (sort_type == SortType::SHELL_SORT) {
     GapGeneration gap_generation;
     ShellSort(start, end, compare_function, &gap_generation);
@@ -128,7 +153,7 @@ void TimSortUpdate(T* start, list<std::pair<Index, Index>>& runs, const CmpType<
       auto* temp_iterator = runs.erase(last_iterator);
       runs.insert(temp_iterator, new_pair);
     }
-    last_iterator--;
+    last_iterator = last_iterator->last_;
   }
 }
 template <typename T>
@@ -177,12 +202,12 @@ void GetWinner(std::pair<T, int>* temp_array, Index index, size_t size, const Cm
                const T& INF) {
   temp_array[index].first = INF;
   temp_array[index].second = -1;
-  if (index * 2 + 1 < size&&temp_array[index * 2 + 1].second != -1) {
+  if (index * 2 + 1 < size && temp_array[index * 2 + 1].second != -1) {
     if (temp_array[index].first == INF || compare_function(temp_array[index * 2 + 1].first, temp_array[index].first)) {
       temp_array[index] = temp_array[index * 2 + 1];
     }
   }
-  if (index * 2 + 2 < size&&temp_array[index * 2 + 2].second != -1) {
+  if (index * 2 + 2 < size && temp_array[index * 2 + 2].second != -1) {
     if (temp_array[index].first == INF || compare_function(temp_array[index * 2 + 2].first, temp_array[index].first)) {
       temp_array[index] = temp_array[index * 2 + 2];
     }
@@ -199,7 +224,7 @@ void TournamentSort(T* start, T* end, const CmpType<T>& compare_function, const 
     GetWinner(temp_array, i, front_size + end - start, compare_function, INF);
   }
   start[0] = temp_array[0].first;
-  Index refresh_index = temp_array[0].second+front_size;
+  Index refresh_index = temp_array[0].second + front_size;
   temp_array[refresh_index].second = -1;
   for (int i = 1; i < end - start; ++i) {
     refresh_index = (refresh_index - 1) / 2;
@@ -209,7 +234,7 @@ void TournamentSort(T* start, T* end, const CmpType<T>& compare_function, const 
     }
     GetWinner(temp_array, refresh_index, front_size + end - start, compare_function, INF);
     start[i] = temp_array[0].first;
-    refresh_index = temp_array[0].second+front_size;
+    refresh_index = temp_array[0].second + front_size;
     temp_array[refresh_index].first = INF;
   }
 }
