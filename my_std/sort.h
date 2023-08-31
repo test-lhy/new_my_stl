@@ -68,7 +68,7 @@ void Sort(T* start, T* end, const UnknownCmpType& compare_function) {
 template <typename T>
 void Sort(T* start, T* end, SortType sort_type) {
   const CmpType<T>& compare_function = std::less<T>();
-  Sort(start, end, SortType::QUICK_SORT, compare_function);
+  Sort(start, end, sort_type, compare_function);
 }
 template <typename T, typename GapGeneration = ShellNormalGapGeneration, typename UnknownCmpType>
 void Sort(T* start, T* end, SortType sort_type, const UnknownCmpType& compare_function) {
@@ -84,21 +84,21 @@ void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_functi
   } else if (sort_type == SortType::MERGE_SORT) {
     MergeSort(start, end, compare_function);
   } else if (sort_type == SortType::COUNT_SORT) {
-    if (typeid(T) == typeid(int) || typeid(T) == typeid(char)) {
-      CountSort(start, end);
-    } else {
-      throw std::logic_error("this type can't use Count_Sort");
-    }
+    //    if (typeid(T) == typeid(int) || typeid(T) == typeid(char)) {
+    //      CountSort(start, end);
+    //    } else {
+    //      throw std::logic_error("this type can't use Count_Sort");
+    //    }
   } else if (sort_type == SortType::HEAP_SORT) {
     HeapSort(start, end, compare_function);
   } else if (sort_type == SortType::INTRO_SORT) {
     QuickSort(start, end, compare_function, 0, std::log2(end - start));
   } else if (sort_type == SortType::BUCKET_SORT) {
-    if (typeid(T) == typeid(int) || typeid(T) == typeid(char)) {
-      BucketSort(start, end);
-    } else {
-      throw std::logic_error("this type can't use Count_Sort");
-    }
+    //    if (typeid(T) == typeid(int) || typeid(T) == typeid(char)) {
+    //      BucketSort(start, end);
+    //    } else {
+    //      throw std::logic_error("this type can't use Count_Sort");
+    //    }
   } else if (sort_type == SortType::SHELL_SORT) {
     GapGeneration gap_generation;
     ShellSort(start, end, compare_function, &gap_generation);
@@ -176,12 +176,13 @@ template <typename T>
 void GetWinner(std::pair<T, int>* temp_array, Index index, size_t size, const CmpType<T>& compare_function,
                const T& INF) {
   temp_array[index].first = INF;
-  if (index * 2 + 1 < size) {
+  temp_array[index].second = -1;
+  if (index * 2 + 1 < size&&temp_array[index * 2 + 1].second != -1) {
     if (temp_array[index].first == INF || compare_function(temp_array[index * 2 + 1].first, temp_array[index].first)) {
       temp_array[index] = temp_array[index * 2 + 1];
     }
   }
-  if (index * 2 + 2 < size) {
+  if (index * 2 + 2 < size&&temp_array[index * 2 + 2].second != -1) {
     if (temp_array[index].first == INF || compare_function(temp_array[index * 2 + 2].first, temp_array[index].first)) {
       temp_array[index] = temp_array[index * 2 + 2];
     }
@@ -198,7 +199,8 @@ void TournamentSort(T* start, T* end, const CmpType<T>& compare_function, const 
     GetWinner(temp_array, i, front_size + end - start, compare_function, INF);
   }
   start[0] = temp_array[0].first;
-  Index refresh_index = temp_array[0].second;
+  Index refresh_index = temp_array[0].second+front_size;
+  temp_array[refresh_index].second = -1;
   for (int i = 1; i < end - start; ++i) {
     refresh_index = (refresh_index - 1) / 2;
     while (refresh_index != 0) {
@@ -207,7 +209,7 @@ void TournamentSort(T* start, T* end, const CmpType<T>& compare_function, const 
     }
     GetWinner(temp_array, refresh_index, front_size + end - start, compare_function, INF);
     start[i] = temp_array[0].first;
-    refresh_index = temp_array[0].second;
+    refresh_index = temp_array[0].second+front_size;
     temp_array[refresh_index].first = INF;
   }
 }

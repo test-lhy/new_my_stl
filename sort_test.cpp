@@ -1,20 +1,23 @@
 //
 // Created by lhy31 on 2023/8/29.
 //
+#include "sort.h"
+
 #include <iostream>
 #include <vector>
-#include "sort.h"
 using namespace lhy;
 int main() {
+  vector<int> test{4,2,1,3,5};
+  for (int i = 0; i < 10000; ++i) {
+    test.push_back(rand(-10000,10000));
+  }
 
-    vector<int> test{5, 3, 1, 4, 2};
-
-    // Test Quick Sort
-    Sort(test.begin(),test.end(), lhy::SortType::QUICK_SORT);
-    for (int i = 0; i < test.size() - 1; i++) {
-        if (test[i] > test[i + 1]) {
-            std::cout << "Quick Sort failed!" << std::endl;
-            return 1;
-        }
+  Sort(test.begin(), test.end(), lhy::SortType::TOURNAMENT_SORT);
+  for (int i = 0; i < test.size() - 1; i++) {
+    std::cerr<<test[i]<<" ";
+    if (test[i] > test[i + 1]) {
+      std::cout << "Quick Sort failed!" << std::endl;
+      return 1;
     }
+  }
 }
