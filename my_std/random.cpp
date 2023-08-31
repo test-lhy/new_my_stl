@@ -4,7 +4,8 @@
 #include "random.h"
 namespace lhy {
 int64_t rand(int64_t a, int64_t b) {
-  std::mt19937 ran(time(nullptr));
+  std::random_device r;
+  std::mt19937 ran(r());
   return ran() % (b - a) + a;
 }
 
