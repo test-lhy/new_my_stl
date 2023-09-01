@@ -7,49 +7,95 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <iostream>
+#include <sstream>
 #include <stdexcept>
+
+#include "basic.h"
 namespace lhy {
 template <typename T>
 class vector {
  public:
   vector();
   explicit vector(const size_t&);
+  explicit vector(T*,T*);
   vector(const std::initializer_list<T>&);
   ~vector();
   vector<T>& operator=(const std::initializer_list<T>&);
   void push_back(const T&);
-  T& operator[](const size_t&);
-  T& At(const size_t&);
+  T& operator[](const Index&);
+  T& At(const Index&);
   void clear();
   size_t size() const;
   bool empty() const;
   T* begin() const;
+  T* rbegin() const;
+  T* rend() const;
   T* end() const;
   const T* cend() const;
   const T* cbegin() const;
+  void pop();
+  T& front() const;
+  T& back() const;
+  std::string show(int) const;
 
  private:
-  using size_T = int64_t;
   T* start_;
   T* end_;
   T* volume_;
   void check_volume();
-  void check_index(const size_t&) const;
+  void check_index(const Index&) const;
 };
+
 template <typename T>
-T& vector<T>::operator[](const size_t& index) {
+vector<T>::vector(T* start, T* end):vector() {
+  for (auto *element = start; element != end; ++element) {
+    push_back(*element);
+  }
+}
+template <typename T>
+T* vector<T>::rend() const {
+  return start_-1;
+}
+template <typename T>
+T* vector<T>::rbegin() const {
+  return end_-1;
+}
+template <typename T>
+T& vector<T>::back() const {
+  if (empty()) {
+    throw std::range_error("no element in vector");
+  }
+  return *(end_ - 1);
+}
+template <typename T>
+T& vector<T>::front() const {
+  if (empty()) {
+    throw std::range_error("no element in vector");
+  }
+  return *start_;
+}
+template <typename T>
+void vector<T>::pop() {
+  if (size() == 0) {
+    throw std::range_error("nothing left to pop");
+  }
+  end_--;
+}
+template <typename T>
+T& vector<T>::operator[](const Index& index) {
   return At(index);
 }
 template <typename T>
-void vector<T>::check_index(const size_t& index) const {
+void vector<T>::check_index(const Index& index) const {
   if (index < 0 || index >= size()) {
     throw std::logic_error("out of range");
   }
 }
 template <typename T>
-T& vector<T>::At(const size_t& index) {
+T& vector<T>::At(const Index& index) {
   check_index(index);
-  return *(start_ + index);
+  return start_[index];
 }
 
 template <typename T>
@@ -99,9 +145,9 @@ size_t vector<T>::size() const {
 template <typename T>
 void vector<T>::clear() {
   delete[] start_;
-  start_=new T[1];
-  end_=start_;
-  volume_=start_+1;
+  start_ = new T[1];
+  end_ = start_;
+  volume_ = start_ + 1;
 }
 template <typename T>
 void vector<T>::check_volume() {
@@ -111,7 +157,7 @@ void vector<T>::check_volume() {
     end_ = start_substitute + size;
     volume_ = start_substitute + size * 2;
     for (int i = 0; i < size; ++i) {
-      *(start_substitute + i) = std::move(*(start_ + i));
+      start_substitute[i] = std::move(start_[i]);
     }
     delete[] start_;
     start_ = start_substitute;
@@ -123,14 +169,11 @@ void vector<T>::push_back(const T& element) {
   *end_ = element;
   end_++;
 }
-}  // namespace lhy
-namespace lhy {
 template <typename T>
 vector<T>::vector() : vector(1) {}
 template <typename T>
 vector<T>::~vector() {
   delete[] start_;
 }
-
 }  // namespace lhy
-#endif  // MY_STL_VECTOR_H
+#endif

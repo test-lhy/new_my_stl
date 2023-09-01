@@ -2,13 +2,11 @@
 // Created by lhy31 on 2023/8/21.
 //
 #include "vector.h"
-
 #include <cassert>
 #include <iostream>
 #include <stdexcept>
 using namespace lhy;
 int main() {
-
   vector<int> vec;
   printf("!");
   // 测试默认构造
@@ -42,6 +40,5 @@ int main() {
   assert(*it == 4);
 
   std::cout << "all test passed" << std::endl;
-
   return 0;
 }

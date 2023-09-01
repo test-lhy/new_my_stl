@@ -1,2 +1,7 @@
 /build
 /cmake-build-debug
+*.exe
+*.obj
+*.i
+/.idea/sonarlint
+*.idx
