@@ -149,7 +149,6 @@ void TimSortUpdate(T* start, list<std::pair<Index, Index>>& runs, const CmpType<
             start + last_iterator->content_.second, compare_function);
       std::pair<Index, Index> new_pair =
           std::make_pair(last_second_iterator->content_.first, last_iterator->content_.second);
-      std::cerr << show(start + new_pair.first, start + new_pair.second, 200) << std::endl;
       runs.erase(last_second_iterator);
       auto* temp_iterator = runs.erase(last_iterator);
       runs.insert(temp_iterator, new_pair);
