@@ -37,7 +37,6 @@ class vector {
   void pop();
   T& front() const;
   T& back() const;
-  std::string show(int) const;
 
  private:
   T* start_;

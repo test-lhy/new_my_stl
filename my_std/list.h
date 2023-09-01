@@ -56,7 +56,8 @@ class list {
   void insert(ListNode*, const T&);
   void pop();
   ListNode* erase(ListNode*);
-  std::string show(int)const;
+  std::string show(int count_limit=20) const;
+
  private:
   ListNode* rend_;
   ListNode* end_;
@@ -65,10 +66,10 @@ class list {
 template <typename T>
 std::string list<T>::show(int count_limit) const {
   std::stringstream string_stream;
-  for(auto &element=begin(); element!=end();element=element->next) {
-    string_stream<<element->content_<<" ";
+  for (auto* element = begin(); element != end(); element = element->next_) {
+    string_stream << element->content_ << " ";
     count_limit--;
-    if(count_limit<=0){
+    if (count_limit <= 0) {
       break;
     }
   }
@@ -86,9 +87,7 @@ bool list<T>::empty() const {
 }
 template <typename T>
 list<T>::~list() {
-  while (!empty()) {
-    pop();
-  }
+  clear();
 }
 template <typename T>
 list<T>::list(T* start, T* end) : list() {
@@ -98,6 +97,9 @@ list<T>::list(T* start, T* end) : list() {
 }
 template <typename T>
 void list<T>::pop() {
+  if (empty()) {
+    throw std::logic_error("the list is empty");
+  }
   erase(end_->last_);
 }
 template <typename T>
@@ -105,7 +107,7 @@ typename list<T>::ListNode* list<T>::erase(list::ListNode* node) {
   if (node == rend_ || node == end_) {
     throw std::logic_error("end iterator can not be erased");
   }
-  if (size_ == 0) {
+  if (empty()) {
     throw std::logic_error("nothing left to erase");
   }
   auto* node_behind = node->next_;
