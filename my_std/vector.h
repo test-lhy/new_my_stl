@@ -7,6 +7,8 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <iostream>
+#include <sstream>
 #include <stdexcept>
 
 #include "basic.h"
@@ -35,6 +37,7 @@ class vector {
   void pop();
   T& front() const;
   T& back() const;
+  std::string show(int) const;
 
  private:
   T* start_;
@@ -43,6 +46,7 @@ class vector {
   void check_volume();
   void check_index(const Index&) const;
 };
+
 template <typename T>
 vector<T>::vector(T* start, T* end):vector() {
   for (auto *element = start; element != end; ++element) {
@@ -165,14 +169,11 @@ void vector<T>::push_back(const T& element) {
   *end_ = element;
   end_++;
 }
-}  // namespace lhy
-namespace lhy {
 template <typename T>
 vector<T>::vector() : vector(1) {}
 template <typename T>
 vector<T>::~vector() {
   delete[] start_;
 }
-
 }  // namespace lhy
-#endif  // MY_STL_VECTOR_H
+#endif

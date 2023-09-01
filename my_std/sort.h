@@ -144,16 +144,19 @@ void TimSortUpdate(T* start, list<std::pair<Index, Index>>& runs, const CmpType<
     auto* last_second_iterator = last_iterator->last_;
     size_t last_second_size = last_second_iterator->content_.second - last_second_iterator->content_.first;
     size_t last_size = last_iterator->content_.second - last_iterator->content_.first;
-    if (last_second_size <= last_size || forced) {
+    if (last_second_size < last_size * 2 || forced) {
       Merge(start + last_second_iterator->content_.first, start + last_second_iterator->content_.second,
             start + last_iterator->content_.second, compare_function);
       std::pair<Index, Index> new_pair =
           std::make_pair(last_second_iterator->content_.first, last_iterator->content_.second);
+      std::cerr << show(start + new_pair.first, start + new_pair.second, 200) << std::endl;
       runs.erase(last_second_iterator);
       auto* temp_iterator = runs.erase(last_iterator);
       runs.insert(temp_iterator, new_pair);
+    } else {
+      break;
     }
-    last_iterator = last_iterator->last_;
+    last_iterator = runs.rbegin();
   }
 }
 template <typename T>
@@ -167,14 +170,15 @@ void TimSort(T* start, T* end, const CmpType<T>& compare_function) {
   Index start_index = 0;
   bool up = true;
   list<std::pair<Index, Index>> runs;
-  while (now_index < end - start) {
+  while (now_index <= end - start) {
     if (now_index - start_index == 1) {
       if (compare_function(start[now_index], start[start_index])) {
         up = false;
       }
     }
-    if ((now_index > start_index + 1) && ((up && compare_function(start[now_index], start[now_index])) ||
-                                          (!up && !compare_function(start[now_index], start[now_index])))) {
+    if (now_index == end - start ||
+        ((now_index > start_index + 1) && (((up && compare_function(start[now_index], start[now_index])) ||
+                                            (!up && !compare_function(start[now_index], start[now_index])))))) {
       while (now_index < end - start && (now_index - start_index) <= minrun) {
         now_index++;
       }
@@ -396,10 +400,10 @@ void CountSort(T* start, T* end) {
     cnt[i] += cnt[i - 1];
   }
   for (Index i = end - start - 1; i >= 0; --i) {
-    temp_array[cnt[start[i]-minT]-1] = start[i];
+    temp_array[cnt[start[i] - minT] - 1] = start[i];
     cnt[start[i] - minT]--;
   }
-  for (Index i = 0; i < end-start; ++i) {
+  for (Index i = 0; i < end - start; ++i) {
     start[i] = temp_array[i];
   }
   delete[] temp_array;
@@ -421,7 +425,7 @@ void BucketSort(T* start, T* end) {
   int count = 0;
   for (Index i = 0; i < maxT - minT + 1; ++i) {
     for (Index j = 0; j < cnt[i]; ++j) {
-      start[count] = i+minT;
+      start[count] = i + minT;
       count++;
     }
   }

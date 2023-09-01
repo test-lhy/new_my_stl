@@ -5,6 +5,7 @@
 #ifndef MY_STL_LIST_H
 #define MY_STL_LIST_H
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 namespace lhy {
 template <typename T>
@@ -44,6 +45,7 @@ class list {
   list();
   list(T*, T*);
   ~list();
+  void clear();
   void push_back(const T&);
   ListNode* begin() const;
   ListNode* end() const;
@@ -54,12 +56,30 @@ class list {
   void insert(ListNode*, const T&);
   void pop();
   ListNode* erase(ListNode*);
-
+  std::string show(int)const;
  private:
   ListNode* rend_;
   ListNode* end_;
   size_t size_{};
 };
+template <typename T>
+std::string list<T>::show(int count_limit) const {
+  std::stringstream string_stream;
+  for(auto &element=begin(); element!=end();element=element->next) {
+    string_stream<<element->content_<<" ";
+    count_limit--;
+    if(count_limit<=0){
+      break;
+    }
+  }
+  return string_stream.str();
+}
+template <typename T>
+void list<T>::clear() {
+  while (!empty()) {
+    pop();
+  }
+}
 template <typename T>
 bool list<T>::empty() const {
   return size_ == 0;

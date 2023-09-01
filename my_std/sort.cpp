@@ -19,12 +19,13 @@ size_t GetMinRun(size_t size) {
   for (auto* element = binary_size.rbegin() - 6; element != binary_size.rend(); --element) {
     if (*element == 1ll) {
       whether_one_in_behind_array = true;
+      break;
     }
   }
   size_t minrun = 0;
-  for (auto* element = binary_minrun.rbegin(); element != binary_minrun.rend(); --element) {
-    minrun += (*element);
+  for (auto & element : binary_minrun) {
     minrun *= 2;
+    minrun += element;
   }
   minrun += whether_one_in_behind_array;
   return minrun;
