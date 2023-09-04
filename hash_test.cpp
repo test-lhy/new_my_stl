@@ -1,25 +1,21 @@
 //
 // Created by lhy31 on 2023/9/4.
 //
-#include "hash.h"
+#include "double_hash.h"
+
+#include <iostream>
 #include <string>
-#include<iostream>
 
 int main() {
 
-  lhy::hash<std::string, int> hash_table;
+  lhy::DoubleHash<std::string, int> hash_table;
 
-  hash_table.insert("apple", 1);
-  hash_table.insert("banana", 2);
-  hash_table.insert("orange", 3);
-
-  std::cout<<hash_table["apple"] ;
-  std::cout<<hash_table["banana"];
-  std::cout<<hash_table["orange"];
-
-  hash_table["apple"] = 4;
-  std::cout<<hash_table["apple"];
-
+  std::cout<<hash_table.equal("orange","orange");
+  std::cout<<hash_table.equal("orange","banana");
+  std::cout<<hash_table.equal("banana","orange");
+  std::cout<<hash_table.equal("banana","banana");
+  std::cout<<hash_table.equal("apple","orange");
+  std::cout<<hash_table.equal("apple","banana");
   std::cout << "All tests passed!" << std::endl;
 
   return 0;

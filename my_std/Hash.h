@@ -26,7 +26,7 @@ size_t GetModValue(const size_t& size) {
   return *iter;
 }
 template <typename T, typename U>
-class hash {
+class Hash {
  private:
   struct Element {
     T key;
@@ -36,13 +36,15 @@ class hash {
   };
 
  public:
-  explicit hash(size_t,size_t mod_value=196613, HashFuncType<T>& hash_func = TypeTraits<T>::hash_func);
-  explicit hash(HashFuncType<T>& hash_func = TypeTraits<T>::hash_func);
+  explicit Hash(size_t,size_t mod_value=196613, HashFuncType<T>& hash_func = TypeTraits<T>::hash_func);
+  explicit Hash(HashFuncType<T>& hash_func = TypeTraits<T>::hash_func);
+  void mod_value_set(size_t mod_value) { mod_value_ = mod_value; }
+  void hash_func_set(HashFuncType<T>& hash_func) { hash_func_=hash_func; };
   void insert(const T& key, const U& value);
   U& operator[](const T& key);
-  ~hash();
+  ~Hash();
   // note:指hash函数得出的结果相等
-  bool equal(const T&, const T&);
+  bool equal(const T&, const T&) const;
 
  private:
   size_t mod_value_ = 196613;
@@ -50,7 +52,7 @@ class hash {
   HashFuncType<T> hash_func_;
 };
 template <typename T, typename U>
-U& hash<T, U>::operator[](const T& key) {
+U& Hash<T, U>::operator[](const T& key) {
   list<Element>& hash_list = hash_table_[hash_func_(key, mod_value_)];
   auto* answer = hash_list.find({key, U()});
   if (answer != hash_list.end()) {
@@ -62,19 +64,19 @@ U& hash<T, U>::operator[](const T& key) {
   }
 }
 template <typename T, typename U>
-bool hash<T, U>::equal(const T& a, const T& b) {
+bool Hash<T, U>::equal(const T& a, const T& b) const {
   return hash_func_(a, mod_value_) == hash_func_(b, mod_value_);
 }
 template <typename T, typename U>
-hash<T, U>::~hash() = default;
+Hash<T, U>::~Hash() = default;
 template <typename T, typename U>
-hash<T, U>::hash(HashFuncType<T>& hash_func) {
+Hash<T, U>::Hash(HashFuncType<T>& hash_func) {
   hash_table_.reserve(mod_value_ + 5);
   hash_func_ = hash_func;
 }
 
 template <typename T, typename U>
-hash<T, U>::hash(size_t size,size_t mod_value, HashFuncType<T>& hash_func) : hash(hash_func) {
+Hash<T, U>::Hash(size_t size,size_t mod_value, HashFuncType<T>& hash_func) : Hash(hash_func) {
   if (mod_value!=mod_value_){
     mod_value_ = mod_value;
   }else{
@@ -84,7 +86,7 @@ hash<T, U>::hash(size_t size,size_t mod_value, HashFuncType<T>& hash_func) : has
   hash_func_ = hash_func;
 }
 template <typename T, typename U>
-void hash<T, U>::insert(const T& key, const U& value) {
+void Hash<T, U>::insert(const T& key, const U& value) {
   hash_table_[hash_func_(key, mod_value_)].push_back({key, value});
 }
 };      // namespace lhy
