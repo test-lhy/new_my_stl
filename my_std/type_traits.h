@@ -7,7 +7,7 @@
 #include <string>
 
 #include "basic.h"
-namespace lhy{
+namespace lhy {
 struct IsInteger {};
 struct IsNotInteger {};
 template <typename T>
@@ -57,5 +57,5 @@ class TypeTraits<std::string> {
   using WhetherInterger = IsNotInteger;
   static HashFuncType<std::string> hash_func;
 };
-}
+}  // namespace lhy
 #endif  // MY_STL_TYPE_TRAITS_H
