@@ -38,6 +38,9 @@ class vector {
   T& front() const;
   T& back() const;
   void reserve(size_t);
+  void erase(Index);
+  void erase(T*);
+  void erase(const T&);
 
  private:
   T* start_;
@@ -46,6 +49,29 @@ class vector {
   void check_volume();
   void check_index(const Index&) const;
 };
+template <typename T>
+//todo:不知道为什么graph erase的时候不能const 也不能&
+void vector<T>::erase(const T& target) {
+  for (auto it = begin(); it!= end(); ++it) {
+    if (*it == target) {
+      erase(it);
+      break;
+    }
+  }
+}
+template <typename T>
+void vector<T>::erase(T* target) {
+  while(target!= end_-1) {
+    target[0] = target[1];
+  }
+}
+
+template <typename T>
+void vector<T>::erase(Index index) {
+  for (Index i = index; i < size() - 1; i++) {
+    start_[i] = start_[i + 1];
+  }
+}
 template <typename T>
 void vector<T>::reserve(size_t size) {
   if (size<this->size()) {
@@ -56,7 +82,7 @@ void vector<T>::reserve(size_t size) {
   end_ = start_substitute + size;
   volume_ = start_substitute + size;
   for (int i = 0; i < ex_size; ++i) {
-    start_substitute[i] = std::move(start_[i]);
+    start_substitute[i] = start_[i];
   }
   delete[] start_;
   start_ = start_substitute;
