@@ -55,14 +55,33 @@ class list {
   bool empty() const;
   void insert(ListNode*, const T&);
   void pop();
+  ListNode* find(const T&);
   ListNode* erase(ListNode*);
-  std::string show(int count_limit=20) const;
+  ListNode* erase(const T&);
+  std::string show(int count_limit = 20) const;
 
  private:
   ListNode* rend_;
   ListNode* end_;
   size_t size_{};
 };
+template <typename T>
+typename list<T>::ListNode* list<T>::find(const T& content) {
+  ListNode* answer = begin();
+  while (answer != end_ && answer->content_ != content) {
+    answer = answer->next_;
+  }
+  return answer;
+}
+template <typename T>
+typename list<T>::ListNode* list<T>::erase(const T& content) {
+  ListNode* answer = find(content);
+  if (answer != end_) {
+    return erase(answer);
+  } else {
+    throw std::logic_error("the element is not in the list");
+  }
+}
 template <typename T>
 std::string list<T>::show(int count_limit) const {
   std::stringstream string_stream;

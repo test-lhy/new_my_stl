@@ -37,6 +37,7 @@ class vector {
   void pop();
   T& front() const;
   T& back() const;
+  void reserve(size_t);
 
  private:
   T* start_;
@@ -45,6 +46,21 @@ class vector {
   void check_volume();
   void check_index(const Index&) const;
 };
+template <typename T>
+void vector<T>::reserve(size_t size) {
+  if (size<this->size()) {
+    throw std::logic_error("the size of the vector cannot be bigger than the reserve size");
+  }
+  T* start_substitute = new T[size];
+  size_t ex_size=this->size();
+  end_ = start_substitute + size;
+  volume_ = start_substitute + size;
+  for (int i = 0; i < ex_size; ++i) {
+    start_substitute[i] = std::move(start_[i]);
+  }
+  delete[] start_;
+  start_ = start_substitute;
+}
 
 template <typename T>
 vector<T>::vector(T* start, T* end):vector() {

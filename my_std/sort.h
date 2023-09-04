@@ -15,6 +15,7 @@
 #include "mmath.h"
 #include "priority_queue.h"
 #include "random.h"
+#include "type_traits.h"
 #include "vector.h"
 
 namespace lhy {
