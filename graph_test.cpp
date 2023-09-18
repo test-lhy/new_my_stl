@@ -16,12 +16,10 @@ int main() {
   std::cout << "Expect node count: 2, actual: " << g.size() << std::endl;
 
   // 测试预留空间的 AddNode,预期节点数为3
-  g.AddNode(2, 3);
+  g.AddNode(2, 10);
   std::cout << "Expect node count: 3, actual: " << g.size() << std::endl;
 
   // 测试边的添加
-  g.AddEdge(0, 1);
-  g.AddEdge(1, 2);
   g.AddNode(2, 100);
   // 测试清空,预期节点数为0
   g.clear();

@@ -85,10 +85,8 @@ void vector<T>::reserve(size_t size) {
   for (int i = 0; i < ex_size; ++i) {
     start_substitute[i] = start_[i];
   }
-  std::cerr<<"reserving::vector_free:"<<start_<<std::endl;
   delete[] start_;
   start_ = start_substitute;
-  std::cerr<<"reserving::vector_create:"<<start_<<std::endl;
 }
 
 template <typename T>
@@ -159,7 +157,6 @@ vector<T>& vector<T>::operator=(const std::initializer_list<T>& element_list) {
 template <typename T>
 vector<T>::vector(const size_t& size) {
   start_ = new T[size];
-  std::cerr<<"vector_create:"<<start_<<std::endl;
   end_ = start_;
   volume_ = size;
 }
@@ -202,10 +199,9 @@ void vector<T>::check_volume() {
     for (int i = 0; i < volume_; ++i) {
       start_substitute[i] = start_[i];
     }
-    std::cerr<<"vol_check::vector_free:"<<start_<<std::endl;
+    volume_ *= 2;
     delete[] start_;
     start_ = start_substitute;
-    std::cerr<<"vol_check::vector_create:"<<start_<<std::endl;
   }
 }
 template <typename T>
@@ -218,7 +214,6 @@ template <typename T>
 vector<T>::vector() : vector(1) {}
 template <typename T>
 vector<T>::~vector() {
-  std::cerr<<"vector_free:"<<start_<<std::endl;
   delete[] start_;
 }
 }  // namespace lhy
