@@ -20,6 +20,8 @@ int main() {
   std::cout << "Expect node count: 3, actual: " << g.size() << std::endl;
 
   // 测试边的添加
+  g.AddEdge(0, 2);
+  g.AddEdge(1, 2);
   g.AddNode(2, 100);
   // 测试清空,预期节点数为0
   g.clear();
@@ -40,7 +42,7 @@ int main() {
   std::cout << "Expect node count: 1, actual: " << g.size() << std::endl;
 
   // 测试节点1的边数,预期为1条
-  std::cout << "Expect node 1 edges: 1, actual: " << g[1].next.size() << std::endl;
+  std::cout << "Expect node 1 edges: 1, actual: " << g[1].next_.size() << std::endl;
 
   return 0;
 }

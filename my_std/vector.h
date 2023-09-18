@@ -22,6 +22,8 @@ class vector {
   vector(const std::initializer_list<T>&);
   ~vector();
   vector<T>& operator=(const std::initializer_list<T>&);
+  vector<T>& operator=(const vector<T>&);
+  vector<T>& operator=(vector<T>&&) noexcept;
   void push_back(const T&);
   T& operator[](const Index&);
   T& At(const Index&);
@@ -49,6 +51,22 @@ class vector {
   void check_volume();
   void check_index(const Index&) const;
 };
+template <typename T>
+vector<T>& vector<T>::operator=(vector<T>&& other)  noexcept {
+  std::swap(this,&other);
+  return *this;
+}
+template <typename T>
+vector<T>& vector<T>::operator=(const vector<T>& other) {
+  if (this==&other) {
+    return *this;
+  }
+  this->clear();
+  for (auto element=other.begin();element!=other.end();element++) {
+    this->push_back(*element);
+  }
+  return *this;
+}
 template <typename T>
 //todo:不知道为什么graph erase的时候不能const 也不能&
 void vector<T>::erase(const T& target) {

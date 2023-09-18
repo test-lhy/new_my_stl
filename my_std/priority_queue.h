@@ -59,7 +59,7 @@ bool priority_queue<T>::empty() const {
 template <typename T>
 void priority_queue<T>::pop() {
   if (empty()) {
-    throw std::range_error("nothing left to pop");
+    throw std::range_error("nothing left to_ pop");
   }
   std::swap(priority_queue_.back(), priority_queue_.front());
   priority_queue_.pop();

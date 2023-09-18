@@ -127,7 +127,7 @@ typename list<T>::ListNode* list<T>::erase(list::ListNode* node) {
     throw std::logic_error("end iterator can not be erased");
   }
   if (empty()) {
-    throw std::logic_error("nothing left to erase");
+    throw std::logic_error("nothing left to_ erase");
   }
   auto* node_behind = node->next_;
   auto* node_before = node->last_;

@@ -68,7 +68,7 @@ namespace lhy {
     template <typename T>
     void vector<T>::pop() {
         if (size() == 0) {
-            throw std::range_error("nothing left to pop");
+            throw std::range_error("nothing left to_ pop");
         }
         end_--;
     }
@@ -236,7 +236,7 @@ namespace lhy {
     template<typename T, typename CmpType>
     void priority_queue<T, CmpType>::pop() {
         if (empty()) {
-            throw std::range_error("nothing left to pop");
+            throw std::range_error("nothing left to_ pop");
         }
         std::swap(priority_queue_.back(), priority_queue_.front());
         priority_queue_.pop();
