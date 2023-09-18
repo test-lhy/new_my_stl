@@ -1,11 +1,11 @@
-#include "graph.h"
+#include "directed_graph.h"
 #include <iostream>
 
 using namespace lhy;
 
 int main() {
 
-  Graph<int, double> g;
+  directed_graph<int, double> g;
 
   // Add some nodes
   g.AddNode(1);

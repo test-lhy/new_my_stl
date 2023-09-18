@@ -46,14 +46,15 @@ class Graph {
   void AddNode(T content);
   void AddNode(T content, Index index);
   void EraseNode(Index index);
-  void AddEdge(T from, T to, WeightType weight = 1);
+  virtual void AddEdge(T from, T to, WeightType weight = 1);
   void clear();
   size_t size() const;
   node& GetNode(Index);
   node& operator[](Index);
 
- private:
+ protected:
   vector<node> nodes_;
+ private:
   size_t reserved_size_;
   size_t size_;
 };
