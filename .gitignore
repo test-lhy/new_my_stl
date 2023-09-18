@@ -6,3 +6,4 @@
 /.idea/sonarlint
 *.idx
 *.zip
+*.name
