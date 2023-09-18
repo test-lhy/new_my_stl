@@ -32,7 +32,12 @@ class Graph {
     T content;
     vector<edge> next;
     vector<edge> prev;
-    ~node()=default;
+    node(){
+      std::cerr<<"node_create:"<<this<<std::endl;
+    }
+    ~node(){
+      std::cerr<<"node_free:"<<this<<std::endl;
+    }
   };
   Graph();
   ~Graph();

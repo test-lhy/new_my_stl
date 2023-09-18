@@ -430,29 +430,29 @@ void BucketSort(T* start, T* end) {
     }
   }
 }
-template <typename... T>
-void RadixSort(std::tuple<T...>* start, std::tuple<T...>* end, SortType sort_type) {
-  using TupleWithIndex = std::pair<std::tuple<T...>, Index>;
-  auto* temp_array = new TupleWithIndex[end - start];
-  for (Index i = 0; i < end - start; ++i) {
-    temp_array[i] = {start[i], i};
-  }
-  for (Index i = 0; i < start->size(); ++i) {
-    for (Index j = 0; j < end - start; ++j) {
-      temp_array[j].second = j;
-    }
-    Sort(start, end, sort_type, [i](const TupleWithIndex& a, const TupleWithIndex& b) -> bool {
-      if (std::get<i>(a.first) == std::get<i>(b.first)) {
-        return a.second < b.second;
-      } else {
-        return std::get<i>(a.first) < std::get<i>(b.first);
-      }
-    });
-  }
-  for (Index i = 0; i < end - start; ++i) {
-    start[i] = temp_array[i].first;
-  }
-}
+//template <typename... T>
+//void RadixSort(std::tuple<T...>* start, std::tuple<T...>* end, SortType sort_type) {
+//  using TupleWithIndex = std::pair<std::tuple<T...>, Index>;
+//  auto* temp_array = new TupleWithIndex[end - start];
+//  for (Index i = 0; i < end - start; ++i) {
+//    temp_array[i] = {start[i], i};
+//  }
+//  for (Index i = 0; i < start->size(); ++i) {
+//    for (Index j = 0; j < end - start; ++j) {
+//      temp_array[j].second = j;
+//    }
+//    Sort(start, end, sort_type, [i](const TupleWithIndex& a, const TupleWithIndex& b) -> bool {
+//      if (std::get<i>(a.first) == std::get<i>(b.first)) {
+//        return a.second < b.second;
+//      } else {
+//        return std::get<i>(a.first) < std::get<i>(b.first);
+//      }
+//    });
+//  }
+//  for (Index i = 0; i < end - start; ++i) {
+//    start[i] = temp_array[i].first;
+//  }
+//}
 template <typename T>
 T GetApproximateMedian(
     T* start, T* end, const CmpType<T>& compare_function = [](const T& a, const T& b) -> bool { return a < b; },

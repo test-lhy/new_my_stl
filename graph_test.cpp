@@ -5,8 +5,6 @@
 #include <iostream>
 #include<vector>
 int main() {
-  lhy::vector<int> vec;
-  vec.push_back(1);
   lhy::Graph<int> g;
 
   // 测试 AddNode,预期节点数为1
@@ -18,7 +16,7 @@ int main() {
   std::cout << "Expect node count: 2, actual: " << g.size() << std::endl;
 
   // 测试预留空间的 AddNode,预期节点数为3
-  g.AddNode(2, 10);
+  g.AddNode(2, 3);
   std::cout << "Expect node count: 3, actual: " << g.size() << std::endl;
 
   // 测试边的添加
