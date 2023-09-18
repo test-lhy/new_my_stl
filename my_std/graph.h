@@ -74,6 +74,7 @@ void Graph<T, WeightType>::clear() {
 template <typename T, typename WeightType>
 void Graph<T, WeightType>::EraseNode(Index index) {
   size_--;
+  nodes_[index].used_= false;
   for (auto& edge : nodes_[index].prev_) {
     edge.to_->next_.erase(edge);
   }
@@ -86,9 +87,12 @@ void Graph<T, WeightType>::AddEdge(T from, T to, WeightType weight) {
   if (from >= nodes_.size() || to >= nodes_.size()) {
     throw std::out_of_range("from or to is out of range");
   }
-  edge edge(weight, &nodes_[from], &nodes_[to]);
-  nodes_[from].next_.push_back(edge);
-  nodes_[to].prev_.push_back(edge);
+  edge edge_temp(weight, &nodes_[from], &nodes_[to]);
+  nodes_[from].next_.push_back(edge_temp);
+  nodes_[to].prev_.push_back(std::move(edge_temp));
+  edge edge_temp_other(weight, &nodes_[to], &nodes_[from]);
+  nodes_[from].prev_.push_back(edge_temp_other);
+  nodes_[to].next_.push_back(std::move(edge_temp_other));
 }
 template <typename T, typename WeightType>
 size_t Graph<T, WeightType>::size() const {

@@ -25,6 +25,7 @@ class vector {
   vector<T>& operator=(const vector<T>&);
   vector<T>& operator=(vector<T>&&) noexcept;
   void push_back(const T&);
+  void push_back(T&&);
   T& operator[](const Index&);
   T& At(const Index&);
   void clear();
@@ -51,6 +52,12 @@ class vector {
   void check_volume();
   void check_index(const Index&) const;
 };
+template <typename T>
+void vector<T>::push_back(T&& element) {
+  check_volume();
+  *end_ = element;
+  end_++;
+}
 template <typename T>
 vector<T>& vector<T>::operator=(vector<T>&& other)  noexcept {
   std::swap(this,&other);
