@@ -45,7 +45,7 @@ class vector {
  private:
   T* start_;
   T* end_;
-  T* volume_;
+  Index volume_;
   void check_volume();
   void check_index(const Index&) const;
 };
@@ -63,6 +63,7 @@ template <typename T>
 void vector<T>::erase(T* target) {
   while(target!= end_-1) {
     target[0] = target[1];
+    target++;
   }
 }
 
@@ -79,8 +80,8 @@ void vector<T>::reserve(size_t size) {
   }
   T* start_substitute = new T[size];
   size_t ex_size=this->size();
-  end_ = start_substitute + size;
-  volume_ = start_substitute + size;
+  end_ =  start_substitute+size;
+  volume_ = size;
   for (int i = 0; i < ex_size; ++i) {
     start_substitute[i] = start_[i];
   }
@@ -160,7 +161,7 @@ vector<T>::vector(const size_t& size) {
   start_ = new T[size];
   std::cerr<<"vector_create:"<<start_<<std::endl;
   end_ = start_;
-  volume_ = start_ + size;
+  volume_ = size;
 }
 template <typename T>
 const T* vector<T>::cbegin() const {
@@ -191,17 +192,15 @@ void vector<T>::clear() {
   delete[] start_;
   start_ = new T[1];
   end_ = start_;
-  volume_ = start_ + 1;
+  volume_ = 1;
 }
 template <typename T>
 void vector<T>::check_volume() {
-  if (end_ == volume_) {
-    int64_t size = (volume_ - start_);
-    T* start_substitute = new T[size * 2];
-    end_ = start_substitute + size;
-    volume_ = start_substitute + size * 2;
-    for (int i = 0; i < size; ++i) {
-      start_substitute[i] = std::move(start_[i]);
+  if (size() == volume_) {
+    T* start_substitute = new T[volume_ * 2];
+    end_ = start_substitute + volume_;
+    for (int i = 0; i < volume_; ++i) {
+      start_substitute[i] = start_[i];
     }
     std::cerr<<"vol_check::vector_free:"<<start_<<std::endl;
     delete[] start_;
