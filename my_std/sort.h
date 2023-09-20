@@ -8,6 +8,7 @@
 #include <functional>
 #include <list>
 #include <stdexcept>
+#include<algorithm>
 
 #include "algorithm.h"
 #include "basic.h"

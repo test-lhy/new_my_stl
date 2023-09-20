@@ -9,6 +9,8 @@
 #include <string>
 #include <utility>
 namespace lhy {
+std::string ToString(int64_t);
+//todo:总感觉将T*改为T好怪
 template <typename T>
 void reverse(T* start, T* end) {
   end--;
