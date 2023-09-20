@@ -12,17 +12,17 @@ class Graph {
   struct node;
   struct edge {
     WeightType weight_;
-    node* from_;
-    node* to_;
-    edge(WeightType weight, node* from, node* to) {
+    Index from_;
+    Index to_;
+    edge(const WeightType& weight, Index from, Index to) {
       this->weight_ = weight;
       this->from_ = from;
       this->to_ = to;
     }
     edge() {
       this->weight_ = 0;
-      this->from_ = nullptr;
-      this->to_ = nullptr;
+      this->from_ = -1;
+      this->to_ = -1;
     }
     bool operator==(const edge& other) { return this->weight_ == other.weight_ && this->from_ == other.from_ && this->to_; }
     bool operator!=(const edge& other) { return !(*this == other); }
@@ -43,10 +43,10 @@ class Graph {
   };
   Graph();
   ~Graph();
-  void AddNode(T content);
-  void AddNode(T content, Index index);
+  void AddNode(const T& content);
+  void AddNode(const T& content, Index index);
   void EraseNode(Index index);
-  virtual void AddEdge(T from, T to, WeightType weight = 1);
+  virtual void AddEdge(Index from, Index to, const WeightType& weight = 1);
   void clear();
   size_t size() const;
   node& GetNode(Index);
@@ -77,21 +77,21 @@ void Graph<T, WeightType>::EraseNode(Index index) {
   size_--;
   nodes_[index].used_= false;
   for (auto& edge : nodes_[index].prev_) {
-    edge.to_->next_.erase(edge);
+    nodes_[edge.to_].next_.erase(edge);
   }
   for (auto& edge : nodes_[index].next_) {
-    edge.from_->prev_.erase(edge);
+    nodes_[edge.from_].prev_.erase(edge);
   }
 }
 template <typename T, typename WeightType>
-void Graph<T, WeightType>::AddEdge(T from, T to, WeightType weight) {
+void Graph<T, WeightType>::AddEdge(Index from, Index to, const WeightType& weight) {
   if (from >= nodes_.size() || to >= nodes_.size()) {
     throw std::out_of_range("from or to is out of range");
   }
-  edge edge_temp(weight, &nodes_[from], &nodes_[to]);
+  edge edge_temp(weight, from, to);
   nodes_[from].next_.push_back(edge_temp);
   nodes_[to].prev_.push_back(std::move(edge_temp));
-  edge edge_temp_other(weight, &nodes_[to], &nodes_[from]);
+  edge edge_temp_other(weight, to, from);
   nodes_[from].prev_.push_back(edge_temp_other);
   nodes_[to].next_.push_back(std::move(edge_temp_other));
 }
@@ -100,7 +100,7 @@ size_t Graph<T, WeightType>::size() const {
   return size_;
 }
 template <typename T, typename WeightType>
-void Graph<T, WeightType>::AddNode(T content, Index index) {
+void Graph<T, WeightType>::AddNode(const T& content, Index index) {
   while(index>=reserved_size_){
     nodes_.push_back(std::move(node(reserved_size_)));
     reserved_size_++;
@@ -113,7 +113,7 @@ void Graph<T, WeightType>::AddNode(T content, Index index) {
   nodes_[index].index_ = index;
 }
 template <typename T, typename WeightType>
-void Graph<T, WeightType>::AddNode(T content) {
+void Graph<T, WeightType>::AddNode(const T& content) {
   AddNode(content, nodes_.size());
 }
 template <typename T, typename WeightType>

@@ -22,8 +22,8 @@ int main() {
 
   // Print out edges
   for (auto& edge : g[0].next_) {
-    std::cout << edge.from_->content_ << " -> "
-              << edge.to_->content_ << " : "
+    std::cout << g[edge.from_].content_ << " -> "
+              << g[edge.to_].content_ << " : "
               << edge.weight_ << "\n";
   }
 
@@ -34,8 +34,8 @@ int main() {
 
   // Print out edges
   for (auto& edge : g[1].next_) {
-    std::cout << edge.from_->content_ << " -> "
-              << edge.to_->content_ << " : "
+    std::cout << g[edge.from_].content_ << " -> "
+              << g[edge.to_].content_ << " : "
               << edge.weight_ << "\n";
   }
 
@@ -74,8 +74,8 @@ int main() {
 
   // Print out edges
   for (auto& edge : g[10].next_) {
-    std::cout << edge.from_->index_ << " -> "
-              << edge.to_->index_ << " : "
+    std::cout << g[edge.from_].content_ << " -> "
+              << g[edge.to_].content_ << " : "
               << edge.weight_ << "\n";
   }
 
@@ -86,8 +86,8 @@ int main() {
 
   // Print out edges
   for (auto& edge : g[0].next_) {
-    std::cout << edge.from_->content_ << " -> "
-              << edge.to_->content_ << " : "
+    std::cout << g[edge.from_].content_ << " -> "
+              << g[edge.to_].content_ << " : "
               << edge.weight_ << "\n";
   }
 

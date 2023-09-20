@@ -12,16 +12,16 @@ class directed_graph:public Graph<T,WeightType>{
   using edge = typename Graph<T,WeightType>::edge;
   directed_graph()=default;
   ~directed_graph()=default;
-  void AddEdge(T from, T to, WeightType weight=1) override ;
+  void AddEdge(Index from, Index to, const WeightType& weight=1) override ;
  private:
   using Graph<T,WeightType>::nodes_;///<using必须写在类声明内
 };
 template <typename T, typename WeightType>
-void directed_graph<T, WeightType>::AddEdge(T from, T to, WeightType weight) {
+void directed_graph<T, WeightType>::AddEdge(Index from, Index to, const WeightType& weight) {
   if (from >= nodes_.size() || to >= nodes_.size()) {
     throw std::out_of_range("from or to is out of range");
   }
-  edge edge_temp(weight, &nodes_[from], &nodes_[to]);
+  edge edge_temp(weight, from, to);
   nodes_[from].next_.push_back(edge_temp);
   nodes_[to].prev_.push_back(std::move(edge_temp));
 }

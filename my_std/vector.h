@@ -19,6 +19,7 @@ class vector {
   vector();
   explicit vector(const size_t&);
   explicit vector(T*,T*);
+  explicit vector(const vector<T>&);
   vector(const std::initializer_list<T>&);
   ~vector();
   vector<T>& operator=(const std::initializer_list<T>&);
@@ -52,6 +53,12 @@ class vector {
   void check_volume();
   void check_index(const Index&) const;
 };
+template <typename T>
+vector<T>::vector(const vector<T>& vector_temp):vector() {
+  for (auto element=vector_temp.begin();element!=vector_temp.end_;element++) {
+    push_back(*element);
+  }
+}
 template <typename T>
 void vector<T>::push_back(T&& element) {
   check_volume();

@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.24)
 project(my_stl)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 include_directories(my_std)
 aux_source_directory(my_std MYSTD)
 add_executable(my_stl
         ${MYSTD}
-        graph_test2.cpp)
+        tree_test.cpp)
