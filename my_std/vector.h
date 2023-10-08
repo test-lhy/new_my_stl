@@ -8,8 +8,10 @@
 #include <algorithm>
 #include <cstdint>
 #include <iostream>
-#include <sstream>
+#include <iostream>
+#include <set>
 #include <stdexcept>
+#include<sstream>
 
 #include "basic.h"
 namespace lhy {
@@ -20,10 +22,14 @@ class vector {
   explicit vector(const size_t&);
   explicit vector(T*,T*);
   vector(const std::initializer_list<T>&);
+  vector(const vector<T>&);
   ~vector();
   vector<T>& operator=(const std::initializer_list<T>&);
   vector<T>& operator=(const vector<T>&);
   vector<T>& operator=(vector<T>&&) noexcept;
+  vector<T>& operator+=(const vector<T>&);
+  vector<T>& operator|=(const vector<T>&);
+  vector<T>& operator&=(const vector<T>&);
   void push_back(const T&);
   void push_back(T&&);
   T& operator[](const Index&);
@@ -52,6 +58,48 @@ class vector {
   void check_volume();
   void check_index(const Index&) const;
 };
+template <typename T>
+vector<T>::vector(const vector<T>& other):vector() {
+  for (auto &each :other) {
+    this->push_back(each);
+  }
+}
+template <typename T>
+vector<T>& vector<T>::operator&=(const vector<T>&) {
+  std::set<T> set_temp;
+  for (auto &each :*this) {
+    set_temp.insert(each);
+  }
+  vector<T> temp(*this);
+  this->clear();
+  for (auto &each :temp) {
+    if (set_temp.count(each)){
+      this->push_back(each);
+    }
+  }
+  return *this;
+}
+template <typename T>
+vector<T>& vector<T>::operator|=(const vector<T>& other) {
+  std::set<T> set_temp;
+  for (auto &each :*this) {
+    set_temp.insert(each);
+  }
+  for (auto &each :other) {
+    if (!set_temp.count(each)){
+      this->push_back(each);
+    }
+  }
+  return *this;
+}
+template <typename T>
+vector<T>& vector<T>::operator+=(const vector<T>& other) {
+  for(auto &each:other){
+    this->push_back(each);
+  }
+  return *this;
+}
+
 template <typename T>
 void vector<T>::push_back(T&& element) {
   check_volume();
@@ -240,6 +288,65 @@ vector<T>::vector() : vector(1) {}
 template <typename T>
 vector<T>::~vector() {
   delete[] start_;
+}
+//todo:流输出
+template<typename T>
+vector<T>&& operator+(vector<T> a,const vector<T> &b){
+  return a+=b;
+}
+template<typename T>
+vector<T>&& operator&(vector<T> a,const vector<T> &b){
+  return a&=b;
+}
+template<typename T>
+vector<T>&& operator|(vector<T> a,const vector<T> &b){
+  return a|=b;
+}
+template<typename T>
+void getline(std::istream& istream_,vector<T>& obj){
+  throw std::logic_error("non-char-vector is not allowed to read through getline");
+}
+template<>
+void getline(std::istream& istream_,vector<char>& obj){
+  obj.clear();
+  char temp_char;
+  while((temp_char=static_cast<char>(istream_.get()))=='\n');
+  istream_.unget();
+  while((temp_char=static_cast<char>(istream_.get()))!=EOF&&temp_char!='\n'){
+    obj.push_back(temp_char);
+  }
+}
+std::string&& str(const vector<char>& obj){
+  std::string temp;
+  for (auto& each :obj) {
+    temp+=each;
+  }
+  return std::move(temp);
+}
+template<typename T>
+std::istream& operator>>(std::istream& istream_,vector<T>& obj){
+  vector<char> temp;
+  getline(istream_,temp);
+  std::stringstream temp_ss(str(temp));
+  T temp_each;
+  while(temp_ss>>temp_each){
+    obj.push_back(std::move(temp_each));
+  }
+  return istream_;
+}
+template<>
+std::istream& operator>>(std::istream& istream_,vector<char>& obj){
+  obj.clear();
+  char temp_char;
+  while((temp_char=static_cast<char>(istream_.get()))==' '||temp_char=='\n');
+  istream_.unget();
+  while((temp_char=static_cast<char>(istream_.get()))!=EOF&&temp_char!=' '&&temp_char!='\n'){
+    obj.push_back(temp_char);
+  };
+  if (temp_char==' '){
+    istream_.unget();
+  }
+  return istream_;
 }
 }  // namespace lhy
 #endif
