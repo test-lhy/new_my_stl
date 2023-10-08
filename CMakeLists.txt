@@ -7,4 +7,5 @@ include_directories(my_std)
 aux_source_directory(my_std MYSTD)
 add_executable(my_stl
         ${MYSTD}
-        tree_test.cpp)
+        vector_test.cpp
+        my_std/string.h)
