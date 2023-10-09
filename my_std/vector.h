@@ -65,9 +65,9 @@ vector<T>::vector(const vector<T>& other):vector() {
   }
 }
 template <typename T>
-vector<T>& vector<T>::operator&=(const vector<T>&) {
+vector<T>& vector<T>::operator&=(const vector<T>& other) {
   std::set<T> set_temp;
-  for (auto &each :*this) {
+  for (auto &each :other) {
     set_temp.insert(each);
   }
   vector<T> temp(*this);
@@ -289,7 +289,6 @@ template <typename T>
 vector<T>::~vector() {
   delete[] start_;
 }
-//todo:流输出
 template<typename T>
 vector<T>&& operator+(vector<T> a,const vector<T> &b){
   return a+=b;
@@ -306,23 +305,7 @@ template<typename T>
 void getline(std::istream& istream_,vector<T>& obj){
   throw std::logic_error("non-char-vector is not allowed to read through getline");
 }
-template<>
-void getline(std::istream& istream_,vector<char>& obj){
-  obj.clear();
-  char temp_char;
-  while((temp_char=static_cast<char>(istream_.get()))=='\n');
-  istream_.unget();
-  while((temp_char=static_cast<char>(istream_.get()))!=EOF&&temp_char!='\n'){
-    obj.push_back(temp_char);
-  }
-}
-std::string&& str(const vector<char>& obj){
-  std::string temp;
-  for (auto& each :obj) {
-    temp+=each;
-  }
-  return std::move(temp);
-}
+std::string str(const vector<char>& obj);
 template<typename T>
 std::istream& operator>>(std::istream& istream_,vector<T>& obj){
   vector<char> temp;
@@ -334,19 +317,12 @@ std::istream& operator>>(std::istream& istream_,vector<T>& obj){
   }
   return istream_;
 }
-template<>
-std::istream& operator>>(std::istream& istream_,vector<char>& obj){
-  obj.clear();
-  char temp_char;
-  while((temp_char=static_cast<char>(istream_.get()))==' '||temp_char=='\n');
-  istream_.unget();
-  while((temp_char=static_cast<char>(istream_.get()))!=EOF&&temp_char!=' '&&temp_char!='\n'){
-    obj.push_back(temp_char);
-  };
-  if (temp_char==' '){
-    istream_.unget();
+template<typename T>
+std::ostream& operator<<(std::ostream& ostream_,vector<T>& obj){
+  for (auto & each :obj) {
+    ostream_ << each << '\n';
   }
-  return istream_;
+  return ostream_;
 }
 }  // namespace lhy
 #endif
