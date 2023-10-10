@@ -34,6 +34,7 @@ vector<int> GetPrefix(const vector<T>& vec) {
  * @tparam T vector元素的类型
  * @param vec 被求vector/string
  * @return 前缀数组
+ * @deprecated 用GetPrefix
  */
 template <typename T>
 vector<int> GetPrefixBad(const vector<T>& vec) {
