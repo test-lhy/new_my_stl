@@ -246,7 +246,7 @@ vector<T>& vector<T>::operator=(const std::initializer_list<T>& element_list) {
 template <typename T>
 vector<T>::vector(const size_t& size) {
   start_ = new T[size];
-  end_ = start_;
+  end_ = start_+size;
   volume_ = size;
 }
 template <typename T>
@@ -273,6 +273,7 @@ template <typename T>
 size_t vector<T>::size() const {
   return end_ - start_;
 }
+//todo:这里的clear感觉有问题
 template <typename T>
 void vector<T>::clear() {
   delete[] start_;
@@ -305,7 +306,7 @@ void vector<T>::push_back(const T& element) {
   end_++;
 }
 template <typename T>
-vector<T>::vector() : vector(1) {}
+vector<T>::vector() : vector(0) {}
 template <typename T>
 vector<T>::~vector() {
   delete[] start_;

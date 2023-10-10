@@ -9,7 +9,7 @@ std::string ToString(int64_t origin){
     ans+=static_cast<char>(origin%10+'0');
     origin/=10;
   }
-  reverse(ans.begin(),ans.end());
+  lhy::reverse(ans.begin(),ans.end());
   return std::move(ans);
 }
 }
