@@ -7,9 +7,9 @@
 namespace lhy {
 using string = vector<char>;
 /**
- * n时间复杂度的前缀函数
+ * @brief n时间复杂度的前缀函数
  * @tparam T vector元素的类型
- * @param const vector<T>& 被求vector/string
+ * @param vec 被求vector/string
  * @return vector<int> 前缀数组
  */
 template <typename T>
@@ -30,10 +30,10 @@ vector<int> GetPrefix(const vector<T>& vec) {
   return prefix;
 }
 /**
- * n^2时间复杂度的前缀函数
+ * @brief n^2时间复杂度的前缀函数
  * @tparam T vector元素的类型
- * @param const vector<T>& 被求vector/string
- * @return vector<int> 前缀数组
+ * @param vec 被求vector/string
+ * @return 前缀数组
  */
 template <typename T>
 vector<int> GetPrefixBad(const vector<T>& vec) {
@@ -54,6 +54,29 @@ vector<int> GetPrefixBad(const vector<T>& vec) {
     }
   }
   return prefix;
+}
+/**
+ * @brief n+m时间复杂度的KMP
+ * @tparam T vector元素的类型
+ * @param target 模式串
+ * @param source 匹配串
+ * @param split 在模式串和匹配串中都不会出现的一个T类型元素
+ * @return 所有匹配的首字符下标
+ * @paragraph 将模式串+不存在的字符+匹配串拼接，则对于匹配串部分得出的前缀函数如果等于模式串长度则匹配上，统计即可
+ */
+template<typename T>
+vector<int> GetKMP(vector<T> target,const vector<T>& source,T split='|'){
+  int target_size=target.size();
+  target+={split};
+  target+=source;
+  vector<int> prefix= GetPrefix(target);
+  vector<int> ans;
+  for (int i = target.size()-source.size(); i < prefix.size(); ++i) {
+    if (prefix[i]==target_size){
+      ans.push_back(i-2*target_size);
+    }
+  }
+  return ans;
 }
 }  // namespace lhy
 #endif  // MY_STL_STRING_H

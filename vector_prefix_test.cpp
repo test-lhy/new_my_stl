@@ -8,8 +8,10 @@ using std::cin;
 using std::cout;
 int main(){
   string now;
+  string now2;
   cin>>now;
+  cin>>now2;
   now[1];
-  auto ans= GetPrefix(now);
+  auto ans= GetKMP(now2,now);
   cout<<ans;
 }
