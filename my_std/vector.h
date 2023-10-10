@@ -33,7 +33,9 @@ class vector {
   void push_back(const T&);
   void push_back(T&&);
   T& operator[](const Index&);
+  const T& operator[](const Index&) const;
   T& At(const Index&);
+  const T& At(const Index&) const;
   void clear();
   size_t size() const;
   bool empty() const;
@@ -55,9 +57,23 @@ class vector {
   T* start_;
   T* end_;
   Index volume_;
-  void check_volume();
+  void extend_volume();
+  bool check_volume() const;
   void check_index(const Index&) const;
 };
+template <typename T>
+bool vector<T>::check_volume() const {
+  return size()==volume_;
+}
+template <typename T>
+const T& vector<T>::At(const Index& index) const {
+  check_index(index);
+  return start_[index];
+}
+template <typename T>
+const T& vector<T>::operator[](const Index& index) const {
+  return At(index);
+}
 template <typename T>
 vector<T>::vector(const vector<T>& other):vector() {
   for (auto &each :other) {
@@ -265,7 +281,7 @@ void vector<T>::clear() {
   volume_ = 1;
 }
 template <typename T>
-void vector<T>::check_volume() {
+void vector<T>::extend_volume() {
   if (size() == volume_) {
     T* start_substitute = new T[volume_ * 2];
     end_ = start_substitute + volume_;
@@ -279,8 +295,13 @@ void vector<T>::check_volume() {
 }
 template <typename T>
 void vector<T>::push_back(const T& element) {
-  check_volume();
-  *end_ = element;
+  if (check_volume()) {
+    T element_temp = element;
+    extend_volume();
+    *end_ = element_temp;
+  } else {
+    *end_ = element;
+  }
   end_++;
 }
 template <typename T>
