@@ -37,6 +37,7 @@ vector<int> GetPrefix(const vector<T>& vec) {
  * @deprecated 用GetPrefix
  */
 template <typename T>
+[[deprecated("use GetPrefix instead of GetPrefixBad")]]
 vector<int> GetPrefixBad(const vector<T>& vec) {
   vector<int> prefix{0};
   for (int i = 1; i < vec.size(); ++i) {
