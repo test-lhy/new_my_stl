@@ -21,9 +21,9 @@ void directed_graph<T, WeightType>::AddEdge(Index from, Index to, const WeightTy
   if (from >= nodes_.size() || to >= nodes_.size()) {
     throw std::out_of_range("from or to is out of range");
   }
-  edge edge_temp(weight, from, to);
-  nodes_[from].next_.push_back(edge_temp);
-  nodes_[to].prev_.push_back(std::move(edge_temp));
+  auto edge_temp=std::make_shared<edge>(weight, from, to);
+  nodes_[from]->next_.push_back(edge_temp);
+  nodes_[to]->prev_.push_back(std::move(edge_temp));
 }
 }
 #endif  // MY_STL_DIRECTED_GRAPH_H

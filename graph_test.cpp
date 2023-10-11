@@ -36,11 +36,17 @@ int main() {
   // 测试边的添加
   g.AddEdge(0, 1);
   g.AddEdge(1, 1);
+  for(const auto& each:g[1].next_){
+    std::cout<<each->to_<<"\n";
+  }
 
   // 测试删除节点,预期节点数为1
   g.EraseNode(0);
   std::cout << "Expect node count: 1, actual: " << g.size() << std::endl;
 
+  for(const auto& each:g[1].next_){
+    std::cout<<each->to_<<"\n";
+  }
   // 测试节点1的边数,预期为1条
   std::cout << "Expect node 1 edges: 1, actual: " << g[1].next_.size() << std::endl;
 

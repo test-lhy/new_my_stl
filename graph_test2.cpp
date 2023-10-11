@@ -8,13 +8,13 @@ int main() {
   directed_graph<int, double> g;
 
   // Add some nodes
-  g.AddNode(1);
+  g.AddNode(1);//0 1
   std::cout << "Added node 1, size: " << g.size() << "\n"; // 1
 
-  g.AddNode(2);
+  g.AddNode(2);//1 2
   std::cout << "Added node 2, size: " << g.size() << "\n"; // 2
 
-  g.AddNode(3, 0);
+  g.AddNode(3, 0);//0 3
   std::cout << "Added node 3 at 0, size: " << g.size() << "\n"; // 3
 
   // Add edges
@@ -22,9 +22,9 @@ int main() {
 
   // Print out edges
   for (auto& edge : g[0].next_) {
-    std::cout << g[edge.from_].content_ << " -> "
-              << g[edge.to_].content_ << " : "
-              << edge.weight_ << "\n";
+    std::cout << g[edge->from_].index_ << " -> "
+              << g[edge->to_].index_ << " : "
+              << edge->weight_ << "\n";
   }
 
   // Output
@@ -34,9 +34,9 @@ int main() {
 
   // Print out edges
   for (auto& edge : g[1].next_) {
-    std::cout << g[edge.from_].content_ << " -> "
-              << g[edge.to_].content_ << " : "
-              << edge.weight_ << "\n";
+    std::cout << g[edge->from_].index_ << " -> "
+              << g[edge->to_].index_ << " : "
+              << edge->weight_ << "\n";
   }
 
   // Output
@@ -44,11 +44,11 @@ int main() {
 
   // Get node
   auto& node1 = g.GetNode(1);
-  std::cout << "Node 1 content: " << node1.content_ << "\n"; // 2
+  std::cout << "Node 1 content: " << node1.index_ << "\n"; // 2
 
   // Indexing operator
   auto& node0 = g[0];
-  std::cout << "Node 0 content: " << node0.content_ << "\n"; // 3
+  std::cout << "Node 0 content: " << node0.index_ << "\n"; // 3
 
   // Erase node
   g.EraseNode(0);
@@ -74,9 +74,9 @@ int main() {
 
   // Print out edges
   for (auto& edge : g[10].next_) {
-    std::cout << g[edge.from_].content_ << " -> "
-              << g[edge.to_].content_ << " : "
-              << edge.weight_ << "\n";
+    std::cout << g[edge->from_].index_ << " -> "
+              << g[edge->to_].index_ << " : "
+              << edge->weight_ << "\n";
   }
 
   // Output
@@ -86,9 +86,9 @@ int main() {
 
   // Print out edges
   for (auto& edge : g[0].next_) {
-    std::cout << g[edge.from_].content_ << " -> "
-              << g[edge.to_].content_ << " : "
-              << edge.weight_ << "\n";
+    std::cout << g[edge->from_].index_ << " -> "
+              << g[edge->to_].index_ << " : "
+              << edge->weight_ << "\n";
   }
 
   // Output

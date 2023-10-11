@@ -154,6 +154,7 @@ void vector<T>::erase(T* target) {
     target[0] = target[1];
     target++;
   }
+  end_--;
 }
 
 template <typename T>
@@ -247,7 +248,7 @@ template <typename T>
 vector<T>::vector(const size_t& size) {
   start_ = new T[size];
   end_ = start_+size;
-  volume_ = size;
+  volume_ = size+1;
 }
 template <typename T>
 const T* vector<T>::cbegin() const {
