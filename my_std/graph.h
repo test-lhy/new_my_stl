@@ -7,7 +7,8 @@
 #include <memory>
 
 #include "vector.h"
-//warning:总感觉used并没有派上什么用场
+//todo:感觉应该写一个graph的抽象基类，undirected_graph和directed_graph和tree都继承于这个类,整体需要大重构
+// warning:总感觉used并没有派上什么用场
 namespace lhy {
 template <typename T, typename WeightType = int64_t>
 class Graph {
@@ -28,7 +29,9 @@ class Graph {
       this->from_ = -1;
       this->to_ = -1;
     }
-    bool operator==(const edge& other) { return this->weight_ == other.weight_ && this->from_ == other.from_ && this->to_; }
+    bool operator==(const edge& other) {
+      return this->weight_ == other.weight_ && this->from_ == other.from_ && this->to_;
+    }
     bool operator!=(const edge& other) { return !(*this == other); }
   };
   class node {
@@ -38,15 +41,10 @@ class Graph {
     bool used_;
     vector<std::shared_ptr<edge>> next_;
     vector<std::shared_ptr<edge>> prev_;
-    node(){
-      used_=false;
-    }
-    explicit node(Index index){
-      index_=index;
-      used_=false;
-    }
-    ~node(){
-      std::cerr<<"releasing node"<<"\n";
+    node() { used_ = false; }
+    explicit node(Index index) {
+      index_ = index;
+      used_ = false;
     }
   };
   Graph();
@@ -59,13 +57,20 @@ class Graph {
   size_t size() const;
   node& GetNode(Index);
   node& operator[](Index);
+  void AddEdge(Index from, Index to, std::shared_ptr<edge> edge_from_to, std::shared_ptr<edge> edge_to_from);
 
  protected:
+  virtual node* GetNodes(size_t);
   vector<node*> nodes_;
+
  private:
   size_t reserved_size_;
   size_t size_;
 };
+template <typename T, typename WeightType>
+typename Graph<T, WeightType>::node* Graph<T, WeightType>::GetNodes(size_t size) {
+  return new node(size);
+}
 template <typename T, typename WeightType>
 typename Graph<T, WeightType>::node& Graph<T, WeightType>::operator[](Index index) {
   return *nodes_[index];
@@ -83,7 +88,7 @@ void Graph<T, WeightType>::clear() {
 template <typename T, typename WeightType>
 void Graph<T, WeightType>::EraseNode(Index index) {
   size_--;
-  nodes_[index]->used_= false;
+  nodes_[index]->used_ = false;
   for (const auto& edge : nodes_[index]->next_) {
     nodes_[edge->to_]->prev_.erase(edge);
   }
@@ -95,18 +100,21 @@ void Graph<T, WeightType>::EraseNode(Index index) {
 }
 template <typename T, typename WeightType>
 void Graph<T, WeightType>::AddEdge(Index from, Index to, const WeightType& weight) {
+  AddEdge(from, to, std::make_shared<edge>(weight, from, to), std::make_shared<edge>(weight, to, from));
+}
+template <typename T, typename WeightType>
+void Graph<T, WeightType>::AddEdge(Index from, Index to, std::shared_ptr<edge> edge_from_to,
+                                   std::shared_ptr<edge> edge_to_from) {
   if (from >= nodes_.size() || to >= nodes_.size()) {
     throw std::out_of_range("from or to is out of range");
   }
-  auto edge_temp=std::make_shared<edge>(weight, from, to);
-  nodes_[from]->next_.push_back(edge_temp);
-  nodes_[to]->prev_.push_back(edge_temp);
-  if (from==to){
+  nodes_[from]->next_.push_back(edge_from_to);
+  nodes_[to]->prev_.push_back(edge_from_to);
+  if (from == to) {
     return;
   }
-  auto edge_temp_other=std::make_shared<edge>(weight, to, from);
-  nodes_[from]->prev_.push_back(edge_temp_other);
-  nodes_[to]->next_.push_back(edge_temp_other);
+  nodes_[from]->prev_.push_back(edge_to_from);
+  nodes_[to]->next_.push_back(edge_to_from);
 }
 template <typename T, typename WeightType>
 size_t Graph<T, WeightType>::size() const {
@@ -114,14 +122,15 @@ size_t Graph<T, WeightType>::size() const {
 }
 template <typename T, typename WeightType>
 void Graph<T, WeightType>::AddNode(const T& content, Index index) {
-  while(index>=reserved_size_){
-    node* node_temp=new node(reserved_size_);
+  while (index >= reserved_size_) {
+    // 创建一个函数来返回node
+    node* node_temp = GetNodes(reserved_size_);
     nodes_.push_back(node_temp);
     reserved_size_++;
   }
-  if (!nodes_[index]->used_){
+  if (!nodes_[index]->used_) {
     size_++;
-    nodes_[index]->used_= true;
+    nodes_[index]->used_ = true;
   }
   nodes_[index]->content_ = content;
   nodes_[index]->index_ = index;
