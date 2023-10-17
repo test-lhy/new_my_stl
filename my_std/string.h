@@ -71,8 +71,8 @@ template <typename T>
  * @deprecated 请使用GetKMP，这个函数使用了DFA
  */
 template <typename T>
-[[deprecated("please use GetKMP which use KmpDFA")]]
-vector<int> GetBadKMP(vector<T> target, const vector<T>& source, T split = '|') {
+[[deprecated("please use GetKMP which use KmpDFA")]] vector<int> GetBadKMP(vector<T> target, const vector<T>& source,
+                                                                           T split = '|') {
   int target_size = target.size();
   target += {split};
   target += source;
@@ -132,24 +132,24 @@ long long GetDiff(const vector<T>& vec) {
  * @param vec 模式串
  * @param split 用于使得其能在匹配成功后继续匹配而在结尾加入的必然不会在模式串和匹配串中出现的分隔符
  * @return KMP的自动机
- * @paragraph 实际上就是进行了路径压缩，保证对于每一个状态，其经过不同的新的输入都只需要走一步走到另一个状态，而原本可能要多步，这里使用了一点dp
+ * @paragraph
+ * 实际上就是进行了路径压缩，保证对于每一个状态，其经过不同的新的输入都只需要走一步走到另一个状态，而原本可能要多步，这里使用了一点dp
  */
-//todo:set在拷贝的时候会出现问题
-template<typename T>
-vector<std::unordered_map<T,int>> GetKmpDFA(vector<T> vec, T split = '|'){
-  vec+={split};///<为了让他必须在结尾不等,来使得在匹配成功后也能继续跳回匹配下一个可能匹配的
+template <typename T>
+vector<std::unordered_map<T, int>> GetKmpDFA(vector<T> vec, T split = '|') {
+  vec += {split};  ///< 为了让他必须在结尾不等,来使得在匹配成功后也能继续跳回匹配下一个可能匹配的
   vector<int> prefix(GetPrefix(vec));
   std::unordered_set<T> all_element;
-  vector<std::unordered_map<T,int>> ans(vec.size());
-  for (auto &each:vec) {
+  vector<std::unordered_map<T, int>> ans(vec.size());
+  for (auto& each : vec) {
     all_element.insert(each);
   }
   for (int i = 0; i < vec.size(); ++i) {
-    for(auto &each:all_element){
-      if (i>0&&each!=vec[i]){
-        ans[i][each]=ans[prefix[i-1]][each];///<让当前跳转到他同前后缀的状态通过each会跳转到的地方
-      }else{
-        ans[i][each]=i+(vec[i]==each);///<当是0或者相等的时候，要么状态向前一步(相等)，要么原地停滞(0)
+    for (auto& each : all_element) {
+      if (i > 0 && each != vec[i]) {
+        ans[i][each] = ans[prefix[i - 1]][each];  ///< 让当前跳转到他同前后缀的状态通过each会跳转到的地方
+      } else {
+        ans[i][each] = i + (vec[i] == each);  ///< 当是0或者相等的时候，要么状态向前一步(相等)，要么原地停滞(0)
       }
     }
   }
@@ -163,8 +163,8 @@ vector<std::unordered_map<T,int>> GetKmpDFA(vector<T> vec, T split = '|'){
  * @return 所有匹配的首字符下标
  */
 template <typename T>
-vector<int> GetKMP(const vector<T>& source,const vector<T>& target){
-  return GetKMP(GetKmpDFA(source),source.size(),target);
+vector<int> GetKMP(const vector<T>& source, const vector<T>& target) {
+  return GetKMP(GetKmpDFA(source), source.size(), target);
 }
 /**
  * @brief KMP自动机
@@ -176,13 +176,13 @@ vector<int> GetKMP(const vector<T>& source,const vector<T>& target){
  * @paragraph 实际上就是以目标串为输入序列在自动机上移动
  */
 template <typename T>
-vector<int> GetKMP(vector<std::unordered_map<T,int>> DFA,size_t source_size,const vector<T>& target){
-  int status=0;
+vector<int> GetKMP(vector<std::unordered_map<T, int>>& DFA, size_t source_size, const vector<T>& target) {
+  int status = 0;
   vector<int> ans;
   for (size_t i = 0; i < target.size(); ++i) {
-    status=DFA[status][target[i]];
-    if (status==source_size){
-      ans.push_back(i-source_size+1l);
+    status = DFA[status][target[i]];
+    if (status == source_size) {
+      ans.push_back(i - source_size + 1l);
     }
   }
   return ans;
