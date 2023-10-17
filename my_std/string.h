@@ -134,6 +134,7 @@ long long GetDiff(const vector<T>& vec) {
  * @return KMP的自动机
  * @paragraph 实际上就是进行了路径压缩，保证对于每一个状态，其经过不同的新的输入都只需要走一步走到另一个状态，而原本可能要多步，这里使用了一点dp
  */
+//todo:set在拷贝的时候会出现问题
 template<typename T>
 vector<std::unordered_map<T,int>> GetKmpDFA(vector<T> vec, T split = '|'){
   vec+={split};///<为了让他必须在结尾不等,来使得在匹配成功后也能继续跳回匹配下一个可能匹配的
