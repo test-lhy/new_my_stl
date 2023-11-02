@@ -10,7 +10,7 @@ std::string str(const vector<char>& obj){
   }
   return temp;
 }
-template<>
+template<> inline
 void getline<char>(std::istream& istream_,vector<char>& obj){
   obj.clear();
   char temp_char;
@@ -20,7 +20,7 @@ void getline<char>(std::istream& istream_,vector<char>& obj){
     obj.push_back(temp_char);
   }
 }
-template<>
+template<> inline
 std::istream& operator>><char>(std::istream& istream_,vector<char>& obj){
   obj.clear();
   char temp_char;
