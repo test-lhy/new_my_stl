@@ -40,7 +40,6 @@ class vector {
   T& front() const;
   T& back() const;
   void reserve(size_t);
-  void erase(Index);
   void erase(T*);
   void erase(const T&);
 
@@ -82,13 +81,6 @@ void vector<T>::erase(T* target) {
   while(target!= end_-1) {
     target[0] = target[1];
     target++;
-  }
-}
-
-template <typename T>
-void vector<T>::erase(Index index) {
-  for (Index i = index; i < size() - 1; i++) {
-    start_[i] = start_[i + 1];
   }
 }
 template <typename T>
