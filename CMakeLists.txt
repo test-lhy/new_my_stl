@@ -6,4 +6,5 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(my_std)
 aux_source_directory(my_std MYSTD)
 add_executable(my_stl
-        ${MYSTD} graph_test.cpp)
+        ${MYSTD}
+        graph_test2.cpp)

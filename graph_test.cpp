@@ -34,8 +34,8 @@ int main() {
   std::cout << "Expect node count: 2, actual: " << g.size() << std::endl;
 
   // 测试边的添加
-  g.AddEdge(0, 2);
-  g.AddEdge(1, 2);
+  g.AddEdge(0, 1);
+  g.AddEdge(1, 1);
 
   // 测试删除节点,预期节点数为1
   g.EraseNode(0);

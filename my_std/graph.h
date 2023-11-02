@@ -30,11 +30,15 @@ class Graph {
   struct node {
     Index index_;
     T content_;
+    bool used_;
     vector<edge> next_;
     vector<edge> prev_;
-    node()=default;
+    node(){
+      used_=false;
+    }
     node(Index index){
       index_=index;
+      used_=false;
     }
   };
   Graph();
@@ -96,9 +100,12 @@ void Graph<T, WeightType>::AddNode(T content, Index index) {
     nodes_.push_back(std::move(node(reserved_size_)));
     reserved_size_++;
   }
+  if (!nodes_[index].used_){
+    size_++;
+    nodes_[index].used_= true;
+  }
   nodes_[index].content_ = content;
   nodes_[index].index_ = index;
-  size_++;
 }
 template <typename T, typename WeightType>
 void Graph<T, WeightType>::AddNode(T content) {
