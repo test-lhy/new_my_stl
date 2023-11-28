@@ -8,6 +8,7 @@
 #include "list.h"
 #include "type_traits.h"
 #include "vector.h"
+#include "concept.h"
 namespace lhy {
 const vector<size_t> kmod_values{53,        97,        193,       389,       769,       1543,     3079,
                                  6151,      12289,     24593,     49157,     98317,     196613,   393241,
@@ -25,7 +26,7 @@ size_t GetModValue(const size_t& size) {
   }
   return *iter;
 }
-template <typename T, typename U>
+template <hashable T, typename U>
 class Hash {
  private:
   struct Element {
@@ -51,7 +52,7 @@ class Hash {
   vector<list<Element>> hash_table_;
   HashFuncType<T> hash_func_;
 };
-template <typename T, typename U>
+template <hashable T, typename U>
 U& Hash<T, U>::operator[](const T& key) {
   list<Element>& hash_list = hash_table_[hash_func_(key, mod_value_)];
   auto* answer = hash_list.find({key, U()});
@@ -63,19 +64,19 @@ U& Hash<T, U>::operator[](const T& key) {
     return new_answer->content_.value;
   }
 }
-template <typename T, typename U>
+template <hashable T, typename U>
 bool Hash<T, U>::equal(const T& a, const T& b) const {
   return hash_func_(a, mod_value_) == hash_func_(b, mod_value_);
 }
-template <typename T, typename U>
+template <hashable T, typename U>
 Hash<T, U>::~Hash() = default;
-template <typename T, typename U>
+template <hashable T, typename U>
 Hash<T, U>::Hash(HashFuncType<T>& hash_func) {
   hash_table_.reserve(mod_value_ + 5);
   hash_func_ = hash_func;
 }
 
-template <typename T, typename U>
+template <hashable T, typename U>
 Hash<T, U>::Hash(size_t size,size_t mod_value, HashFuncType<T>& hash_func) : Hash(hash_func) {
   if (mod_value!=mod_value_){
     mod_value_ = mod_value;
@@ -85,7 +86,7 @@ Hash<T, U>::Hash(size_t size,size_t mod_value, HashFuncType<T>& hash_func) : Has
   hash_table_.reserve(mod_value_ + 5);
   hash_func_ = hash_func;
 }
-template <typename T, typename U>
+template <hashable T, typename U>
 void Hash<T, U>::insert(const T& key, const U& value) {
   hash_table_[hash_func_(key, mod_value_)].push_back({key, value});
 }

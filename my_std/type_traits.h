@@ -8,53 +8,46 @@
 
 #include "basic.h"
 namespace lhy {
-struct IsInteger {};
-struct IsNotInteger {};
 template <typename T>
 class TypeTraits {
+};
+class TypeTraitsForInt{
  public:
-  using WhetherInterger = IsNotInteger;
+  static bool isInteger;
 };
 template <>
-class TypeTraits<int> {
+class TypeTraits<int>: public TypeTraitsForInt{
  public:
-  using WhetherInterger = IsInteger;
   static HashFuncType<int> hash_func;
 };
 template <>
-class TypeTraits<long> {
+class TypeTraits<long>: public TypeTraitsForInt{
  public:
-  using WhetherInterger = IsInteger;
   static HashFuncType<long> hash_func;
 };
 template <>
-class TypeTraits<long long> {
+class TypeTraits<long long>: public TypeTraitsForInt{
  public:
-  using WhetherInterger = IsInteger;
   static HashFuncType<long long> hash_func;
 };
 template <>
-class TypeTraits<unsigned int> {
+class TypeTraits<unsigned int>: public TypeTraitsForInt{
  public:
-  using WhetherInterger = IsInteger;
   static HashFuncType<unsigned int> hash_func;
 };
 template <>
-class TypeTraits<unsigned long> {
+class TypeTraits<unsigned long>: public TypeTraitsForInt{
  public:
-  using WhetherInterger = IsInteger;
   static HashFuncType<unsigned long> hash_func;
 };
 template <>
-class TypeTraits<unsigned long long> {
+class TypeTraits<unsigned long long>: public TypeTraitsForInt{
  public:
-  using WhetherInterger = IsInteger;
   static HashFuncType<unsigned long long> hash_func;
 };
 template <>
 class TypeTraits<std::string> {
  public:
-  using WhetherInterger = IsNotInteger;
   static HashFuncType<std::string> hash_func;
 };
 }  // namespace lhy

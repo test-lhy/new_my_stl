@@ -1,14 +1,13 @@
 //
 // Created by lhy31 on 2023/9/4.
 //
-#include "double_hash.h"
 
 #include <iostream>
 #include <string>
-
+#include "unordered_map.h"
 int main() {
 
-  lhy::DoubleHash<std::string, int> hash_table;
+  lhy::unordered_map<std::string,std::string> hash_table;
 
   std::cout<<hash_table.equal("orange","orange");
   std::cout<<hash_table.equal("orange","banana");
