@@ -117,7 +117,9 @@ vector<T>& vector<T>::operator+=(const vector<T>& other) {
 
 template <typename T>
 void vector<T>::push_back(T&& element) {
-  check_volume();
+  if (check_volume()) {
+    extend_volume();
+  }
   *end_ = element;
   end_++;
 }
