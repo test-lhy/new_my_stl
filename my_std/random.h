@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <random>
 namespace lhy {
-int64_t rand(int64_t, int64_t);
+[[nodiscard]]int64_t rand(int64_t, int64_t);
 template <typename T>
 void randomize(T *start, T *end) {
   for (int i = 0; i < end - start; ++i) {

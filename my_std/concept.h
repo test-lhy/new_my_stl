@@ -8,23 +8,20 @@
 #include <set>
 #include <typeindex>
 #include <typeinfo>
+
 #include "type_traits.h"
-namespace lhy{
-template<typename T>
-concept int_type= requires(){
-  TypeTraits<T>::isInteger;
-};
-template<typename T>
-concept not_int_type=not int_type<T>;
+namespace lhy {
 template <typename T>
-concept char_type= requires(){
-  TypeTraits<T>::isChar;
-};
+concept int_type = requires() { TypeTraits<T>::isInteger; };
+template <typename T>
+concept not_int_type = not int_type<T>;
+template <typename T>
+concept char_type = requires() { TypeTraits<T>::isChar; };
 template <typename T>
 concept not_char_type = not char_type<T>;
-template<typename T>
-concept hashable=requires(){
-  TypeTraits<T>::hash_func;
-};
-}
+template <typename T>
+concept hashable = requires() { TypeTraits<T>::hash_func; };
+template <typename T>
+concept not_hashable = not hashable<T>;
+}  // namespace lhy
 #endif  // MY_STL_CONCEPT_H

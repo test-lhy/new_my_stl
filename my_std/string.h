@@ -17,7 +17,7 @@ using string = vector<char>;
  * @return vector<int> 前缀数组
  */
 template <typename T>
-vector<int> GetPrefix(const vector<T>& vec) {
+[[nodiscard]] vector<int> GetPrefix(const vector<T>& vec) {
   vector<int> prefix{0};
   for (int i = 1; i < vec.size(); ++i) {
     int prefix_comp = prefix[i - 1];
@@ -41,7 +41,7 @@ vector<int> GetPrefix(const vector<T>& vec) {
  * @deprecated 用GetPrefix
  */
 template <typename T>
-[[deprecated("use GetPrefix instead of GetPrefixBad")]] vector<int> GetPrefixBad(const vector<T>& vec) {
+[[deprecated("use GetPrefix instead of GetPrefixBad")]] [[nodiscard]] vector<int> GetPrefixBad(const vector<T>& vec) {
   vector<int> prefix{0};
   for (int i = 1; i < vec.size(); ++i) {
     for (int j = prefix[i - 1] + 1; j >= 0; --j) {
@@ -71,8 +71,9 @@ template <typename T>
  * @deprecated 请使用GetKMP，这个函数使用了DFA
  */
 template <typename T>
-[[deprecated("please use GetKMP which use KmpDFA")]] vector<int> GetBadKMP(vector<T> target, const vector<T>& source,
-                                                                           T split = '|') {
+[[deprecated("please use GetKMP which use KmpDFA")]] [[nodiscard]] vector<int> GetBadKMP(vector<T> target,
+                                                                                         const vector<T>& source,
+                                                                                         T split = '|') {
   int target_size = target.size();
   target += {split};
   target += source;
@@ -94,7 +95,7 @@ template <typename T>
  * @paragraph 长度为border的前缀与后缀相等,对于一个border,字符串长度-border为字符串的周期长度
  */
 template <typename T>
-vector<int> GetBorder(const vector<T>& vec) {
+[[nodiscard]] vector<int> GetBorder(const vector<T>& vec) {
   auto prefix = GetPrefix(vec);
   vector<int> ans;
   int prefix_now = vec.size() - 1;
@@ -114,7 +115,7 @@ vector<int> GetBorder(const vector<T>& vec) {
  * 对于当前在首位加入的新字符，这个新的串的新产生的不同的字串肯定是包括首字符的，也就是前缀，找到最长的出现过第二次的前缀，总长-这个就是新增加的数量
  */
 template <typename T>
-long long GetDiff(const vector<T>& vec) {
+[[nodiscard]] long long GetDiff(const vector<T>& vec) {
   vector<T> vec_temp;
   long long ans = 0;
   vector<T> prefix;
@@ -136,7 +137,7 @@ long long GetDiff(const vector<T>& vec) {
  * 实际上就是进行了路径压缩，保证对于每一个状态，其经过不同的新的输入都只需要走一步走到另一个状态，而原本可能要多步，这里使用了一点dp
  */
 template <typename T>
-vector<std::unordered_map<T, int>> GetKmpDFA(vector<T> vec, T split = '|') {
+[[nodiscard]] vector<std::unordered_map<T, int>> GetKmpDFA(vector<T> vec, T split = '|') {
   vec += {split};  ///< 为了让他必须在结尾不等,来使得在匹配成功后也能继续跳回匹配下一个可能匹配的
   vector<int> prefix(GetPrefix(vec));
   std::unordered_set<T> all_element;
@@ -163,7 +164,7 @@ vector<std::unordered_map<T, int>> GetKmpDFA(vector<T> vec, T split = '|') {
  * @return 所有匹配的首字符下标
  */
 template <typename T>
-vector<int> GetKMP(const vector<T>& source, const vector<T>& target) {
+[[nodiscard]] vector<int> GetKMP(const vector<T>& source, const vector<T>& target) {
   return GetKMP(GetKmpDFA(source), source.size(), target);
 }
 /**
@@ -176,7 +177,7 @@ vector<int> GetKMP(const vector<T>& source, const vector<T>& target) {
  * @paragraph 实际上就是以目标串为输入序列在自动机上移动
  */
 template <typename T>
-vector<int> GetKMP(vector<std::unordered_map<T, int>>& DFA, size_t source_size, const vector<T>& target) {
+[[nodiscard]] vector<int> GetKMP(vector<std::unordered_map<T, int>>& DFA, size_t source_size, const vector<T>& target) {
   int status = 0;
   vector<int> ans;
   for (size_t i = 0; i < target.size(); ++i) {

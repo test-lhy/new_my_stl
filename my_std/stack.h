@@ -13,27 +13,26 @@ class stack {
   stack();
   stack(T *, T *);
   ~stack();
-  void push(const T &);
-  bool empty() const;
   void clear();
-  T &top() const;
+  [[nodiscard]] bool empty() const;
+  void push(const T &);
   void pop();
-  std::string show(int count_limit=20) const;
+  [[nodiscard]] T &top();
+  [[nodiscard]] std::string show(int count_limit = 20) const;
+
  private:
   vector<T> stack_;
 };
 template <typename T>
-std::string stack<T>::show(int count_limit) const {
-  return lhy::show(stack_.begin(), stack_.end(), count_limit);
+stack<T>::stack() = default;
+template <typename T>
+stack<T>::stack(T *start, T *end) {
+  for (auto *element = start; element != end; element++) {
+    stack_.push_back(*element);
+  }
 }
 template <typename T>
-void stack<T>::pop() {
-  stack_.pop();
-}
-template <typename T>
-T &stack<T>::top() const {
-  return stack_.back();
-}
+stack<T>::~stack() = default;
 template <typename T>
 void stack<T>::clear() {
   stack_.clear();
@@ -47,15 +46,16 @@ void stack<T>::push(const T &data) {
   stack_.push_back(data);
 }
 template <typename T>
-stack<T>::~stack()=default;
-template <typename T>
-stack<T>::stack(T *start, T *end) {
-  for (auto *element = start; element!= end; element++) {
-    stack_.push_back(*element);
-  }
+void stack<T>::pop() {
+  stack_.pop();
 }
 template <typename T>
-stack<T>::stack()=default;
-
+T &stack<T>::top() {
+  return stack_.back();
+}
+template <typename T>
+std::string stack<T>::show(int count_limit) const {
+  return lhy::show(stack_.begin(), stack_.end(), count_limit);
+}
 };      // namespace lhy
 #endif  // MY_STL_STACK_H

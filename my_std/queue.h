@@ -12,41 +12,26 @@ class queue {
   queue();
   queue(T*, T*);
   ~queue();
-  void push(const T&);
-  bool empty() const;
   void clear();
-  T& front() const;
-  void size() const;
+  [[nodiscard]] bool empty() const;
+  [[nodiscard]] T& front();
   void pop();
-  std::string show(int) const;
+  void push(const T&);
+  [[nodiscard]] std::string show(int) const;
+  [[nodiscard]] size_t size() const;
 
  private:
   list<T> queue_;
 };
 template <typename T>
-std::string queue<T>::show(int count_limit) const {
-  return queue_.show(count_limit);
-}
+queue<T>::queue() = default;
 template <typename T>
-void queue<T>::pop() {
-  if (empty()) {
-    throw std::logic_error("queue is empty");
-  }
-  queue_.erase(queue_.begin());
-}
+queue<T>::~queue() = default;
 template <typename T>
 queue<T>::queue(T* start, T* end) {
   for (auto* element = start; element != end; ++element) {
     queue_.push_back(*element);
   }
-}
-template <typename T>
-void queue<T>::size() const {
-  return queue_.size();
-}
-template <typename T>
-T& queue<T>::front() const {
-  return queue_.begin()->content_;
 }
 template <typename T>
 void queue<T>::clear() {
@@ -56,13 +41,30 @@ template <typename T>
 bool queue<T>::empty() const {
   return queue_.empty();
 }
+
+template <typename T>
+T& queue<T>::front() {
+  return queue_.begin()->content_;
+}
+
 template <typename T>
 void queue<T>::push(const T& data) {
   queue_.push_back(data);
 }
 template <typename T>
-queue<T>::~queue() = default;
+void queue<T>::pop() {
+  if (empty()) {
+    throw std::logic_error("queue is empty");
+  }
+  queue_.erase(queue_.begin());
+}
 template <typename T>
-queue<T>::queue() = default;
+std::string queue<T>::show(int count_limit) const {
+  return queue_.show(count_limit);
+}
+template <typename T>
+size_t queue<T>::size() const {
+  return queue_.size();
+}
 }  // namespace lhy
 #endif  // MY_STL_QUEUE_H
