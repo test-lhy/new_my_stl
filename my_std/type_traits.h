@@ -9,43 +9,42 @@
 #include "basic.h"
 namespace lhy {
 template <typename T>
-class TypeTraits {
-};
-class TypeTraitsForInt{
+class TypeTraits {};
+class TypeTraitsForInt {
  public:
   static bool isInteger;
 };
-class TypeTraitsForChar{
+class TypeTraitsForChar {
  public:
   static bool isChar;
 };
 template <>
-class TypeTraits<int>: public TypeTraitsForInt{
+class TypeTraits<int> : public TypeTraitsForInt {
  public:
   static HashFuncType<int> hash_func;
 };
 template <>
-class TypeTraits<long>: public TypeTraitsForInt{
+class TypeTraits<long> : public TypeTraitsForInt {
  public:
   static HashFuncType<long> hash_func;
 };
 template <>
-class TypeTraits<long long>: public TypeTraitsForInt{
+class TypeTraits<long long> : public TypeTraitsForInt {
  public:
   static HashFuncType<long long> hash_func;
 };
 template <>
-class TypeTraits<unsigned int>: public TypeTraitsForInt{
+class TypeTraits<unsigned int> : public TypeTraitsForInt {
  public:
   static HashFuncType<unsigned int> hash_func;
 };
 template <>
-class TypeTraits<unsigned long>: public TypeTraitsForInt{
+class TypeTraits<unsigned long> : public TypeTraitsForInt {
  public:
   static HashFuncType<unsigned long> hash_func;
 };
 template <>
-class TypeTraits<unsigned long long>: public TypeTraitsForInt{
+class TypeTraits<unsigned long long> : public TypeTraitsForInt {
  public:
   static HashFuncType<unsigned long long> hash_func;
 };
@@ -54,9 +53,7 @@ class TypeTraits<std::string> {
  public:
   static HashFuncType<std::string> hash_func;
 };
-template<>
-class TypeTraits<char>:public TypeTraitsForChar{
-
-};
+template <>
+class TypeTraits<char> : public TypeTraitsForChar {};
 }  // namespace lhy
 #endif  // MY_STL_TYPE_TRAITS_H

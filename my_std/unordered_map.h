@@ -7,10 +7,8 @@
 #define MY_STL_UNORDERED_MAP_H
 
 namespace lhy {
-
-template<typename T,typename U>
-using unordered_map=DoubleHash<T,U>;
-
+template <typename T, typename U>
+using unordered_map = DoubleHash<T, U>;
 }  // namespace lhy
 
 #endif  // MY_STL_UNORDERED_MAP_H

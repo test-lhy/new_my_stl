@@ -23,7 +23,7 @@ size_t GetMinRun(size_t size) {
     }
   }
   size_t minrun = 0;
-  for (auto & element : binary_minrun) {
+  for (auto& element : binary_minrun) {
     minrun *= 2;
     minrun += element;
   }
