@@ -15,7 +15,7 @@ const vector<size_t> kmod_values{53,        97,        193,       389,       769
                                  786433,    1572869,   3145739,   6291469,   12582917,  25165843, 50331653,
                                  100663319, 201326611, 402653189, 805306457, 1610612741};
 size_t GetModValue(const size_t& size) {
-  auto* iter = kmod_values.begin();
+  auto iter = kmod_values.begin();
   size_t up_limit = 32;
   while (size > up_limit && iter != kmod_values.end()) {
     up_limit *= 2;

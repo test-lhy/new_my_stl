@@ -24,7 +24,7 @@ class stack {
 };
 template <typename T>
 std::string stack<T>::show(int count_limit) const {
-  return lhy::show(stack_.begin(), stack_.end(), count_limit);
+  return lhy::show((const T*)stack_.begin(), (const T*)stack_.end(), count_limit);
 }
 template <typename T>
 void stack<T>::pop() {

@@ -15,7 +15,8 @@ class priority_queue {
   ~priority_queue();
   void push(T);
   void pop();
-  T &top() const;
+  T &top();
+  const T &top() const;
   bool empty() const;
 
  private:
@@ -36,7 +37,11 @@ priority_queue<T>::priority_queue(const CmpType<T>& cmp){
   compare_function_ = cmp;
 }
 template <typename T>
-T &priority_queue<T>::top() const {
+T &priority_queue<T>::top() {
+  return priority_queue_.front();
+}
+template <typename T>
+const T &priority_queue<T>::top() const {
   return priority_queue_.front();
 }
 template <typename T>

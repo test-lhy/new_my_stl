@@ -15,7 +15,13 @@ concept int_type= requires(){
   TypeTraits<T>::isInteger;
 };
 template<typename T>
+concept char_type=requires(){
+  TypeTraits<T>::isChar;
+};
+template<typename T>
 concept not_int_type=not int_type<T>;
+template<typename T>
+concept not_char_type=not char_type<T>;
 template<typename T>
 concept hashable=requires(){
   TypeTraits<T>::hash_func;

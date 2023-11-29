@@ -2,6 +2,7 @@
 // Created by lhy31 on 2023/9/4.
 //
 #include "type_traits.h"
+#include "concept.h"
 namespace lhy {
 HashFuncType<int> TypeTraits<int>::hash_func = [](const int& x, const size_t& mod) -> Index {
   return ((x % mod) + mod) % mod;

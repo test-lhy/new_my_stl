@@ -20,7 +20,7 @@ int main() {
     std::cout << "\n";
 
     vector<int> arr = {5, 2, 7, 9, 6};
-    lhy::priority_queue<int> pq2(arr.begin(), arr.end());
+    lhy::priority_queue<int> pq2((int*)arr.begin(), (int*)arr.end());
 
     while (!pq2.empty()) {
         std::cout << pq2.top() << " ";
