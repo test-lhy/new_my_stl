@@ -15,6 +15,10 @@ class TypeTraitsForInt{
  public:
   static bool isInteger;
 };
+class TypeTraitsForChar{
+ public:
+  static bool isChar;
+};
 template <>
 class TypeTraits<int>: public TypeTraitsForInt{
  public:
@@ -49,6 +53,10 @@ template <>
 class TypeTraits<std::string> {
  public:
   static HashFuncType<std::string> hash_func;
+};
+template<>
+class TypeTraits<char>:public TypeTraitsForChar{
+
 };
 }  // namespace lhy
 #endif  // MY_STL_TYPE_TRAITS_H
