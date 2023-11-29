@@ -10,5 +10,4 @@ std::string str(const vector<char>& obj){
   }
   return temp;
 }
-
 }
