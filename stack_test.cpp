@@ -28,6 +28,5 @@ int main() {
   s.clear();
 
   cout << "Empty after clear? " << s.empty() << endl;
-  std::string  a,b;
   return 0;
 }
