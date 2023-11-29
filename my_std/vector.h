@@ -13,6 +13,7 @@
 #include <stdexcept>
 
 #include "basic.h"
+#include "concept.h"
 namespace lhy {
 template <typename T>
 class vector {
@@ -315,12 +316,43 @@ template <typename T>
 vector<T>&& operator|(vector<T> a, const vector<T>& b) {
   return a |= b;
 }
-template <typename T>
+template<char_type T>
+void getline(std::istream& istream_,vector<T>& obj){
+  obj.clear();
+  char temp_char;
+  while((temp_char=static_cast<char>(istream_.get()))=='\n');
+  istream_.unget();
+  while((temp_char=static_cast<char>(istream_.get()))!=EOF&&temp_char!='\n'){
+    obj.push_back(temp_char);
+  }
+}
+template<char_type T>
+std::istream& operator>>(std::istream& istream_,vector<T>& obj){
+  obj.clear();
+  char temp_char;
+  while((temp_char=static_cast<char>(istream_.get()))==' '||temp_char=='\n');
+  istream_.unget();
+  while((temp_char=static_cast<char>(istream_.get()))!=EOF&&temp_char!=' '&&temp_char!='\n'){
+    obj.push_back(temp_char);
+  };
+  if (temp_char==' '){
+    istream_.unget();
+  }
+  return istream_;
+}
+template<char_type T>
+std::ostream& operator<<(std::ostream& ostream_,vector<T>& obj){
+  for(auto& each:obj){
+    ostream_<<each;
+  }
+  return ostream_;
+}
+template <not_char_type T>
 void getline(std::istream& istream_, vector<T>& obj) {
   throw std::logic_error("non-char-vector is not allowed to read through getline");
 }
 std::string str(const vector<char>& obj);
-template <typename T>
+template <not_char_type T>
 std::istream& operator>>(std::istream& istream_, vector<T>& obj) {
   vector<char> temp;
   getline(istream_, temp);
@@ -331,7 +363,7 @@ std::istream& operator>>(std::istream& istream_, vector<T>& obj) {
   }
   return istream_;
 }
-template <typename T>
+template <not_char_type T>
 std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj) {
   for (auto& each : obj) {
     ostream_ << each << '\n';
