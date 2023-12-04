@@ -20,7 +20,7 @@ template <typename T>
 class vector : public DataStructure<T> {
  public:
   using typename DataStructure<T>::Pointer;
-  using iterator=lhy::NormIterator<T>;
+  using iterator = lhy::NormIterator<T>;
   vector();
   explicit vector(iterator, iterator);
   explicit vector(const size_t&);

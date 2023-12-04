@@ -7,65 +7,76 @@
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+
+#include "data_structure.h"
 namespace lhy {
 template <typename T>
-class list {
- private:
-  struct ListNode {
-    ListNode() {
-      next_ = nullptr;
-      last_ = nullptr;
-    }
-    explicit ListNode(const T& content) : ListNode() { content_ = content; }
-    T& operator*() { return content_; }
-    ListNode* operator++() {
-      if (this->next_ == nullptr) {
-        throw std::logic_error("the iterator is the last one");
-      }
-      this = this->next_;
-      return this;
-    }
-    ListNode* operator--() {
-      if (this->last_ == nullptr) {
-        throw std::logic_error("the iterator is the last one");
-      }
-      this = this->last_;
-      return this;
-    }
-    ListNode* next_;
-    ListNode* last_;
-    T content_;
-  };
-
+struct listNode;
+template <typename T>
+class list : public DataStructure<T, listNode<T>> {
  public:
+  class iterator;
+  using ListNode = listNode<T>;
+  using typename DataStructure<T, ListNode>::Pointer;
+
   list();
   list(T*, T*);
   ~list();
-  [[nodiscard]] ListNode* begin();
-  [[nodiscard]] ListNode* end();
-  [[nodiscard]] ListNode* rbegin();
-  [[nodiscard]] ListNode* rend();
-  [[nodiscard]] const ListNode* begin() const;
-  [[nodiscard]] const ListNode* end() const;
-  [[nodiscard]] const ListNode* rbegin() const;
-  [[nodiscard]] const ListNode* rend() const;
-  [[nodiscard]] const ListNode* cbegin() const;
-  [[nodiscard]] const ListNode* cend() const;
+  [[nodiscard]] iterator begin();
+  [[nodiscard]] iterator end();
+  [[nodiscard]] iterator rbegin();
+  [[nodiscard]] iterator rend();
+  [[nodiscard]] const iterator begin() const;
+  [[nodiscard]] const iterator end() const;
+  [[nodiscard]] const iterator rbegin() const;
+  [[nodiscard]] const iterator rend() const;
+  [[nodiscard]] const iterator cbegin() const;
+  [[nodiscard]] const iterator cend() const;
   void clear();
   [[nodiscard]] bool empty() const;
-  ListNode* erase(const T&);
-  ListNode* erase(ListNode*);
-  [[nodiscard]]ListNode* find(const T&);
-  void insert(ListNode*, const T&);
+  iterator erase(const T&);
+  iterator erase(iterator);
+  [[nodiscard]] iterator find(const T&);
+  void insert(iterator, const T&);
   void pop();
   void push_back(const T&);
   [[nodiscard]] std::string show(int count_limit = 20) const;
   [[nodiscard]] size_t size() const;
 
  private:
-  ListNode* rend_;
-  ListNode* end_;
+  iterator start_;
+  iterator end_;
+  iterator rend_;
   size_t size_{};
+  Pointer getBegin() override { return &start_; }
+  Pointer getEnd() override { return &end_; }
+};
+
+template <typename T>
+struct listNode {
+  listNode() : next_(nullptr), last_(nullptr){};
+  explicit listNode(const T& content) : listNode() { content_ = content; };
+  T& operator*() { return content_; }
+  list<T>::iterator next_;
+  list<T>::iterator last_;
+  T content_;
+};
+template <typename T>
+class list<T>::iterator : public TwoDirectionIterator<ListNode> {
+ public:
+  using TwoDirectionIterator<ListNode>::TwoDirectionIterator;
+  T& operator*() { return this->getPointer()->content_; }
+  const T& operator*() const { return this->getPointer()->content_; }
+  iterator& operator++() override {
+    this->getPointer() = this->getPointer()->next_;
+    return *this;
+  }
+  iterator& operator--() override {
+    this->getPointer() = this->getPointer()->last_;
+    return *this;
+  }
+  iterator& operator++(int i) override { return operator++(); }
+  iterator& operator--(int i) override { return operator--(); }
 };
 
 template <typename T>
@@ -74,6 +85,7 @@ list<T>::list() {
   end_ = new ListNode();
   rend_->next_ = end_;
   end_->last_ = rend_;
+  start_ = end_;
   size_ = 0;
 }
 template <typename T>
@@ -87,43 +99,46 @@ list<T>::~list() {
   clear();
 }
 template <typename T>
-typename list<T>::ListNode* list<T>::begin() {
-  return rend_->next_;
+list<T>::iterator list<T>::begin() {
+  start_ = rend_->next_;
+  return start_;
 }
 template <typename T>
-typename list<T>::ListNode* list<T>::end() {
+list<T>::iterator list<T>::end() {
   return end_;
 }
 template <typename T>
-typename list<T>::ListNode* list<T>::rbegin() {
+list<T>::iterator list<T>::rbegin() {
   return end_->last_;
 }
 template <typename T>
-typename list<T>::ListNode* list<T>::rend() {
+list<T>::iterator list<T>::rend() {
   return rend_;
 }
 template <typename T>
-const typename list<T>::ListNode* list<T>::begin() const {
-  return rend_->next_;
+const list<T>::iterator list<T>::begin() const {
+  start_ = rend_->next_;
+  return start_;
 }
 template <typename T>
-const typename list<T>::ListNode* list<T>::end() const {
+const list<T>::iterator list<T>::end() const {
   return end_;
 }
 template <typename T>
-const typename list<T>::ListNode* list<T>::rbegin() const {
+const list<T>::iterator list<T>::rbegin() const {
   return end_->last_;
 }
 template <typename T>
-const typename list<T>::ListNode* list<T>::rend() const {
+const list<T>::iterator list<T>::rend() const {
   return rend_;
 }
 template <typename T>
-const list<T>::ListNode* list<T>::cbegin() const {
-  return rend_->next_;
+const list<T>::iterator list<T>::cbegin() const {
+  start_ = rend_->next_;
+  return start_;
 }
 template <typename T>
-const list<T>::ListNode* list<T>::cend() const {
+const list<T>::iterator list<T>::cend() const {
   return end_;
 }
 template <typename T>
@@ -137,8 +152,8 @@ bool list<T>::empty() const {
   return size_ == 0;
 }
 template <typename T>
-typename list<T>::ListNode* list<T>::erase(const T& content) {
-  ListNode* answer = find(content);
+list<T>::iterator list<T>::erase(const T& content) {
+  iterator answer = find(content);
   if (answer != end_) {
     return erase(answer);
   } else {
@@ -146,15 +161,15 @@ typename list<T>::ListNode* list<T>::erase(const T& content) {
   }
 }
 template <typename T>
-typename list<T>::ListNode* list<T>::erase(list::ListNode* node) {
+list<T>::iterator list<T>::erase(list::iterator node) {
   if (node == rend_ || node == end_) {
     throw std::logic_error("end iterator can not be erased");
   }
   if (empty()) {
     throw std::logic_error("nothing left to_ erase");
   }
-  auto* node_behind = node->next_;
-  auto* node_before = node->last_;
+  auto node_behind = node->next_;
+  auto node_before = node->last_;
   delete node;
   node_behind->last_ = node_before;
   node_before->next_ = node_behind;
@@ -162,8 +177,8 @@ typename list<T>::ListNode* list<T>::erase(list::ListNode* node) {
   return node_behind;
 }
 template <typename T>
-typename list<T>::ListNode* list<T>::find(const T& content) {
-  ListNode* answer = begin();
+list<T>::iterator list<T>::find(const T& content) {
+  iterator answer = begin();
   while (answer != end_ && answer->content_ != content) {
     answer = answer->next_;
   }
@@ -171,9 +186,9 @@ typename list<T>::ListNode* list<T>::find(const T& content) {
 }
 
 template <typename T>
-void list<T>::insert(list::ListNode* node_behind, const T& content) {
-  auto* node_before = node_behind->last_;
-  auto* node_temp = new ListNode(content);
+void list<T>::insert(list::iterator node_behind, const T& content) {
+  auto node_before = node_behind->last_;
+  auto node_temp = new ListNode(content);
   node_before->next_ = node_temp;
   node_behind->last_ = node_temp;
   node_temp->next_ = node_behind;
@@ -195,7 +210,7 @@ void list<T>::push_back(const T& content) {
 template <typename T>
 std::string list<T>::show(int count_limit) const {
   std::stringstream string_stream;
-  for (auto* element = begin(); element != end(); element = element->next_) {
+  for (auto element = begin(); element != end(); element = element->next_) {
     string_stream << element->content_ << " ";
     count_limit--;
     if (count_limit <= 0) {

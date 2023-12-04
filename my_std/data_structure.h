@@ -16,54 +16,67 @@ class Iterator {
   using Pointer = T*;
   Iterator() : data_(nullptr){};
   Iterator(Pointer data) : data_(data){};
-  operator Pointer () { return data_;}
-  operator const Pointer () const { return data_; }
-  [[nodiscard]]Pointer& getPointer() { return data_; }
-  [[nodiscard]]const Pointer& getPointer() const { return data_; }
-  [[nodiscard]]virtual Iterator* next()=0;
+  operator Pointer() { return data_; }
+  operator const Pointer() const { return data_; }
+  T* operator->() { return data_; }
+  [[nodiscard]] Pointer& getPointer() { return data_; }
+  [[nodiscard]] const Pointer& getPointer() const { return data_; }
+  [[nodiscard]] virtual Iterator* next() = 0;
 
  private:
   Pointer data_;
 };
-template<typename T>
-class NormIterator:public Iterator<T>{
+template <typename T>
+class TwoDirectionIterator : public Iterator<T> {
  public:
   using lhy::Iterator<T>::Iterator;
-  virtual NormIterator& operator++() {
+  virtual TwoDirectionIterator& operator++() {
     this->getPointer()++;
     return *this;
   }
-  virtual NormIterator& operator++(int) { return operator++(); }
-  NormIterator& operator--() {
+  virtual TwoDirectionIterator& operator++(int) { return operator++(); }
+  virtual TwoDirectionIterator& operator--() {
     this->getPointer()--;
     return *this;
   }
-  NormIterator& operator--(int) { return operator--(); }
+  virtual TwoDirectionIterator& operator--(int) { return operator--(); }
   Iterator<T>* next() override {
     operator++();
     return this;
   }
-  NormIterator operator+(Index index){
-    return this->getPointer()+index;
-  }
-  NormIterator operator-(Index index){
-    return this->getPointer()-index;
-  }
-};
-template<typename T>
-class DataStructure {
- public:
-  using Pointer = Iterator<T>*;
- private:
-  std::vector<int> observers;
-  virtual Pointer getBegin()=0;
-  virtual Pointer getEnd()=0;
-  void inform();
 };
 template <typename T>
-void DataStructure<T>::inform() {
-  for (auto& each_observer :observers) {
-//    each_observer->update(*this);
+class NormIterator : public TwoDirectionIterator<T> {
+ public:
+  using lhy::TwoDirectionIterator<T>::TwoDirectionIterator;
+  NormIterator& operator++() override {
+    this->getPointer()++;
+    return *this;
+  }
+  NormIterator& operator++(int) override { return operator++(); }
+  NormIterator& operator--() override {
+    this->getPointer()--;
+    return *this;
+  }
+  NormIterator& operator--(int) override { return operator--(); }
+  NormIterator operator+(Index index) { return this->getPointer() + index; }
+  NormIterator operator-(Index index) { return this->getPointer() - index; }
+};
+template <typename T, typename U = T>
+class DataStructure {
+ public:
+  using Pointer = Iterator<U>*;
+
+ private:
+  std::vector<int> observers;
+  virtual Pointer getBegin() = 0;
+  virtual Pointer getEnd() = 0;
+  void inform();
+};
+template <typename T, typename U>
+void DataStructure<T, U>::inform() {
+  for (auto& each_observer : observers) {
+    //    each_observer->update(*this);
   }
 }
 }  // namespace lhy

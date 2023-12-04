@@ -13,13 +13,13 @@
 #include "algorithm.h"
 #include "basic.h"
 #include "concept.h"
+#include "data_structure.h"
 #include "list.h"
 #include "mmath.h"
 #include "priority_queue.h"
 #include "random.h"
 #include "type_traits.h"
 #include "vector.h"
-#include"data_structure.h"
 
 namespace lhy {
 enum SortType {
@@ -65,11 +65,12 @@ T GetKthElement(NormIterator<T> start, NormIterator<T> end, Index k, const CmpTy
 template <typename T>
 void Merge(T start, T other_start, T end, const CmpType<T>& compare_function);
 template <typename T>
-void TimSortUpdate(NormIterator<T> start, list<std::pair<Index, Index>>& runs, const CmpType<T>& compare_function, bool forced) {
-  auto* last_iterator = runs.rbegin();
+void TimSortUpdate(NormIterator<T> start, list<std::pair<Index, Index>>& runs, const CmpType<T>& compare_function,
+                   bool forced) {
+  auto last_iterator = runs.rbegin();
   size_t size = runs.size();
   for (int i = 0; i < size - 1; ++i) {
-    auto* last_second_iterator = last_iterator->last_;
+    auto last_second_iterator = last_iterator->last_;
     size_t last_second_size = last_second_iterator->content_.second - last_second_iterator->content_.first;
     size_t last_size = last_iterator->content_.second - last_iterator->content_.first;
     if (last_second_size < last_size * 2 || forced) {
@@ -78,7 +79,7 @@ void TimSortUpdate(NormIterator<T> start, list<std::pair<Index, Index>>& runs, c
       std::pair<Index, Index> new_pair =
           std::make_pair(last_second_iterator->content_.first, last_iterator->content_.second);
       runs.erase(last_second_iterator);
-      auto* temp_iterator = runs.erase(last_iterator);
+      auto temp_iterator = runs.erase(last_iterator);
       runs.insert(temp_iterator, new_pair);
     } else {
       break;
@@ -170,7 +171,8 @@ void TournamentSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>
   }
 }
 template <typename T>
-void ShellSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function, ShellGapGenerationBase* gap_generation) {
+void ShellSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function,
+               ShellGapGenerationBase* gap_generation) {
   while (gap_generation->Get() < end - start) {
     gap_generation->Up();
   }
@@ -202,19 +204,20 @@ void InsertSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& co
   list<T> temp_list;
   for (auto element = start; element != end; ++element) {
     auto temp_list_iterator = temp_list.begin();
-    while (temp_list_iterator != temp_list.end() && compare_function(*(*temp_list_iterator), *element)) {
-      temp_list_iterator = temp_list_iterator->next_;
+    while (temp_list_iterator != temp_list.end() && compare_function(*temp_list_iterator, *element)) {
+      temp_list_iterator++;
     }
     temp_list.insert(temp_list_iterator, *element);
   }
   auto temp_list_iterator = temp_list.begin();
   for (Index i = 0; i < end - start; i++) {
-    start[i] = *(*temp_list_iterator);
-    temp_list_iterator = temp_list_iterator->next_;
+    start[i] = *temp_list_iterator;
+    temp_list_iterator++;
   }
 }
 template <typename T>
-void QuickSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function, int64_t depth, int64_t limit_depth) {
+void QuickSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function, int64_t depth,
+               int64_t limit_depth) {
   if (limit_depth != -1 && depth >= limit_depth) {
     HeapSort(start, end, compare_function);
     return;
@@ -243,7 +246,8 @@ void QuickSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& com
   QuickSort(bigger, end, compare_function, depth + 1, limit_depth);
 }
 template <typename T>
-void Merge(NormIterator<T> start, NormIterator<T> other_start, NormIterator<T> end, const CmpType<T>& compare_function) {
+void Merge(NormIterator<T> start, NormIterator<T> other_start, NormIterator<T> end,
+           const CmpType<T>& compare_function) {
   auto* temp_array = new T[end - start];
   for (Index i = 0; i < end - start; ++i) {
     temp_array[i] = start[i];
@@ -283,7 +287,7 @@ void MergeSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& com
     for (Index j = 0; j < end - start; j += i * 2) {
       Index i1 = j, i2 = j + i;
       Index i3 = j;
-      while (i1 < j+i && i2 < std::min(j + 2 * i, end - start)) {
+      while (i1 < j + i && i2 < std::min(j + 2 * i, end - start)) {
         if (compare_function(temp_array[i1], temp_array[i2])) {
           start[i3] = temp_array[i1];
           i3++;
@@ -382,7 +386,8 @@ void BucketSort(NormIterator<T> start, NormIterator<T> end) {
 // }
 template <typename T>
 T GetApproximateMedian(
-    NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function = [](const T& a, const T& b) -> bool { return a < b; },
+    NormIterator<T> start, NormIterator<T> end,
+    const CmpType<T>& compare_function = [](const T& a, const T& b) -> bool { return a < b; },
     size_t median_split_length = 5) {
   for (Index i = 0; i < end - start; i += median_split_length) {
     Sort(start + i, start + std::min(i + median_split_length, end - start), SortType::INSERT_SORT, compare_function);
