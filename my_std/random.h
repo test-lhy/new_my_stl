@@ -6,10 +6,11 @@
 #define MY_STL_RANDOM_H
 #include <cstdint>
 #include <random>
+#include "data_structure.h"
 namespace lhy {
 [[nodiscard]]int64_t rand(int64_t, int64_t);
 template <typename T>
-void randomize(T *start, T *end) {
+void randomize(NormIterator<T> start, NormIterator<T> end) {
   for (int i = 0; i < end - start; ++i) {
     int ran = rand(0, end - start - 1);
     if (ran != i) {

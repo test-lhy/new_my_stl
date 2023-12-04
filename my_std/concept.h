@@ -23,5 +23,11 @@ template <typename T>
 concept hashable = requires() { TypeTraits<T>::hash_func; };
 template <typename T>
 concept not_hashable = not hashable<T>;
+template <typename T>
+concept iter = requires(T x) {
+  *x;
+  x++;
+  x--;
+};
 }  // namespace lhy
 #endif  // MY_STL_CONCEPT_H

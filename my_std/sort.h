@@ -19,6 +19,7 @@
 #include "random.h"
 #include "type_traits.h"
 #include "vector.h"
+#include"data_structure.h"
 
 namespace lhy {
 enum SortType {
@@ -60,11 +61,11 @@ class ShellNormalGapGeneration : public ShellGapGenerationBase {
   }
 };
 template <typename T>
-T GetKthElement(T* start, T* end, Index k, const CmpType<T>& compare_function);
+T GetKthElement(NormIterator<T> start, NormIterator<T> end, Index k, const CmpType<T>& compare_function);
 template <typename T>
-void Merge(T* start, T* other_start, T* end, const CmpType<T>& compare_function);
+void Merge(T start, T other_start, T end, const CmpType<T>& compare_function);
 template <typename T>
-void TimSortUpdate(T* start, list<std::pair<Index, Index>>& runs, const CmpType<T>& compare_function, bool forced) {
+void TimSortUpdate(NormIterator<T> start, list<std::pair<Index, Index>>& runs, const CmpType<T>& compare_function, bool forced) {
   auto* last_iterator = runs.rbegin();
   size_t size = runs.size();
   for (int i = 0; i < size - 1; ++i) {
@@ -86,7 +87,7 @@ void TimSortUpdate(T* start, list<std::pair<Index, Index>>& runs, const CmpType<
   }
 }
 template <typename T>
-void TimSort(T* start, T* end, const CmpType<T>& compare_function) {
+void TimSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function) {
   if (end - start <= 64) {
     Sort(start, end, SortType::INSERT_SORT, compare_function);
     return;
@@ -144,7 +145,7 @@ void GetWinner(std::pair<T, int>* temp_array, Index index, size_t size, const Cm
   }
 }
 template <typename T>
-void TournamentSort(T* start, T* end, const CmpType<T>& compare_function, const T& INF) {
+void TournamentSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function, const T& INF) {
   size_t front_size = pow(2, ceil(log2(end - start))) - 1;
   auto* temp_array = new std::pair<T, int>[front_size + end - start];
   for (Index i = 0; i < end - start; ++i) {
@@ -169,7 +170,7 @@ void TournamentSort(T* start, T* end, const CmpType<T>& compare_function, const 
   }
 }
 template <typename T>
-void ShellSort(T* start, T* end, const CmpType<T>& compare_function, ShellGapGenerationBase* gap_generation) {
+void ShellSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function, ShellGapGenerationBase* gap_generation) {
   while (gap_generation->Get() < end - start) {
     gap_generation->Up();
   }
@@ -185,7 +186,7 @@ void ShellSort(T* start, T* end, const CmpType<T>& compare_function, ShellGapGen
   }
 }
 template <typename T>
-void HeapSort(T* start, T* end, const CmpType<T>& compare_function) {
+void HeapSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function) {
   priority_queue<T> priority_queue_temp(start, end, compare_function);
   for (int i = 0; i < end - start; ++i) {
     start[i] = priority_queue_temp.top();
@@ -197,7 +198,7 @@ void Sort(std::tuple<T...>* start, std::tuple<T...>* end, SortType sort_type = S
   RadixSort(start, end, sort_type);
 }
 template <typename T>
-void InsertSort(T* start, T* end, const CmpType<T>& compare_function) {
+void InsertSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function) {
   list<T> temp_list;
   for (auto element = start; element != end; ++element) {
     auto temp_list_iterator = temp_list.begin();
@@ -213,7 +214,7 @@ void InsertSort(T* start, T* end, const CmpType<T>& compare_function) {
   }
 }
 template <typename T>
-void QuickSort(T* start, T* end, const CmpType<T>& compare_function, int64_t depth, int64_t limit_depth) {
+void QuickSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function, int64_t depth, int64_t limit_depth) {
   if (limit_depth != -1 && depth >= limit_depth) {
     HeapSort(start, end, compare_function);
     return;
@@ -225,7 +226,7 @@ void QuickSort(T* start, T* end, const CmpType<T>& compare_function, int64_t dep
     randomize(start, end);
   }
   T pivot = GetKthElement(start, end, (end - start + 1) / 2, compare_function);
-  T *smaller = start, *now = start, *bigger = end;
+  auto smaller = start, now = start, bigger = end;
   while (now < bigger) {
     if (compare_function(*now, pivot)) {
       std::swap(*now, *smaller);
@@ -242,7 +243,7 @@ void QuickSort(T* start, T* end, const CmpType<T>& compare_function, int64_t dep
   QuickSort(bigger, end, compare_function, depth + 1, limit_depth);
 }
 template <typename T>
-void Merge(T* start, T* other_start, T* end, const CmpType<T>& compare_function) {
+void Merge(NormIterator<T> start, NormIterator<T> other_start, NormIterator<T> end, const CmpType<T>& compare_function) {
   auto* temp_array = new T[end - start];
   for (Index i = 0; i < end - start; ++i) {
     temp_array[i] = start[i];
@@ -273,8 +274,8 @@ void Merge(T* start, T* other_start, T* end, const CmpType<T>& compare_function)
   delete[] temp_array;
 }
 template <typename T>
-void MergeSort(T* start, T* end, const CmpType<T>& compare_function) {
-  T* temp_array = new T[end - start];
+void MergeSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function) {
+  NormIterator<T> temp_array = new T[end - start];
   for (Index i = 1; i < end - start; i <<= 1) {
     for (Index j = 0; j < end - start; ++j) {
       temp_array[j] = start[j];
@@ -308,9 +309,9 @@ void MergeSort(T* start, T* end, const CmpType<T>& compare_function) {
   delete[] temp_array;
 }
 template <typename T>
-void CountSort(T* start, T* end) {
+void CountSort(NormIterator<T> start, NormIterator<T> end) {
   T maxT = *start, minT = *start;
-  T* temp_array = new T[end - start];
+  NormIterator<T> temp_array = new T[end - start];
   for (auto element = start; element != end; ++element) {
     maxT = std::max(*element, maxT);
     minT = std::min(*element, minT);
@@ -335,7 +336,7 @@ void CountSort(T* start, T* end) {
   delete[] temp_array;
 }
 template <typename T>
-void BucketSort(T* start, T* end) {
+void BucketSort(NormIterator<T> start, NormIterator<T> end) {
   T maxT = *start, minT = *start;
   for (auto element = start; element != end; ++element) {
     maxT = std::max(*element, maxT);
@@ -381,7 +382,7 @@ void BucketSort(T* start, T* end) {
 // }
 template <typename T>
 T GetApproximateMedian(
-    T* start, T* end, const CmpType<T>& compare_function = [](const T& a, const T& b) -> bool { return a < b; },
+    NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function = [](const T& a, const T& b) -> bool { return a < b; },
     size_t median_split_length = 5) {
   for (Index i = 0; i < end - start; i += median_split_length) {
     Sort(start + i, start + std::min(i + median_split_length, end - start), SortType::INSERT_SORT, compare_function);
@@ -395,9 +396,9 @@ T GetApproximateMedian(
   }
 }
 template <typename T>
-T GetKthElement(T* start, T* end, Index k, const CmpType<T>& compare_function) {
+T GetKthElement(NormIterator<T> start, NormIterator<T> end, Index k, const CmpType<T>& compare_function) {
   T pivot = GetApproximateMedian(start, end, compare_function);
-  T *smaller = start, *now = start, *bigger = end;
+  auto smaller = start, now = start, bigger = end;
   while (now < bigger) {
     if (compare_function(*now, pivot)) {
       std::swap(*now, *smaller);
@@ -419,26 +420,26 @@ T GetKthElement(T* start, T* end, Index k, const CmpType<T>& compare_function) {
   }
 }
 template <typename T>
-void Sort(T* start, T* end) {
+void Sort(NormIterator<T> start, NormIterator<T> end) {
   Sort(start, end, SortType::QUICK_SORT);
 }
 template <typename T, typename UnknownCmpType>
-void Sort(T* start, T* end, const UnknownCmpType& compare_function) {
+void Sort(NormIterator<T> start, NormIterator<T> end, const UnknownCmpType& compare_function) {
   const CmpType<T>& compare_function_known = compare_function;
   Sort(start, end, SortType::QUICK_SORT, compare_function_known);
 }
 template <typename T>
-void Sort(T* start, T* end, SortType sort_type) {
+void Sort(NormIterator<T> start, NormIterator<T> end, SortType sort_type) {
   const CmpType<T>& compare_function = std::less<T>();
   Sort(start, end, sort_type, compare_function);
 }
 template <typename T, typename GapGeneration = ShellNormalGapGeneration, typename UnknownCmpType>
-void Sort(T* start, T* end, SortType sort_type, const UnknownCmpType& compare_function) {
+void Sort(NormIterator<T> start, NormIterator<T> end, SortType sort_type, const UnknownCmpType& compare_function) {
   const CmpType<T>& compare_function_known = compare_function;
   Sort(start, end, sort_type, compare_function_known);
 }
 template <int_type T, typename GapGeneration = ShellNormalGapGeneration>
-void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_function) {
+void Sort(NormIterator<T> start, NormIterator<T> end, SortType sort_type, const CmpType<T>& compare_function) {
   if (sort_type == SortType::QUICK_SORT) {
     QuickSort(start, end, compare_function, 0, -1);
   } else if (sort_type == SortType::INSERT_SORT) {
@@ -466,7 +467,7 @@ void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_functi
   }
 }
 template <not_int_type T, typename GapGeneration = ShellNormalGapGeneration>
-void Sort(T* start, T* end, SortType sort_type, const CmpType<T>& compare_function) {
+void Sort(NormIterator<T> start, NormIterator<T> end, SortType sort_type, const CmpType<T>& compare_function) {
   if (sort_type == SortType::QUICK_SORT) {
     QuickSort(start, end, compare_function, 0, -1);
   } else if (sort_type == SortType::INSERT_SORT) {

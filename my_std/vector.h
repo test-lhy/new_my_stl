@@ -14,12 +14,15 @@
 
 #include "basic.h"
 #include "concept.h"
+#include "data_structure.h"
 namespace lhy {
 template <typename T>
-class vector {
+class vector : public DataStructure<T> {
  public:
+  using typename DataStructure<T>::Pointer;
+  using iterator=lhy::NormIterator<T>;
   vector();
-  explicit vector(T*, T*);
+  explicit vector(iterator, iterator);
   explicit vector(const size_t&);
   vector(const vector<T>&);
   vector(const std::initializer_list<T>&);
@@ -36,21 +39,21 @@ class vector {
   [[nodiscard]] const T& At(const Index&) const;
   [[nodiscard]] T& front();
   [[nodiscard]] T& back();
-  [[nodiscard]] T* begin();
-  [[nodiscard]] T* end();
-  [[nodiscard]] T* rbegin();
-  [[nodiscard]] T* rend();
+  [[nodiscard]] iterator begin();
+  [[nodiscard]] iterator end();
+  [[nodiscard]] iterator rbegin();
+  [[nodiscard]] iterator rend();
   [[nodiscard]] const T& front() const;
   [[nodiscard]] const T& back() const;
-  [[nodiscard]] const T* begin() const;
-  [[nodiscard]] const T* end() const;
-  [[nodiscard]] const T* rbegin() const;
-  [[nodiscard]] const T* rend() const;
-  [[nodiscard]] const T* cbegin() const;
-  [[nodiscard]] const T* cend() const;
+  [[nodiscard]] const iterator begin() const;
+  [[nodiscard]] const iterator end() const;
+  [[nodiscard]] const iterator rbegin() const;
+  [[nodiscard]] const iterator rend() const;
+  [[nodiscard]] const iterator cbegin() const;
+  [[nodiscard]] const iterator cend() const;
   void clear();
   [[nodiscard]] bool empty() const;
-  void erase(T*);
+  void erase(iterator);
   void erase(const T&);
   void push_back(const T&);
   void push_back(T&&);
@@ -59,12 +62,14 @@ class vector {
   [[nodiscard]] size_t size() const;
 
  private:
-  T* start_;
-  T* end_;
+  iterator start_;
+  iterator end_;
   Index volume_;
   [[nodiscard]] bool check_volume() const;
   void check_index(const Index&) const;
   void extend_volume();
+  Pointer getBegin() override { return &start_; }
+  Pointer getEnd() override { return &end_; }
 };
 std::string str(const vector<char>& obj);
 // todo:研究这里到底应该右值引用还是直接值返回，编译器是否有优化
@@ -90,7 +95,7 @@ std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj);
 template <typename T>
 vector<T>::vector() : vector(0) {}
 template <typename T>
-vector<T>::vector(T* start, T* end) : vector() {
+vector<T>::vector(iterator start, iterator end) : vector() {
   for (auto* element = start; element != end; ++element) {
     push_back(*element);
   }
@@ -209,19 +214,19 @@ T& vector<T>::back() {
   return *(end_ - 1);
 }
 template <typename T>
-T* vector<T>::begin() {
+vector<T>::iterator vector<T>::begin() {
   return start_;
 }
 template <typename T>
-T* vector<T>::end() {
+vector<T>::iterator vector<T>::end() {
   return end_;
 }
 template <typename T>
-T* vector<T>::rbegin() {
+vector<T>::iterator vector<T>::rbegin() {
   return end_ - 1;
 }
 template <typename T>
-T* vector<T>::rend() {
+vector<T>::iterator vector<T>::rend() {
   return start_ - 1;
 }
 template <typename T>
@@ -239,28 +244,28 @@ const T& vector<T>::back() const {
   return *(end_ - 1);
 }
 template <typename T>
-const T* vector<T>::begin() const {
+const vector<T>::iterator vector<T>::begin() const {
   return start_;
 }
 template <typename T>
-const T* vector<T>::end() const {
+const vector<T>::iterator vector<T>::end() const {
   return end_;
 }
 template <typename T>
-const T* vector<T>::rbegin() const {
+const vector<T>::iterator vector<T>::rbegin() const {
   return end_ - 1;
 }
 template <typename T>
-const T* vector<T>::rend() const {
+const vector<T>::iterator vector<T>::rend() const {
   return start_ - 1;
 }
 template <typename T>
-const T* vector<T>::cbegin() const {
-  return const_cast<const T*>(end_);
+const vector<T>::iterator vector<T>::cbegin() const {
+  return const_cast<const iterator>(end_);
 }
 template <typename T>
-const T* vector<T>::cend() const {
-  return const_cast<const T*>(start_);
+const vector<T>::iterator vector<T>::cend() const {
+  return const_cast<const iterator>(start_);
 }
 // todo:这里的clear感觉有问题
 template <typename T>
@@ -275,7 +280,7 @@ bool vector<T>::empty() const {
   return size() == 0;
 }
 template <typename T>
-void vector<T>::erase(T* target) {
+void vector<T>::erase(iterator target) {
   while (target != end_ - 1) {
     target[0] = target[1];
     target++;
@@ -323,7 +328,7 @@ void vector<T>::reserve(size_t size) {
   if (size < this->size()) {
     throw std::logic_error("the size of the vector cannot be bigger than the reserve size");
   }
-  T* start_substitute = new T[size];
+  iterator start_substitute = new T[size];
   size_t ex_size = this->size();
   end_ = start_substitute + size;
   volume_ = size;
@@ -336,7 +341,7 @@ void vector<T>::reserve(size_t size) {
 
 template <typename T>
 size_t vector<T>::size() const {
-  return std::distance(start_, end_);
+  return distance(start_, end_);
 }
 template <typename T>
 bool vector<T>::check_volume() const {
@@ -350,7 +355,7 @@ void vector<T>::check_index(const Index& index) const {
 }
 template <typename T>
 void vector<T>::extend_volume() {
-  T* start_substitute = new T[volume_ * 2];
+  iterator start_substitute = new T[volume_ * 2];
   end_ = start_substitute + volume_;
   for (int i = 0; i < volume_; ++i) {
     start_substitute[i] = start_[i];
