@@ -283,7 +283,7 @@ void MergeSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& com
     for (Index j = 0; j < end - start; j += i * 2) {
       Index i1 = j, i2 = j + i;
       Index i3 = j;
-      while (i1 < i2 && i2 < std::min(j + 2 * i, end - start)) {
+      while (i1 < j+i && i2 < std::min(j + 2 * i, end - start)) {
         if (compare_function(temp_array[i1], temp_array[i2])) {
           start[i3] = temp_array[i1];
           i3++;
