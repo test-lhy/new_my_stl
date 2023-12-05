@@ -100,8 +100,8 @@ class DataStructure {
 
  private:
   std::vector<int> observers;
-  virtual Pointer getBegin() = 0;
-  virtual Pointer getEnd() = 0;
+  [[nodiscard]] virtual Pointer getBegin() = 0;
+  [[nodiscard]] virtual Pointer getEnd() = 0;
   void inform();
 };
 template <typename T, typename U>

@@ -23,7 +23,7 @@ class list : public DataStructure<T, listNode<T>> {
   using typename DataStructure<T, ListNode>::Pointer;
 
   list();
-  list(const iterator&, const iterator&);
+  list(iterator, iterator);
   ~list();
   [[nodiscard]] iterator begin();
   [[nodiscard]] iterator end();
@@ -98,7 +98,7 @@ list<T>::list() {
   size_ = 0;
 }
 template <typename T>
-list<T>::list(const iterator& start, const iterator& end) : list() {
+list<T>::list(iterator start, iterator end) : list() {
   for (auto element = start; element != end; ++element) {
     push_back(*element);
   }
