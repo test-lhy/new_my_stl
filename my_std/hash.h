@@ -62,12 +62,12 @@ Hash<T, U>::~Hash() = default;
 template <hashable T, typename U>
 U& Hash<T, U>::operator[](const T& key) {
   list<Element>& hash_list = hash_table_[hash_func_(key, mod_value_)];
-  auto* answer = hash_list.find({key, U()});
+  auto answer = hash_list.find({key, U()});
   if (answer != hash_list.end()) {
     return answer->content_.value;
   } else {
     hash_list.push_back({key, U()});
-    auto* new_answer = hash_list.find({key, U()});
+    auto new_answer = hash_list.find({key, U()});
     return new_answer->content_.value;
   }
 }
@@ -81,7 +81,7 @@ void Hash<T, U>::insert(const T& key, const U& value) {
   hash_table_[hash_func_(key, mod_value_)].push_back({key, value});
 }
 size_t GetModValue(const size_t& size) {
-  auto* iter = kmod_values.begin();
+  auto iter = kmod_values.begin();
   size_t up_limit = 32;
   while (size > up_limit && iter != kmod_values.end()) {
     up_limit *= 2;
