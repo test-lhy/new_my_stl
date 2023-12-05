@@ -8,10 +8,12 @@
 #include "vector.h"
 namespace lhy {
 template <typename T>
-class priority_queue {
+class priority_queue : public DataStructure<T> {
  public:
+  using iterator = vector<T>::iterator;
+  using typename DataStructure<T>::Pointer;
   explicit priority_queue(const CmpType<T> &cmp = std::less<T>());
-  priority_queue(T *, T *, const CmpType<T> &cmp = std::less<T>());
+  priority_queue(iterator, iterator, const CmpType<T> &cmp = std::less<T>());
   ~priority_queue();
   [[nodiscard]] bool empty() const;
   void push(T);
@@ -31,13 +33,15 @@ class priority_queue {
   const Index root = 0;
   vector<T> priority_queue_;
   CmpType<T> compare_function_;
+  Pointer getBegin() override { return priority_queue_.getBegin(); }
+  Pointer getEnd() override { return priority_queue_.getEnd(); }
 };
 template <typename T>
 priority_queue<T>::priority_queue(const CmpType<T> &cmp) {
   compare_function_ = cmp;
 }
 template <typename T>
-priority_queue<T>::priority_queue(T *start, T *end, const CmpType<T> &cmp) {
+priority_queue<T>::priority_queue(iterator start, iterator end, const CmpType<T> &cmp) {
   compare_function_ = cmp;
   for (auto &element = start; element != end; element++) {
     priority_queue_.push_back(*element);

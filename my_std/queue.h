@@ -7,10 +7,12 @@
 #include "list.h"
 namespace lhy {
 template <typename T>
-class queue {
+class queue : public DataStructure<T, typename list<T>::ListNode> {
  public:
+  using iterator = list<T>::iterator;
+  using typename DataStructure<T, typename list<T>::ListNode>::Pointer;
   queue();
-  queue(T*, T*);
+  queue(iterator, iterator);
   ~queue();
   void clear();
   [[nodiscard]] bool empty() const;
@@ -22,14 +24,16 @@ class queue {
 
  private:
   list<T> queue_;
+  Pointer getBegin() override { return queue_.getBegin(); }
+  Pointer getEnd() override { return queue_.getEnd(); }
 };
 template <typename T>
 queue<T>::queue() = default;
 template <typename T>
 queue<T>::~queue() = default;
 template <typename T>
-queue<T>::queue(T* start, T* end) {
-  for (auto* element = start; element != end; ++element) {
+queue<T>::queue(iterator start, iterator end) {
+  for (auto element = start; element != end; ++element) {
     queue_.push_back(*element);
   }
 }
@@ -44,7 +48,7 @@ bool queue<T>::empty() const {
 
 template <typename T>
 T& queue<T>::front() {
-  return queue_.begin()->content_;
+  return *(queue_.begin());
 }
 
 template <typename T>

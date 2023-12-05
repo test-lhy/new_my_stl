@@ -70,14 +70,13 @@ void TimSortUpdate(NormIterator<T> start, list<std::pair<Index, Index>>& runs, c
   auto last_iterator = runs.rbegin();
   size_t size = runs.size();
   for (int i = 0; i < size - 1; ++i) {
-    auto last_second_iterator = last_iterator->last_;
-    size_t last_second_size = last_second_iterator->content_.second - last_second_iterator->content_.first;
-    size_t last_size = last_iterator->content_.second - last_iterator->content_.first;
+    auto last_second_iterator = last_iterator.getLast();
+    size_t last_second_size = last_second_iterator->second - last_second_iterator->first;
+    size_t last_size = last_iterator->second - last_iterator->first;
     if (last_second_size < last_size * 2 || forced) {
-      Merge(start + last_second_iterator->content_.first, start + last_second_iterator->content_.second,
-            start + last_iterator->content_.second, compare_function);
-      std::pair<Index, Index> new_pair =
-          std::make_pair(last_second_iterator->content_.first, last_iterator->content_.second);
+      Merge(start + last_second_iterator->first, start + last_second_iterator->second, start + last_iterator->second,
+            compare_function);
+      std::pair<Index, Index> new_pair = std::make_pair(last_second_iterator->first, last_iterator->second);
       runs.erase(last_second_iterator);
       auto temp_iterator = runs.erase(last_iterator);
       runs.insert(temp_iterator, new_pair);

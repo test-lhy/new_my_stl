@@ -17,8 +17,14 @@
 #include "data_structure.h"
 namespace lhy {
 template <typename T>
+class priority_queue;
+template <typename T>
+class stack;
+template <typename T>
 class vector : public DataStructure<T> {
  public:
+  friend class priority_queue<T>;
+  friend class stack<T>;
   using typename DataStructure<T>::Pointer;
   using iterator = lhy::NormIterator<T>;
   vector();
@@ -30,6 +36,7 @@ class vector : public DataStructure<T> {
   vector<T>& operator=(const vector<T>&);
   vector<T>& operator=(vector<T>&&) noexcept;
   vector<T>& operator=(const std::initializer_list<T>&);
+  vector<T>& operator+=(const T&);
   vector<T>& operator+=(const vector<T>&);
   vector<T>& operator&=(const vector<T>&);
   vector<T>& operator|=(const vector<T>&);
@@ -151,6 +158,11 @@ vector<T>& vector<T>::operator+=(const vector<T>& other) {
   for (auto& each : other) {
     this->push_back(each);
   }
+  return *this;
+}
+template <typename T>
+vector<T>& vector<T>::operator+=(const T& other) {
+  this->push_back(other);
   return *this;
 }
 template <typename T>

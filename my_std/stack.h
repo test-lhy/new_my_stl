@@ -8,10 +8,12 @@
 #include "vector.h"
 namespace lhy {
 template <typename T>
-class stack {
+class stack : public DataStructure<T> {
  public:
+  using iterator = vector<T>::iterator;
+  using typename DataStructure<T>::Pointer;
   stack();
-  stack(T *, T *);
+  stack(iterator, iterator);
   ~stack();
   void clear();
   [[nodiscard]] bool empty() const;
@@ -22,12 +24,14 @@ class stack {
 
  private:
   vector<T> stack_;
+  Pointer getBegin() override { return stack_.getBegin(); }
+  Pointer getEnd() override { return stack_.getEnd(); }
 };
 template <typename T>
 stack<T>::stack() = default;
 template <typename T>
-stack<T>::stack(T *start, T *end) {
-  for (auto *element = start; element != end; element++) {
+stack<T>::stack(iterator start, iterator end) {
+  for (auto element = start; element != end; element++) {
     stack_.push_back(*element);
   }
 }

@@ -9,11 +9,11 @@
 #include <string>
 #include <utility>
 
+#include "string.h"
 #include "vector.h"
 namespace lhy {
-std::string ToString(int64_t);
-// todo:总感觉将T*改为T好怪
-template <typename T>
+string ToString(int64_t);
+template <iter T>
 void reverse(T start, T end) {
   end--;
   while (start < end) {
@@ -23,9 +23,9 @@ void reverse(T start, T end) {
   }
 }
 template <typename T>
-[[nodiscard]] std::string show(const T* start, const T* end, int count_limit = 20) {
+[[nodiscard]] std::string show(const ForwardIterator<T>& start, const ForwardIterator<T>& end, int count_limit = 20) {
   std::stringstream string_stream;
-  for (auto* element = start; element != end; element++) {
+  for (auto element = start; element != end; element++) {
     string_stream << *element << " ";
     count_limit--;
     if (count_limit <= 0) {

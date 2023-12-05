@@ -75,7 +75,7 @@ template <typename T>
                                                                                          const vector<T>& source,
                                                                                          T split = '|') {
   int target_size = target.size();
-  target += {split};
+  target += split;
   target += source;
   vector<int> prefix = GetPrefix(target);
   vector<int> ans;
@@ -119,7 +119,7 @@ template <typename T>
   vector<T> vec_temp;
   long long ans = 0;
   vector<T> prefix;
-  for (auto* it = vec.rbegin(); it != vec.rend(); it--) {
+  for (auto it = vec.rbegin(); it != vec.rend(); it--) {
     vec_temp.push_back(*it);
     prefix = GetPrefix(vec_temp);
     ans += vec_temp.size() + 1 - max(prefix);
@@ -138,7 +138,7 @@ template <typename T>
  */
 template <typename T>
 [[nodiscard]] vector<std::unordered_map<T, int>> GetKmpDFA(vector<T> vec, T split = '|') {
-  vec += {split};  ///< 为了让他必须在结尾不等,来使得在匹配成功后也能继续跳回匹配下一个可能匹配的
+  vec += split;  ///< 为了让他必须在结尾不等,来使得在匹配成功后也能继续跳回匹配下一个可能匹配的
   vector<int> prefix(GetPrefix(vec));
   std::unordered_set<T> all_element;
   vector<std::unordered_map<T, int>> ans(vec.size());
