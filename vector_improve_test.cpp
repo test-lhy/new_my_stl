@@ -1,18 +1,18 @@
 //
 // Created by lhy on 23-10-9.
 //
+#include <sstream>
+
 #include "vector.h"
-#include<sstream>
 
 using namespace lhy;
-using std::cout;
 using std::cin;
+using std::cout;
 using std::endl;
 using std::stringstream;
 int main() {
-
-  vector<int> v1 {1, 5, 3};
-  vector<int> v2 {4, 5, 6};
+  vector<int> v1{1, 5, 3};
+  vector<int> v2{4, 5, 6};
 
   // Test += operator
   v1 += v2;

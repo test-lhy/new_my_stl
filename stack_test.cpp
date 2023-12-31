@@ -8,7 +8,6 @@
 using namespace std;
 
 int main() {
-
   lhy::stack<int> s;
 
   s.push(1);

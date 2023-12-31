@@ -1,12 +1,12 @@
 #include "tree.h"
+
 #include <iostream>
 
 int main() {
-
   lhy::tree<int> t;
 
   // 添加节点
-  t.AddNode(0, 10); // root node
+  t.AddNode(0, 10);  // root node
 
   t.AddNode(0, 20, 1);
   t.AddNode(0, 30, 2);
@@ -21,21 +21,20 @@ int main() {
   t.set_root(0);
 
   // 打印根节点
-  std::cout << t[t.get_root()].content_ << std::endl; // 10
+  std::cout << t[t.get_root()].content_ << std::endl;  // 10
 
   // 打印子节点
-  std::cout << t[1].content_ << std::endl; // 20
+  std::cout << t[1].content_ << std::endl;  // 20
 
   // 打印叶子节点
-  std::cout << t[4].content_ << std::endl; // 50
+  std::cout << t[4].content_ << std::endl;  // 50
 
   // 获取大小
-  std::cout << t.size() << std::endl; // 7
+  std::cout << t.size() << std::endl;  // 7
 
   // 删除节点
   t.EraseNode(5);
 
   // 大小
-  std::cout << t.size() << std::endl; // 6
-
+  std::cout << t.size() << std::endl;  // 6
 }

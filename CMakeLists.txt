@@ -3,9 +3,33 @@ project(my_stl)
 
 set(CMAKE_CXX_STANDARD 23)
 
-include_directories(my_std)
-aux_source_directory(my_std MYSTD)
-add_executable(my_stl
-        ${MYSTD}
-        sort_test.cpp
+add_subdirectory(my_std)
+add_library(${PROJECT_NAME} INTERFACE)
+target_link_libraries(
+        ${PROJECT_NAME}
+        INTERFACE my_std
 )
+add_executable(graph_test graph_test.cpp)
+target_link_libraries(graph_test ${PROJECT_NAME})
+add_executable(graph_test2 graph_test2.cpp)
+target_link_libraries(graph_test2 ${PROJECT_NAME})
+add_executable(hash_test hash_test.cpp)
+target_link_libraries(hash_test ${PROJECT_NAME})
+add_executable(p1631_priority_queue_test p1631_priority_queue_test.cpp)
+target_link_libraries(p1631_priority_queue_test ${PROJECT_NAME})
+add_executable(priority_queue_test priority_queue_test.cpp)
+target_link_libraries(priority_queue_test ${PROJECT_NAME})
+add_executable(queue_test queue_test.cpp)
+target_link_libraries(queue_test ${PROJECT_NAME})
+add_executable(sort_test sort_test.cpp)
+target_link_libraries(sort_test ${PROJECT_NAME})
+add_executable(stack_test stack_test.cpp)
+target_link_libraries(stack_test ${PROJECT_NAME})
+add_executable(tree_test tree_test.cpp)
+target_link_libraries(tree_test ${PROJECT_NAME})
+add_executable(vector_test vector_test.cpp)
+target_link_libraries(vector_test ${PROJECT_NAME})
+add_executable(vector_prefix_test vector_prefix_test.cpp)
+target_link_libraries(vector_prefix_test ${PROJECT_NAME})
+add_executable(vector_improve_test vector_improve_test.cpp)
+target_link_libraries(vector_improve_test ${PROJECT_NAME})
