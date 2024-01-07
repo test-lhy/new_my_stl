@@ -19,6 +19,7 @@ class list : public DataStructure<T, listNode<T>> {
  public:
   friend class queue<T>;
   class iterator;
+  class reversed_iterator;
   using ListNode = listNode<T>;
   using typename DataStructure<T, ListNode>::Pointer;
 
@@ -27,12 +28,12 @@ class list : public DataStructure<T, listNode<T>> {
   ~list();
   [[nodiscard]] iterator begin();
   [[nodiscard]] iterator end();
-  [[nodiscard]] iterator rbegin();
-  [[nodiscard]] iterator rend();
+  [[nodiscard]] reversed_iterator rbegin();
+  [[nodiscard]] reversed_iterator rend();
   [[nodiscard]] const iterator begin() const;
   [[nodiscard]] const iterator end() const;
-  [[nodiscard]] const iterator rbegin() const;
-  [[nodiscard]] const iterator rend() const;
+  [[nodiscard]] const reversed_iterator rbegin() const;
+  [[nodiscard]] const reversed_iterator rend() const;
   [[nodiscard]] const iterator cbegin() const;
   [[nodiscard]] const iterator cend() const;
   void clear();
@@ -67,8 +68,11 @@ struct listNode {
 };
 template <typename T>
 class list<T>::iterator : public TwoDirectionIterator<ListNode> {
+  friend class list<T>;
+
  public:
   using TwoDirectionIterator<ListNode>::TwoDirectionIterator;
+  iterator(const Iterator<ListNode>& other) : Iterator<ListNode>(other) {}
   T& operator*() { return this->getPointer()->content_; }
   const T& operator*() const { return this->getPointer()->content_; }
   T* operator->() { return &(this->getPointer()->content_); }
@@ -82,10 +86,38 @@ class list<T>::iterator : public TwoDirectionIterator<ListNode> {
   }
   iterator& operator++(int i) override { return operator++(); }
   iterator& operator--(int i) override { return operator--(); }
+  virtual iterator& Next() { return this->getPointer()->next_; }
+  virtual const iterator& Next() const { return this->getPointer()->next_; }
+  virtual iterator& Last() { return this->getPointer()->last_; }
+  virtual const iterator& Last() const { return this->getPointer()->last_; }
+
+ protected:
   iterator& getNext() { return this->getPointer()->next_; }
   const iterator& getNext() const { return this->getPointer()->next_; }
   iterator& getLast() { return this->getPointer()->last_; }
   const iterator& getLast() const { return this->getPointer()->last_; }
+};
+template <typename T>
+class list<T>::reversed_iterator : public list<T>::iterator {
+  friend class list<T>;
+
+ public:
+  using iterator::iterator;
+  reversed_iterator(const Iterator<ListNode>& other) : Iterator<ListNode>(other) {}
+  reversed_iterator& operator++() override {
+    this->getPointer() = this->getLast();
+    return *this;
+  }
+  reversed_iterator& operator--() override {
+    this->getPointer() = this->getNext();
+    return *this;
+  }
+  reversed_iterator& operator++(int i) override { return operator++(); }
+  reversed_iterator& operator--(int i) override { return operator--(); }
+  iterator& Next() override { return this->getPointer()->last_; }
+  const iterator& Next() const override { return this->getPointer()->last_; }
+  iterator& Last() override { return this->getPointer()->next_; }
+  const iterator& Last() const override { return this->getPointer()->next_; }
 };
 
 template <typename T>
@@ -117,11 +149,11 @@ list<T>::iterator list<T>::end() {
   return end_;
 }
 template <typename T>
-list<T>::iterator list<T>::rbegin() {
+list<T>::reversed_iterator list<T>::rbegin() {
   return end_.getLast();
 }
 template <typename T>
-list<T>::iterator list<T>::rend() {
+list<T>::reversed_iterator list<T>::rend() {
   return rend_;
 }
 template <typename T>
@@ -134,11 +166,11 @@ const list<T>::iterator list<T>::end() const {
   return end_;
 }
 template <typename T>
-const list<T>::iterator list<T>::rbegin() const {
+const list<T>::reversed_iterator list<T>::rbegin() const {
   return end_.getLast();
 }
 template <typename T>
-const list<T>::iterator list<T>::rend() const {
+const list<T>::reversed_iterator list<T>::rend() const {
   return rend_;
 }
 template <typename T>

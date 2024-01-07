@@ -27,6 +27,7 @@ class vector : public DataStructure<T> {
   friend class stack<T>;
   using typename DataStructure<T>::Pointer;
   using iterator = lhy::NormIterator<T>;
+  using reversed_iterator = lhy::ReversedNormIterator<T>;
   vector();
   explicit vector(iterator, iterator);
   explicit vector(const size_t&);
@@ -48,14 +49,14 @@ class vector : public DataStructure<T> {
   [[nodiscard]] T& back();
   [[nodiscard]] iterator begin();
   [[nodiscard]] iterator end();
-  [[nodiscard]] iterator rbegin();
-  [[nodiscard]] iterator rend();
+  [[nodiscard]] reversed_iterator rbegin();
+  [[nodiscard]] reversed_iterator rend();
   [[nodiscard]] const T& front() const;
   [[nodiscard]] const T& back() const;
   [[nodiscard]] const iterator begin() const;
   [[nodiscard]] const iterator end() const;
-  [[nodiscard]] const iterator rbegin() const;
-  [[nodiscard]] const iterator rend() const;
+  [[nodiscard]] const reversed_iterator rbegin() const;
+  [[nodiscard]] const reversed_iterator rend() const;
   [[nodiscard]] const iterator cbegin() const;
   [[nodiscard]] const iterator cend() const;
   void clear();
@@ -234,11 +235,11 @@ vector<T>::iterator vector<T>::end() {
   return end_;
 }
 template <typename T>
-vector<T>::iterator vector<T>::rbegin() {
+vector<T>::reversed_iterator vector<T>::rbegin() {
   return end_ - 1;
 }
 template <typename T>
-vector<T>::iterator vector<T>::rend() {
+vector<T>::reversed_iterator vector<T>::rend() {
   return start_ - 1;
 }
 template <typename T>
@@ -264,11 +265,11 @@ const vector<T>::iterator vector<T>::end() const {
   return end_;
 }
 template <typename T>
-const vector<T>::iterator vector<T>::rbegin() const {
+const vector<T>::reversed_iterator vector<T>::rbegin() const {
   return end_ - 1;
 }
 template <typename T>
-const vector<T>::iterator vector<T>::rend() const {
+const vector<T>::reversed_iterator vector<T>::rend() const {
   return start_ - 1;
 }
 template <typename T>

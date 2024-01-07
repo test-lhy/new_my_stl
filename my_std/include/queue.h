@@ -10,6 +10,7 @@ template <typename T>
 class queue : public DataStructure<T, typename list<T>::ListNode> {
  public:
   using iterator = list<T>::iterator;
+  using reversed_iterator = list<T>::reversed_iterator;
   using typename DataStructure<T, typename list<T>::ListNode>::Pointer;
   queue();
   queue(iterator, iterator);

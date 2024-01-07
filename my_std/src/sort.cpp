@@ -13,10 +13,10 @@ size_t GetMinRun(size_t size) {
   }
   vector<int64_t> binary_minrun;
   bool whether_one_in_behind_array = false;
-  for (auto element = binary_size.rbegin(); element != binary_size.rbegin() - 6; element--) {
+  for (auto element = binary_size.rbegin(); element != binary_size.rbegin() + 6; element++) {
     binary_minrun.push_back(*element);
   }
-  for (auto element = binary_size.rbegin() - 6; element != binary_size.rend(); --element) {
+  for (auto element = binary_size.rbegin() + 6; element != binary_size.rend(); ++element) {
     if (*element == 1ll) {
       whether_one_in_behind_array = true;
       break;

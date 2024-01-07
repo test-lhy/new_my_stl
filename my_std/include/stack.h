@@ -11,6 +11,7 @@ template <typename T>
 class stack : public DataStructure<T> {
  public:
   using iterator = vector<T>::iterator;
+  using reversed_iterator = vector<T>::iterator;
   using typename DataStructure<T>::Pointer;
   stack();
   stack(iterator, iterator);

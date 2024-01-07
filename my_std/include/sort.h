@@ -70,7 +70,7 @@ void TimSortUpdate(NormIterator<T> start, list<std::pair<Index, Index>>& runs, c
   auto last_iterator = runs.rbegin();
   size_t size = runs.size();
   for (int i = 0; i < size - 1; ++i) {
-    auto last_second_iterator = last_iterator.getLast();
+    auto last_second_iterator = last_iterator.Next();
     size_t last_second_size = last_second_iterator->second - last_second_iterator->first;
     size_t last_size = last_iterator->second - last_iterator->first;
     if (last_second_size < last_size * 2 || forced) {
