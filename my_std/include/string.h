@@ -119,7 +119,7 @@ template <typename T>
   vector<T> vec_temp;
   long long ans = 0;
   vector<T> prefix;
-  for (auto it = vec.rbegin(); it != vec.rend(); it--) {
+  for (auto it = vec.rbegin(); it != vec.rend(); it++) {
     vec_temp.push_back(*it);
     prefix = GetPrefix(vec_temp);
     ans += vec_temp.size() + 1 - max(prefix);
