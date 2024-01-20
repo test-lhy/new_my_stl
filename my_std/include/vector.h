@@ -32,6 +32,7 @@ class vector : public DataStructure<T> {
   explicit vector(iterator, iterator);
   explicit vector(const size_t&);
   vector(const vector<T>&);
+  vector(vector<T> &&);
   vector(const std::initializer_list<T>&);
   ~vector();
   vector<T>& operator=(const vector<T>&);
@@ -99,7 +100,12 @@ template <char_type T>
 std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj);
 template <not_char_type T>
 std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj);
-
+template <typename T>
+vector<T>::vector(vector<T> &&other){
+  std::swap(start_,other.start_);
+  std::swap(end_,other.end_);
+  volume_=other.volume_;
+}
 template <typename T>
 vector<T>::vector() : vector(0) {}
 template <typename T>
@@ -143,7 +149,9 @@ vector<T>& vector<T>::operator=(const vector<T>& other) {
 }
 template <typename T>
 vector<T>& vector<T>::operator=(vector<T>&& other) noexcept {
-  std::swap(this, &other);
+  std::swap(this->start_, other.start_);
+  std::swap(this->end_, other.end_);
+  std::swap(this->volume_,other.volume_);
   return *this;
 }
 template <typename T>

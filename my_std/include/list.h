@@ -25,6 +25,8 @@ class list : public DataStructure<T, listNode<T>> {
 
   list();
   list(iterator, iterator);
+  list(const list<T> &);
+  list(list<T> &&);
   ~list();
   [[nodiscard]] iterator begin();
   [[nodiscard]] iterator end();
@@ -37,6 +39,9 @@ class list : public DataStructure<T, listNode<T>> {
   [[nodiscard]] const iterator cbegin() const;
   [[nodiscard]] const iterator cend() const;
   void clear();
+  list<T>& operator=(const list<T>&);
+  list<T>& operator=(list<T>&&) noexcept;
+  list<T>& operator=(const std::initializer_list<T>&);
   [[nodiscard]] bool empty() const;
   iterator erase(const T&);
   iterator erase(iterator);
@@ -56,6 +61,37 @@ class list : public DataStructure<T, listNode<T>> {
   Pointer getEnd() override { return &end_; }
 };
 
+template <typename T>
+list<T>& list<T>::operator=(const list<T>& other) {
+  if (this == &other) {
+    return *this;
+  }
+  this->clear();
+  size_ = 0;
+  for (auto element = other.begin(); element != other.end(); element++) {
+    this->push_back(*element);
+  }
+  return *this;
+}
+template <typename T>
+list<T>& list<T>::operator=(list<T>&& other) noexcept {
+  if (this == &other) {
+    return *this;
+  }
+  std::swap(rend_,other.rend_);
+  std::swap(end_,other.end_);
+  size_=other.size_;
+  return *this;
+}
+template <typename T>
+list<T>& list<T>::operator=(const std::initializer_list<T>& element_list) {
+  clear();
+  size_ = 0;
+  for (auto& element : element_list) {
+    push_back(element);
+  }
+  return *this;
+}
 template <typename T>
 struct listNode {
   listNode() : next_(nullptr), last_(nullptr){};
@@ -118,7 +154,23 @@ class list<T>::reversed_iterator : public list<T>::iterator {
   iterator& Last() override { return this->getPointer()->next_; }
   const iterator& Last() const override { return this->getPointer()->next_; }
 };
-
+template <typename T>
+list<T>::list(const list<T> &other){
+  rend_ = new ListNode();
+  end_ = new ListNode();
+  rend_.getNext() = end_;
+  end_.getLast() = rend_;
+  size_ = 0;
+  for (auto element = other.begin(); element != other.end(); element++) {
+    this->push(*element);
+  }
+}
+template <typename T>
+list<T>::list(list<T> &&other){
+  std::swap(rend_ ,other.rend_);
+  std::swap(end_ ,other.end_);
+  size_=other.size();
+}
 template <typename T>
 list<T>::list() {
   rend_ = new ListNode();
