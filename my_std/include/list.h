@@ -41,6 +41,7 @@ class list : public DataStructure<T, listNode<T>> {
   iterator erase(const T&);
   iterator erase(iterator);
   [[nodiscard]] iterator find(const T&);
+  [[nodiscard]] iterator find(const T&) const;
   void insert(iterator, const T&);
   void pop();
   void push_back(const T&);
@@ -48,12 +49,10 @@ class list : public DataStructure<T, listNode<T>> {
   [[nodiscard]] size_t size() const;
 
  private:
-  iterator start_;
   iterator end_;
-  iterator rend_;
+  reversed_iterator rend_;
   size_t size_{};
-  void updateStart() { start_ = rend_.getNext(); };
-  Pointer getBegin() override { return &start_; }
+  Pointer getBegin() override { return &rend_.getNext(); }
   Pointer getEnd() override { return &end_; }
 };
 
@@ -126,7 +125,6 @@ list<T>::list() {
   end_ = new ListNode();
   rend_.getNext() = end_;
   end_.getLast() = rend_;
-  start_ = end_;
   size_ = 0;
 }
 template <typename T>
@@ -138,11 +136,12 @@ list<T>::list(iterator start, iterator end) : list() {
 template <typename T>
 list<T>::~list() {
   clear();
+  delete end_;
+  delete rend_;
 }
 template <typename T>
 list<T>::iterator list<T>::begin() {
-  updateStart();
-  return start_;
+  return rend_.getNext();
 }
 template <typename T>
 list<T>::iterator list<T>::end() {
@@ -158,8 +157,7 @@ list<T>::reversed_iterator list<T>::rend() {
 }
 template <typename T>
 const list<T>::iterator list<T>::begin() const {
-  // 由于是const的所以没有update start_
-  return start_;
+  return rend_.getNext();
 }
 template <typename T>
 const list<T>::iterator list<T>::end() const {
@@ -175,8 +173,7 @@ const list<T>::reversed_iterator list<T>::rend() const {
 }
 template <typename T>
 const list<T>::iterator list<T>::cbegin() const {
-  updateStart();
-  return start_;
+  return rend_.getNext();
 }
 template <typename T>
 const list<T>::iterator list<T>::cend() const {
@@ -218,9 +215,17 @@ list<T>::iterator list<T>::erase(list::iterator node) {
   return node_behind;
 }
 template <typename T>
+list<T>::iterator list<T>::find(const T& content) const {
+  iterator answer = begin();
+  while (answer != end_ && *answer != content) {
+    answer++;
+  }
+  return answer;
+}
+template <typename T>
 list<T>::iterator list<T>::find(const T& content) {
   iterator answer = begin();
-  while (answer != end_ && answer->content_ != content) {
+  while (answer != end_ && *answer != content) {
     answer++;
   }
   return answer;
