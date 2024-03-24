@@ -13,7 +13,13 @@ int main() {
   s.push(1);
   s.push(2);
   s.push(3);
+  lhy::stack<int> s2;
 
+  s2.push(5);
+  s2.push(6);
+  s2.push(7);
+  lhy::stack<int> s1(move(s2));
+  cout<<s1.empty()<<s1.top()<<endl;
   cout << "Stack: " << s.show() << endl;
 
   cout << "Top: " << s.top() << endl;
@@ -25,7 +31,8 @@ int main() {
   cout << "Empty? " << s.empty() << endl;
 
   s.clear();
-
+  //s1=s;
   cout << "Empty after clear? " << s.empty() << endl;
+  
   return 0;
 }

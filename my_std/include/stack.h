@@ -14,6 +14,8 @@ class stack : public DataStructure<T> {
   using reversed_iterator = vector<T>::iterator;
   using typename DataStructure<T>::Pointer;
   stack();
+  stack(const stack<T> &);
+  stack(stack<T> &&);
   stack(iterator, iterator);
   ~stack();
   void clear();
@@ -22,12 +24,45 @@ class stack : public DataStructure<T> {
   void pop();
   [[nodiscard]] T &top();
   [[nodiscard]] std::string show(int count_limit = 20) const;
-
+  stack<T>& operator=(const stack<T>&);
+  stack<T>& operator=(stack<T>&&) noexcept;
+  stack<T>& operator=(const std::initializer_list<T>&);
  private:
   vector<T> stack_;
   Pointer getBegin() override { return stack_.getBegin(); }
   Pointer getEnd() override { return stack_.getEnd(); }
 };
+
+template <typename T>
+stack<T>& stack<T>::operator=(const stack<T>& other) {
+  if (this == &other) {
+    return *this;
+  }
+  this->clear();
+  this->stack_=other.stack_;
+  return *this;
+}
+template <typename T>
+stack<T>& stack<T>::operator=(stack<T>&& other) noexcept {
+  std::swap(this->stack_, other.stack_);
+  return *this;
+}
+template <typename T>
+stack<T>& stack<T>::operator=(const std::initializer_list<T>& element_list) {
+  clear();
+  for (auto& element : element_list) {
+    push(element);
+  }
+  return *this;
+}
+template <typename T>
+stack<T>::stack(const stack<T> &other){
+  stack_=other.stack_;
+}
+template <typename T>
+stack<T>::stack(stack<T> &&other){
+  std::swap(stack_,other.stack_);
+}
 template <typename T>
 stack<T>::stack() = default;
 template <typename T>

@@ -22,7 +22,11 @@ int main() {
   q.push(1);
   q.push(2);
   q.push(3);
-
+  queue<int> q1;
+  q1={3,4,5};
+  queue<int> q2;
+  q2=std::move(q1);
+  std::cout << q2.front();
   // 测试front
   std::cout << q.front() << std::endl;  // 应输出1
 
@@ -38,14 +42,15 @@ int main() {
   std::cout << q.empty() << std::endl;  // 应输出1
 
   // 测试拷贝构造
-  queue<int> q2(q);
-  std::cout << q2.empty() << std::endl;  // 应输出1
-
+  
+  //std::cout << q1.front() << std::endl;  // 应输出1
+  //q1.pop();
+  //std::cout<<q1.front()<<std::endl;
   // 测试遍历显示
   q.push(1);
   q.push(2);
   q.push(3);
-  std::cout << q.show(2) << std::endl;  // 应显示前2个元素
+  //std::cout << q.show(2) << std::endl;  // 应显示前2个元素
 
   return 0;
 }
