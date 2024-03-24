@@ -55,5 +55,13 @@ class TypeTraits<std::string> {
 };
 template <>
 class TypeTraits<char> : public TypeTraitsForChar {};
+template <typename T>
+concept int_type = requires() { TypeTraits<T>::isInteger; };
+template <typename T>
+concept not_int_type = not int_type<T>;
+template <typename T>
+concept char_type = requires() { TypeTraits<T>::isChar; };
+template <typename T>
+concept not_char_type = not char_type<T>;
 }  // namespace lhy
 #endif  // MY_STL_TYPE_TRAITS_H

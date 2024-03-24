@@ -2,9 +2,8 @@
 // Created by lhy31 on 2023/8/29.
 //
 #include "sort.h"
-
 #include <time.h>  //引入头文件
-
+#include"base_graph.h"
 #include <iostream>
 #include <vector>
 using namespace lhy;

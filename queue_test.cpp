@@ -1,6 +1,7 @@
 //
 // Created by lhy31 on 2023/9/1.
 //
+
 #include "queue.h"
 
 #include <iostream>
@@ -42,7 +43,7 @@ int main() {
   std::cout << q.empty() << std::endl;  // 应输出1
 
   // 测试拷贝构造
-  
+
   //std::cout << q1.front() << std::endl;  // 应输出1
   //q1.pop();
   //std::cout<<q1.front()<<std::endl;

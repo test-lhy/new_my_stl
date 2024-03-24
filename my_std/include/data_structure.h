@@ -4,10 +4,23 @@
 #include <stdexcept>
 
 #include "basic.h"
-#include "concept.h"
 #ifndef MY_STL_DATA_STRUCTURE_H
 #define MY_STL_DATA_STRUCTURE_H
 namespace lhy {
+template <typename T>
+concept iter = requires(T x) {
+  *x;
+  x++;
+  x--;
+};
+template <typename T, typename U>
+concept T_iter = iter<T> and (
+                                 requires(T x) {
+                                   { *x } -> std::convertible_to<U>;
+                                 } or
+                                 requires(T x) {
+                                   { *x } -> std::convertible_to<U&>;
+                                 });
 template <iter T>
 size_t distance(T st, T en) {
   return en - st;
@@ -18,6 +31,12 @@ class Iterator {
   using Pointer = T*;
   Iterator() : data_(nullptr){};
   Iterator(Pointer data) : data_(data) {}
+  Iterator<T>& operator=(const Iterator<T>& other) {
+    this->data_ = other.data_;
+    return *this;
+  }
+  bool operator==(const Iterator& other) const { return other.data_ == data_; }
+  bool operator!=(const Iterator& other) const { return other.data_ != data_; }
   operator Pointer() { return data_; }
   operator const Pointer() const { return data_; }
   T* operator->() { return data_; }
@@ -83,7 +102,7 @@ class ReversedBackwardIterator : public BackwardIterator<T> {
   ReversedBackwardIterator& operator--(int) override { return operator--(); }
 };
 template <typename T>
-class TwoDirectionIterator : virtual public ForwardIterator<T>, virtual public BackwardIterator<T> {
+class TwoDirectionIterator : public ForwardIterator<T>, public BackwardIterator<T> {
  public:
   using lhy::ForwardIterator<T>::ForwardIterator;
   using lhy::BackwardIterator<T>::BackwardIterator;

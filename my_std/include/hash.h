@@ -5,11 +5,14 @@
 #ifndef MY_STL_HASH_H
 #define MY_STL_HASH_H
 #include "basic.h"
-#include "concept.h"
 #include "list.h"
 #include "type_traits.h"
 #include "vector.h"
 namespace lhy {
+template <typename T>
+concept hashable = requires() { TypeTraits<T>::hash_func; };
+template <typename T>
+concept not_hashable = not hashable<T>;
 const vector<size_t> kmod_values{53,        97,        193,       389,       769,       1543,     3079,
                                  6151,      12289,     24593,     49157,     98317,     196613,   393241,
                                  786433,    1572869,   3145739,   6291469,   12582917,  25165843, 50331653,
@@ -32,6 +35,7 @@ class Hash {
   ~Hash();
   [[nodiscard]] U& operator[](const T& key);
   [[nodiscard]] bool equal(const T&, const T&) const;  // note:指hash函数得出的结果相等
+  [[nodiscard]] bool exist(const T& key) const;
   void insert(const T& key, const U& value);
   void hash_func_set(HashFuncType<T>& hash_func) { hash_func_ = hash_func; };
   void mod_value_set(size_t mod_value) { mod_value_ = mod_value; }
@@ -64,11 +68,11 @@ U& Hash<T, U>::operator[](const T& key) {
   list<Element>& hash_list = hash_table_[hash_func_(key, mod_value_)];
   auto answer = hash_list.find({key, U()});
   if (answer != hash_list.end()) {
-    return answer->content_.value;
+    return answer->value;
   } else {
     hash_list.push_back({key, U()});
     auto new_answer = hash_list.find({key, U()});
-    return new_answer->content_.value;
+    return new_answer->value;
   }
 }
 template <hashable T, typename U>
@@ -76,6 +80,16 @@ bool Hash<T, U>::equal(const T& a, const T& b) const {
   return hash_func_(a, mod_value_) == hash_func_(b, mod_value_);
 }
 
+template <hashable T, typename U>
+bool Hash<T, U>::exist(const T& key) const {
+  const list<Element>& hash_list = hash_table_[hash_func_(key, mod_value_)];
+  auto answer = hash_list.find({key, U()});
+  if (answer != hash_list.end()) {
+    return true;
+  } else {
+    return false;
+  }
+}
 template <hashable T, typename U>
 void Hash<T, U>::insert(const T& key, const U& value) {
   hash_table_[hash_func_(key, mod_value_)].push_back({key, value});

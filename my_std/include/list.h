@@ -9,11 +9,13 @@
 #include <stdexcept>
 
 #include "data_structure.h"
+
 namespace lhy {
 template <typename T>
 struct listNode;
 template <typename T>
 class queue;
+
 template <typename T>
 class list : public DataStructure<T, listNode<T>> {
  public:
@@ -25,8 +27,8 @@ class list : public DataStructure<T, listNode<T>> {
 
   list();
   list(iterator, iterator);
-  list(const list<T> &);
-  list(list<T> &&);
+  list(const list<T>&);
+  list(list<T>&&);
   ~list();
   [[nodiscard]] iterator begin();
   [[nodiscard]] iterator end();
@@ -73,16 +75,18 @@ list<T>& list<T>::operator=(const list<T>& other) {
   }
   return *this;
 }
+
 template <typename T>
 list<T>& list<T>::operator=(list<T>&& other) noexcept {
   if (this == &other) {
     return *this;
   }
-  std::swap(rend_,other.rend_);
-  std::swap(end_,other.end_);
-  size_=other.size_;
+  std::swap(rend_, other.rend_);
+  std::swap(end_, other.end_);
+  size_ = other.size_;
   return *this;
 }
+
 template <typename T>
 list<T>& list<T>::operator=(const std::initializer_list<T>& element_list) {
   clear();
@@ -92,6 +96,7 @@ list<T>& list<T>::operator=(const std::initializer_list<T>& element_list) {
   }
   return *this;
 }
+
 template <typename T>
 struct listNode {
   listNode() : next_(nullptr), last_(nullptr){};
@@ -101,24 +106,30 @@ struct listNode {
   list<T>::iterator last_;
   T content_;
 };
+
 template <typename T>
 class list<T>::iterator : public TwoDirectionIterator<ListNode> {
   friend class list<T>;
 
  public:
   using TwoDirectionIterator<ListNode>::TwoDirectionIterator;
+
   iterator(const Iterator<ListNode>& other) : Iterator<ListNode>(other) {}
+
   T& operator*() { return this->getPointer()->content_; }
   const T& operator*() const { return this->getPointer()->content_; }
   T* operator->() { return &(this->getPointer()->content_); }
+
   iterator& operator++() override {
     this->getPointer() = this->getNext();
     return *this;
   }
+
   iterator& operator--() override {
     this->getPointer() = this->getLast();
     return *this;
   }
+
   iterator& operator++(int i) override { return operator++(); }
   iterator& operator--(int i) override { return operator--(); }
   virtual iterator& Next() { return this->getPointer()->next_; }
@@ -132,21 +143,26 @@ class list<T>::iterator : public TwoDirectionIterator<ListNode> {
   iterator& getLast() { return this->getPointer()->last_; }
   const iterator& getLast() const { return this->getPointer()->last_; }
 };
+
 template <typename T>
 class list<T>::reversed_iterator : public list<T>::iterator {
   friend class list<T>;
 
  public:
   using iterator::iterator;
+
   reversed_iterator(const Iterator<ListNode>& other) : Iterator<ListNode>(other) {}
+
   reversed_iterator& operator++() override {
     this->getPointer() = this->getLast();
     return *this;
   }
+
   reversed_iterator& operator--() override {
     this->getPointer() = this->getNext();
     return *this;
   }
+
   reversed_iterator& operator++(int i) override { return operator++(); }
   reversed_iterator& operator--(int i) override { return operator--(); }
   iterator& Next() override { return this->getPointer()->last_; }
@@ -154,23 +170,26 @@ class list<T>::reversed_iterator : public list<T>::iterator {
   iterator& Last() override { return this->getPointer()->next_; }
   const iterator& Last() const override { return this->getPointer()->next_; }
 };
+
 template <typename T>
-list<T>::list(const list<T> &other){
+list<T>::list(const list<T>& other) {
   rend_ = new ListNode();
   end_ = new ListNode();
   rend_.getNext() = end_;
   end_.getLast() = rend_;
   size_ = 0;
   for (auto element = other.begin(); element != other.end(); element++) {
-    this->push(*element);
+    this->push_back(*element);
   }
 }
+
 template <typename T>
-list<T>::list(list<T> &&other){
-  std::swap(rend_ ,other.rend_);
-  std::swap(end_ ,other.end_);
-  size_=other.size();
+list<T>::list(list<T>&& other) {
+  std::swap(rend_, other.rend_);
+  std::swap(end_, other.end_);
+  size_ = other.size();
 }
+
 template <typename T>
 list<T>::list() {
   rend_ = new ListNode();
@@ -179,68 +198,83 @@ list<T>::list() {
   end_.getLast() = rend_;
   size_ = 0;
 }
+
 template <typename T>
 list<T>::list(iterator start, iterator end) : list() {
   for (auto element = start; element != end; ++element) {
     push_back(*element);
   }
 }
+
 template <typename T>
 list<T>::~list() {
   clear();
   delete end_;
   delete rend_;
 }
+
 template <typename T>
 list<T>::iterator list<T>::begin() {
   return rend_.getNext();
 }
+
 template <typename T>
 list<T>::iterator list<T>::end() {
   return end_;
 }
+
 template <typename T>
 list<T>::reversed_iterator list<T>::rbegin() {
   return end_.getLast();
 }
+
 template <typename T>
 list<T>::reversed_iterator list<T>::rend() {
   return rend_;
 }
+
 template <typename T>
 const list<T>::iterator list<T>::begin() const {
   return rend_.getNext();
 }
+
 template <typename T>
 const list<T>::iterator list<T>::end() const {
   return end_;
 }
+
 template <typename T>
 const list<T>::reversed_iterator list<T>::rbegin() const {
   return end_.getLast();
 }
+
 template <typename T>
 const list<T>::reversed_iterator list<T>::rend() const {
   return rend_;
 }
+
 template <typename T>
 const list<T>::iterator list<T>::cbegin() const {
   return rend_.getNext();
 }
+
 template <typename T>
 const list<T>::iterator list<T>::cend() const {
   return end_;
 }
+
 template <typename T>
 void list<T>::clear() {
   while (!empty()) {
     pop();
   }
 }
+
 template <typename T>
 bool list<T>::empty() const {
   return size_ == 0;
 }
+
 template <typename T>
 list<T>::iterator list<T>::erase(const T& content) {
   iterator answer = find(content);
@@ -250,6 +284,7 @@ list<T>::iterator list<T>::erase(const T& content) {
     throw std::logic_error("the element is not in the list");
   }
 }
+
 template <typename T>
 list<T>::iterator list<T>::erase(list::iterator node) {
   if (node == rend_ || node == end_) {
@@ -266,6 +301,7 @@ list<T>::iterator list<T>::erase(list::iterator node) {
   size_--;
   return node_behind;
 }
+
 template <typename T>
 list<T>::iterator list<T>::find(const T& content) const {
   iterator answer = begin();
@@ -274,6 +310,7 @@ list<T>::iterator list<T>::find(const T& content) const {
   }
   return answer;
 }
+
 template <typename T>
 list<T>::iterator list<T>::find(const T& content) {
   iterator answer = begin();
@@ -301,10 +338,12 @@ void list<T>::pop() {
   }
   erase(end_.getLast());
 }
+
 template <typename T>
 void list<T>::push_back(const T& content) {
   insert(end_, content);
 }
+
 template <typename T>
 std::string list<T>::show(int count_limit) const {
   std::stringstream string_stream;
@@ -317,10 +356,10 @@ std::string list<T>::show(int count_limit) const {
   }
   return string_stream.str();
 }
+
 template <typename T>
 size_t list<T>::size() const {
   return size_;
 }
-
 }  // namespace lhy
 #endif  // MY_STL_LIST_H

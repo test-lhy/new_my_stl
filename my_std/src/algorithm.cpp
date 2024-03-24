@@ -3,10 +3,9 @@
 //
 #include "algorithm.h"
 
-#include "string.h"
 namespace lhy {
-[[nodiscard]] string ToString(int64_t origin) {
-  string ans;
+[[nodiscard]] std::string ToString(int64_t origin) {
+  std::string ans;
   bool whether_negative = false;
   if (origin < 0) {
     whether_negative = true;

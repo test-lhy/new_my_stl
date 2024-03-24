@@ -13,8 +13,8 @@
 #include <stdexcept>
 
 #include "basic.h"
-#include "concept.h"
 #include "data_structure.h"
+#include "type_traits.h"
 namespace lhy {
 template <typename T>
 class priority_queue;
@@ -30,7 +30,9 @@ class vector : public DataStructure<T> {
   using reversed_iterator = lhy::ReversedNormIterator<T>;
   vector();
   explicit vector(iterator, iterator);
-  explicit vector(const size_t&);
+  explicit vector(size_t);
+  vector(T* other);
+  vector(const T* other);
   vector(const vector<T>&);
   vector(vector<T> &&);
   vector(const std::initializer_list<T>&);
@@ -38,6 +40,7 @@ class vector : public DataStructure<T> {
   vector<T>& operator=(const vector<T>&);
   vector<T>& operator=(vector<T>&&) noexcept;
   vector<T>& operator=(const std::initializer_list<T>&);
+  bool operator==(const vector<T>& other) const;
   vector<T>& operator+=(const T&);
   vector<T>& operator+=(const vector<T>&);
   vector<T>& operator&=(const vector<T>&);
@@ -107,7 +110,14 @@ vector<T>::vector(vector<T> &&other){
   volume_=other.volume_;
 }
 template <typename T>
-vector<T>::vector() : vector(0) {}
+vector<T>::vector(T const* other) :vector(){
+  size_t N=std::string(other).size();
+  for (int i = 0; i < N; ++i) {
+    push_back(other[i]);
+  }
+}
+template <typename T>
+vector<T>::vector() : vector(0l) {}
 template <typename T>
 vector<T>::vector(iterator start, iterator end) : vector() {
   for (auto* element = start; element != end; ++element) {
@@ -115,7 +125,7 @@ vector<T>::vector(iterator start, iterator end) : vector() {
   }
 }
 template <typename T>
-vector<T>::vector(const size_t& size) {
+vector<T>::vector(const size_t size) {
   start_ = new T[size + 2];
   end_ = start_ + size;
   volume_ = size + 1;
@@ -161,6 +171,18 @@ vector<T>& vector<T>::operator=(const std::initializer_list<T>& element_list) {
     push_back(element);
   }
   return *this;
+}
+template <typename T>
+bool vector<T>::operator==(const vector<T>& other) const {
+  if(size()!=other.size()){
+    return false;
+  }
+  for(Index i=0;i<size();i++){
+    if(At(i)!=other.At(i)){
+      return false;
+    }
+  }
+  return true;
 }
 template <typename T>
 vector<T>& vector<T>::operator+=(const vector<T>& other) {
@@ -336,7 +358,14 @@ void vector<T>::push_back(T&& element) {
   *end_ = element;
   end_++;
 }
-
+//todo:只针对char
+template <typename T>
+vector<T>::vector(T* other) :vector(){
+  size_t N=sizeof(other)/sizeof(T);
+  for (int i = 0; i < N; ++i) {
+    push_back(other[i]);
+  }
+}
 template <typename T>
 void vector<T>::pop() {
   if (size() == 0) {
@@ -353,6 +382,7 @@ void vector<T>::reserve(size_t size) {
   size_t ex_size = this->size();
   end_ = start_substitute + size;
   volume_ = size;
+  //todo:std::move
   for (int i = 0; i < ex_size; ++i) {
     start_substitute[i] = start_[i];
   }
@@ -447,6 +477,20 @@ std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj) {
 }
 template <not_char_type T>
 std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj) {
+  for (auto& each : obj) {
+    ostream_ << each << '\n';
+  }
+  return ostream_;
+}
+template <char_type T>
+std::ostream& operator<<(std::ostream& ostream_, const vector<T>& obj) {
+  for (auto& each : obj) {
+    ostream_ << each;
+  }
+  return ostream_;
+}
+template <not_char_type T>
+std::ostream& operator<<(std::ostream& ostream_, const vector<T>& obj) {
   for (auto& each : obj) {
     ostream_ << each << '\n';
   }
