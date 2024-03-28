@@ -13,17 +13,15 @@ namespace lhy {
 class Node {
  public:
   Node() = default;
-  explicit Node(Index id);
+  explicit Node(Index&& id) : id_(id){};
   virtual ~Node() = default;
   virtual bool operator==(const Node& other) const { return id_ == other.id_; }
   bool operator!=(const Node& other) const { return !(*this == other); }
   [[nodiscard]] Index GetId() const { return id_; }
 
  private:
-  Index id_;
+  Index id_{};
 };
-
-Node::Node(Index id) : id_(id) {}
 
 template <typename T>
 concept node_c = std::is_base_of_v<Node, T>;

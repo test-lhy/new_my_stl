@@ -1,4 +1,5 @@
-set(LIB my_std)
+set(LIB graph)
+set(variable_for_father ${LIB} PARENT_SCOPE)
 aux_source_directory(src SRC)
 add_library(${LIB} SHARED ${SRC})
 target_include_directories(

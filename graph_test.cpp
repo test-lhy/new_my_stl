@@ -1,8 +1,11 @@
 //
 // Created by lhy on 24-1-10.
 //
-#include "base_graph.h"
 
+#include "directed_graph.h"
+#include "undirected_graph.h"
+#include "weighted_edge.h"
+#include "weighted_node.h"
 using namespace lhy;
 
 int main() {
