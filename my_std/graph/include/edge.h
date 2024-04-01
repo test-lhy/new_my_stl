@@ -5,6 +5,8 @@
 #ifndef MY_STL_EDGE_H
 #define MY_STL_EDGE_H
 #include <type_traits>
+
+#include "weighted.h"
 namespace lhy {
 class Node;
 class Edge {
@@ -12,8 +14,8 @@ class Edge {
   Edge() = default;
   Edge(Node& first, Node& second) : first_(&first), second_(&second) {}
   virtual ~Edge() = default;
-  virtual bool operator==(const Edge& other)const { return first_ == other.first_ && second_ == other.second_; }
-  bool operator!=(const Edge& other)const { return !(*this == other); }
+  virtual bool operator==(const Edge& other) const { return first_ == other.first_ && second_ == other.second_; }
+  bool operator!=(const Edge& other) const { return !(*this == other); }
   Node& GetAnotherNode(const Node& other) { return *((&other == first_) ? second_ : first_); }
   Node& GetFirst() { return *first_; }
   Node& GetSecond() { return *second_; }
@@ -33,5 +35,7 @@ class Edge {
 };
 template <typename T>
 concept edge_c = std::is_base_of_v<Edge, T>;
+template <typename WeightType>
+using WeightedEdge = Weighted<WeightType, Edge>;
 }  // namespace lhy
 #endif  // MY_STL_EDGE_H

@@ -9,7 +9,7 @@ namespace lhy {
 template <node_c Node_>
 class NormalNodeAllocator : public NodeAllocator<Node_> {
  public:
-  explicit NormalNodeAllocator(size_t size = 1000);
+  explicit NormalNodeAllocator(size_t size = 1);
   void AddNode(const Node_& node) override;
   bool Exist(Index index) override;
   Node_& GetNode(Index index) override;
@@ -22,6 +22,7 @@ class NormalNodeAllocator : public NodeAllocator<Node_> {
 };
 template <node_c Node_>
 void NormalNodeAllocator<Node_>::Sync() {
+  std::cout << nodes_.size() << std::endl;
   this->GetEdgeReserveSync()->Reserve(nodes_.size());
 }
 template <node_c Node_>

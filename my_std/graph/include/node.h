@@ -8,6 +8,7 @@
 #include <type_traits>
 
 #include "basic.h"
+#include "weighted.h"
 
 namespace lhy {
 class Node {
@@ -25,5 +26,7 @@ class Node {
 
 template <typename T>
 concept node_c = std::is_base_of_v<Node, T>;
+template <typename WeightType>
+using WeightedNode = Weighted<WeightType, Node>;
 }  // namespace lhy
 #endif  // MY_STL_NODE_H

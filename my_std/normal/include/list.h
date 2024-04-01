@@ -323,6 +323,7 @@ list<T>::iterator list<T>::find(const T& content) {
 template <typename T>
 void list<T>::insert(list::iterator node_behind, const T& content) {
   auto node_before = node_behind.getLast();
+  // todo:多个一个的new需要通过allocator之类的方法来优化掉
   iterator node_temp = new ListNode(content);
   node_before.getNext() = node_temp;
   node_behind.getLast() = node_temp;

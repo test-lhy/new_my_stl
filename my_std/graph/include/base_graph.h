@@ -99,7 +99,7 @@ void BaseGraph<Node_, Edge_>::AddNode(const Node_& node) {
 template <node_c Node_, edge_c Edge_>
 template <typename... Args>
 void BaseGraph<Node_, Edge_>::AddNode(Args&&... args) {
-  node_allocator_->EmplaceNode(args...);
+  node_allocator_->EmplaceNode(std::forward<Args>(args)...);
 }
 template <node_c Node_, edge_c Edge_>
 void BaseGraph<Node_, Edge_>::AddEdge(const Edge_& edge) {
@@ -108,7 +108,8 @@ void BaseGraph<Node_, Edge_>::AddEdge(const Edge_& edge) {
 template <node_c Node_, edge_c Edge_>
 template <typename... Args>
 void BaseGraph<Node_, Edge_>::AddEdge(Index first, Index second, Args&&... args) {
-  edge_allocator_->AddEdge(Edge_{node_allocator_->GetNode(first), node_allocator_->GetNode(second), args...});
+  edge_allocator_->AddEdge(
+      Edge_{node_allocator_->GetNode(first), node_allocator_->GetNode(second), std::forward<Args>(args)...});
 }
 }  // namespace lhy
 #endif  // MY_STL_BASE_GRAPH_H

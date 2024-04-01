@@ -5,8 +5,6 @@
 #ifndef DIRECTED_GRAPH_H
 #define DIRECTED_GRAPH_H
 #include "base_graph.h"
-#include "weighted_edge.h"
-#include "weighted_node.h"
 namespace lhy {
 template <node_c Node_ = Node, edge_c Edge_ = Edge>
 using DirectedGraph = BaseGraph<Node_, Edge_>;

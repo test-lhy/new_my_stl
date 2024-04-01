@@ -4,20 +4,21 @@
 
 #include "directed_graph.h"
 #include "undirected_graph.h"
-#include "weighted_edge.h"
-#include "weighted_node.h"
+#include "weighted.h"
 using namespace lhy;
 
 int main() {
+  clock_t start, end;  // 定义clock_t变量
   auto allnodemode = {MapNodeAllocatorMode, NormalNodeAllocatorMode};
   auto alledgemode = {MatrixEdgeAllocatorMode, MapEdgeAllocatorMode, LinkListEdgeAllocatorMode};
   for (auto& eachedgemode : alledgemode) {
     for (auto& eachnodemode : allnodemode) {
-      BaseGraph<Node, Edge> graph(eachnodemode, eachedgemode);
+      start = clock();  // 开始时间
+      BaseGraph<Weighted<int, Node>, Edge> graph(eachnodemode, eachedgemode);
 
-      graph.AddNode(1);
-      graph.AddNode(2);
-      graph.AddNode(3);
+      graph.AddNode(1, 1);
+      graph.AddNode(2, 2);
+      graph.AddNode(3, 3);
       graph.AddEdge(1, 2);
       graph.AddEdge(1, 3);
       graph.AddEdge(2, 3);
@@ -54,6 +55,8 @@ int main() {
         std::cout << edge.GetFirst().GetId() << " -> " << edge.GetSecond().GetId() << std::endl;
       }
       std::cout << "finished one test" << std::endl;
+      end = clock();                                                                       // 结束时间
+      std::cout << "time = " << double(end - start) / CLOCKS_PER_SEC << "s" << std::endl;  // 输出时间（单位：ｓ）
     }
   }
 }
