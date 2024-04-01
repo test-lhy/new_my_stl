@@ -22,7 +22,6 @@ class NormalNodeAllocator : public NodeAllocator<Node_> {
 };
 template <node_c Node_>
 void NormalNodeAllocator<Node_>::Sync() {
-  std::cout << nodes_.size() << std::endl;
   this->GetEdgeReserveSync()->Reserve(nodes_.size());
 }
 template <node_c Node_>

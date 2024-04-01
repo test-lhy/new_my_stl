@@ -14,8 +14,8 @@ class BaseGraph {
  public:
   struct return_node {
     Node_& node_;
-    list<Edge_>& edges_;
-    return_node(Node_& node, list<Edge>& edges) : node_(node), edges_(edges) {}
+    const list<Edge_>& edges_;
+    return_node(Node_& node, const list<Edge>& edges) : node_(node), edges_(edges) {}
     bool operator==(const return_node& other) const { return node_ == other.node_; }
     bool operator!=(const return_node& other) const { return node_ != other.node_; }
     ~return_node() = default;

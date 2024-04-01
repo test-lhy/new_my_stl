@@ -13,7 +13,7 @@ class MapEdgeAllocator : public EdgeAllocator<Edge_> {
   void AddEdge(const Edge_& edge) override;
   bool Exist(const Edge_& edge) override;
   void DeleteEdge(const Edge_& edge) override;
-  list<Edge_>& GetEdges(Index node) override;
+  const list<Edge_>& GetEdges(Index node) override;
   void DeleteNode(Index node) override;
   ~MapEdgeAllocator() override = default;
 
@@ -45,7 +45,7 @@ void MapEdgeAllocator<Edge_>::DeleteEdge(const Edge_& edge) {
   }
 }
 template <edge_c Edge_>
-list<Edge_>& MapEdgeAllocator<Edge_>::GetEdges(Index node) {
+const list<Edge_>& MapEdgeAllocator<Edge_>::GetEdges(Index node) {
   if (vec_edges_.find(node) == vec_edges_.end()) {
     return no_edges_;
   }

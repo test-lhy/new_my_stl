@@ -1,9 +1,9 @@
 //
 // Created by lhy31 on 2024/1/8
 //
+#include "algorithm.h"
 #include "edge.h"
 #include "edge_allocator.h"
-#include"algorithm.h"
 #ifndef MY_STL_MATRIX_EDGE_ALLOCATOR_H
 #define MY_STL_MATRIX_EDGE_ALLOCATOR_H
 namespace lhy {
@@ -13,10 +13,10 @@ class MatrixEdgeAllocator : public EdgeAllocator<Edge_> {
   void AddEdge(const Edge_& edge) override;
   bool Exist(const Edge_& edge) override;
   void DeleteEdge(const Edge_& edge) override;
-  list<Edge_>& GetEdges(Index node) override;
+  const list<Edge_>& GetEdges(Index node) override;
   void DeleteNode(Index node) override;
   void Reserve(size_t size) override;
-  ~MatrixEdgeAllocator() override=default;
+  ~MatrixEdgeAllocator() override = default;
 
  private:
   vector<vector<list<Edge_>>> edges_;
@@ -39,7 +39,7 @@ void MatrixEdgeAllocator<Edge_>::DeleteEdge(const Edge_& edge) {
   }
 }
 template <edge_c Edge_>
-list<Edge_>& MatrixEdgeAllocator<Edge_>::GetEdges(Index node) {
+const list<Edge_>& MatrixEdgeAllocator<Edge_>::GetEdges(Index node) {
   edge_asked_.clear();
   for (auto& each_vec : edges_[node]) {
     for (auto& each : each_vec) {
