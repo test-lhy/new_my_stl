@@ -1,6 +1,8 @@
 //
 // Created by lhy31 on 2024/1/8
 //
+#include <ranges>
+
 #include "edge.h"
 #include "edge_allocator.h"
 #include "list.h"
@@ -13,6 +15,7 @@ class LinkListEdgeAllocator : public EdgeAllocator<Edge_> {
   void AddEdge(const Edge_& edge) override;
   bool Exist(const Edge_& edge) override;
   void DeleteEdge(const Edge_& edge) override;
+  void DeleteEdges(Index first, Index second) override;
   const list<Edge_>& GetEdges(Index node) override;
   void DeleteNode(Index node) override;
   void Reserve(size_t size) override;
@@ -34,6 +37,18 @@ template <edge_c Edge_>
 void LinkListEdgeAllocator<Edge_>::DeleteEdge(const Edge_& edge) {
   auto& all_edges = edges_[edge.GetFirst().GetId()];
   all_edges.erase(edge);
+}
+template <edge_c Edge_>
+void LinkListEdgeAllocator<Edge_>::DeleteEdges(Index first, Index second) {
+  auto& all_edges = edges_[first];
+  auto each_iter = all_edges.begin();
+  while (each_iter != all_edges.end()) {
+    if (each_iter->GetSecond().GetId() == second) {
+      each_iter = all_edges.erase(each_iter);
+    } else {
+      each_iter++;
+    }
+  }
 }
 template <edge_c Edge_>
 const list<Edge_>& LinkListEdgeAllocator<Edge_>::GetEdges(Index node) {  //?

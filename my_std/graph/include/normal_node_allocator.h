@@ -10,7 +10,7 @@ template <node_c Node_>
 class NormalNodeAllocator : public NodeAllocator<Node_> {
  public:
   explicit NormalNodeAllocator(size_t size = 1);
-  void AddNode(const Node_& node) override;
+  Index AddNode(const Node_& node) override;
   bool Exist(Index index) override;
   Node_& GetNode(Index index) override;
   void DeleteNode(Index index) override;
@@ -29,7 +29,7 @@ NormalNodeAllocator<Node_>::NormalNodeAllocator(size_t size) {
   nodes_.reserve(size);
 }
 template <node_c Node_>
-void NormalNodeAllocator<Node_>::AddNode(const Node_& node) {
+Index NormalNodeAllocator<Node_>::AddNode(const Node_& node) {
   if (node.GetId() >= nodes_.size()) {
     size_t size = nodes_.size() * 2 + 100;
     nodes_.reserve(size);
@@ -40,6 +40,7 @@ void NormalNodeAllocator<Node_>::AddNode(const Node_& node) {
   }
   nodes_[node.GetId()].first = node;
   nodes_[node.GetId()].second = true;
+  return node.GetId();
 }
 template <node_c Node_>
 bool NormalNodeAllocator<Node_>::Exist(Index index) {

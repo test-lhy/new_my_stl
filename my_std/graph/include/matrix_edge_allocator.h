@@ -13,6 +13,7 @@ class MatrixEdgeAllocator : public EdgeAllocator<Edge_> {
   void AddEdge(const Edge_& edge) override;
   bool Exist(const Edge_& edge) override;
   void DeleteEdge(const Edge_& edge) override;
+  void DeleteEdges(Index first, Index second) override;
   const list<Edge_>& GetEdges(Index node) override;
   void DeleteNode(Index node) override;
   void Reserve(size_t size) override;
@@ -37,6 +38,10 @@ void MatrixEdgeAllocator<Edge_>::DeleteEdge(const Edge_& edge) {
   if (!all_edges.empty()) {
     all_edges.erase(edge);
   }
+}
+template <edge_c Edge_>
+void MatrixEdgeAllocator<Edge_>::DeleteEdges(Index first, Index second) {
+  edges_[first][second].clear();
 }
 template <edge_c Edge_>
 const list<Edge_>& MatrixEdgeAllocator<Edge_>::GetEdges(Index node) {

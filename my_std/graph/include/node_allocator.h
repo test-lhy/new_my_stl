@@ -14,9 +14,9 @@ namespace lhy {
 template <node_c Node_>
 class NodeAllocator {
  public:
-  virtual void AddNode(const Node_& node) = 0;
+  virtual Index AddNode(const Node_& node) = 0;
   template <typename... Args>
-  void EmplaceNode(Args&&... args);
+  Index EmplaceNode(Args&&... args);
   virtual void DeleteNode(Index index) = 0;
   virtual Node_& GetNode(Index index) = 0;
   virtual bool Exist(Index index) = 0;
@@ -39,8 +39,8 @@ void NodeAllocator<Node_>::SetEdgeReserveSync(EdgeReserveSync* edge_allocator_sy
 }
 template <node_c Node_>
 template <typename... Args>
-void NodeAllocator<Node_>::EmplaceNode(Args&&... args) {
-  AddNode(Node_(std::forward<Args>(args)...));
+Index NodeAllocator<Node_>::EmplaceNode(Args&&... args) {
+  return AddNode(Node_(std::forward<Args>(args)...));
 }
 template <typename T, typename Node_>
 concept node_allocator_c = std::is_base_of_v<NodeAllocator<Node_>, T>;

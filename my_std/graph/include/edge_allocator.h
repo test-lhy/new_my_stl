@@ -24,6 +24,7 @@ class EdgeAllocator : public EdgeReserveSync {
   void EmplaceEdge(Args&&... args);
   virtual bool Exist(const Edge_& edge) = 0;
   virtual void DeleteEdge(const Edge_& edge) = 0;
+  virtual void DeleteEdges(Index first, Index second) = 0;
   virtual const list<Edge_>& GetEdges(Index node) = 0;
   virtual void DeleteNode(Index node) = 0;
   virtual ~EdgeAllocator() = default;

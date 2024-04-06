@@ -10,7 +10,7 @@ namespace lhy {
 template <node_c Node_>
 class MapNodeAllocator : public NodeAllocator<Node_> {
  public:
-  void AddNode(const Node_& node) override;
+  Index AddNode(const Node_& node) override;
   bool Exist(Index index) override;
   Node_& GetNode(Index index) override;
   void DeleteNode(Index index) override;
@@ -21,12 +21,13 @@ class MapNodeAllocator : public NodeAllocator<Node_> {
 };
 
 template <node_c Node_>
-void MapNodeAllocator<Node_>::AddNode(const Node_& node) {
+Index MapNodeAllocator<Node_>::AddNode(const Node_& node) {
   if (Exist(node.GetId()) && node != GetNode(node.GetId())) {
     throw std::logic_error("can not add a node with the same id and different content");
   }
   this->GetEdgeReserveSync()->Reserve(node.GetId() + 1);
   nodes_[node.GetId()] = node;
+  return node.GetId();
 }
 template <node_c Node_>
 bool MapNodeAllocator<Node_>::Exist(Index index) {

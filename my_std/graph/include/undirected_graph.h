@@ -11,19 +11,25 @@ template <node_c Node_ = Node, edge_c Edge_ = Edge>
 class UndirectedGraph : public BaseGraph<Node_, Edge_> {
  public:
   using BaseGraph<Node_, Edge_>::BaseGraph;
-  void AddEdge(const Edge_& edge) override;
+  void AddEdge(Edge_&& edge) override;
   void DeleteEdge(Edge_&& edge) override;
+  void DeleteEdges(Index first, Index second) override;
 };
 
 template <node_c Node_, edge_c Edge_>
-void UndirectedGraph<Node_, Edge_>::AddEdge(const Edge_& edge) {
-  BaseGraph<Node_, Edge_>::AddEdge(edge);
-  BaseGraph<Node_, Edge_>::AddEdge(edge.GetReversed());
+void UndirectedGraph<Node_, Edge_>::AddEdge(Edge_&& edge) {
+  BaseGraph<Node_, Edge_>::AddEdge(std::forward<Edge_>(edge));
+  BaseGraph<Node_, Edge_>::AddEdge(std::forward<Edge_>(edge.GetReversed()));
 }
 template <node_c Node_, edge_c Edge_>
 void UndirectedGraph<Node_, Edge_>::DeleteEdge(Edge_&& edge) {
-  BaseGraph<Node_, Edge_>::DeleteEdge(edge);
-  BaseGraph<Node_, Edge_>::DeleteEdge(edge.GetReversed());
+  BaseGraph<Node_, Edge_>::DeleteEdge(std::forward<Edge_>(edge));
+  BaseGraph<Node_, Edge_>::DeleteEdge(std::forward<Edge_>(edge.GetReversed()));
+}
+template <node_c Node_, edge_c Edge_>
+void UndirectedGraph<Node_, Edge_>::DeleteEdges(Index first, Index second) {
+  BaseGraph<Node_, Edge_>::DeleteEdges(first, second);
+  BaseGraph<Node_, Edge_>::DeleteEdges(second, first);
 }
 template <node_c Node_ = Node, edge_c Edge_ = Edge>
 using UG = UndirectedGraph<Node_, Edge_>;

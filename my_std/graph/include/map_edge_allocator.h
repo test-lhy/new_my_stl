@@ -13,6 +13,7 @@ class MapEdgeAllocator : public EdgeAllocator<Edge_> {
   void AddEdge(const Edge_& edge) override;
   bool Exist(const Edge_& edge) override;
   void DeleteEdge(const Edge_& edge) override;
+  void DeleteEdges(Index first, Index second) override;
   const list<Edge_>& GetEdges(Index node) override;
   void DeleteNode(Index node) override;
   ~MapEdgeAllocator() override = default;
@@ -45,6 +46,22 @@ void MapEdgeAllocator<Edge_>::DeleteEdge(const Edge_& edge) {
   }
 }
 template <edge_c Edge_>
+void MapEdgeAllocator<Edge_>::DeleteEdges(Index first, Index second) {
+  auto& each_list = vec_edges_[first];
+  auto each_iter = each_list.begin();
+  while (each_iter != each_list.end()) {
+    if (each_iter->GetSecond().GetId() == second) {
+      if (Exist(*each_iter)) {
+        edges_.erase({each_iter->GetFirst().GetId(), each_iter->GetSecond().GetId()});
+      }
+      each_iter = each_list.erase(each_iter);
+    } else {
+      each_iter++;
+    }
+  }
+  edges_[{first, second}].clear();
+}
+template <edge_c Edge_>
 const list<Edge_>& MapEdgeAllocator<Edge_>::GetEdges(Index node) {
   if (vec_edges_.find(node) == vec_edges_.end()) {
     return no_edges_;
@@ -65,6 +82,12 @@ void MapEdgeAllocator<Edge_>::DeleteNode(Index node) {
       } else {
         each_iter++;
       }
+    }
+  }
+  // todo:是不是应该反记一下
+  for (auto& [key, content] : edges_) {
+    if (key.first == node || key.second == node) {
+      content.clear();
     }
   }
 }
