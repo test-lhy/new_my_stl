@@ -34,7 +34,7 @@ class vector : public DataStructure<T> {
   vector(T* other);
   vector(const T* other);
   vector(const vector<T>&);
-  vector(vector<T> &&);
+  vector(vector<T>&&);
   vector(const std::initializer_list<T>&);
   ~vector();
   vector<T>& operator=(const vector<T>&);
@@ -86,11 +86,11 @@ class vector : public DataStructure<T> {
 std::string str(const vector<char>& obj);
 // todo:研究这里到底应该右值引用还是直接值返回，编译器是否有优化
 template <typename T>
-vector<T>&& operator+(vector<T> a, const vector<T>& b);
+vector<T> operator+(vector<T> a, const vector<T>& b);
 template <typename T>
-vector<T>&& operator&(vector<T> a, const vector<T>& b);
+vector<T> operator&(vector<T> a, const vector<T>& b);
 template <typename T>
-vector<T>&& operator|(vector<T> a, const vector<T>& b);
+vector<T> operator|(vector<T> a, const vector<T>& b);
 template <char_type T>
 void getline(std::istream& istream_, vector<T>& obj);
 template <not_char_type T>
@@ -104,14 +104,14 @@ std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj);
 template <not_char_type T>
 std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj);
 template <typename T>
-vector<T>::vector(vector<T> &&other){
-  std::swap(start_,other.start_);
-  std::swap(end_,other.end_);
-  volume_=other.volume_;
+vector<T>::vector(vector<T>&& other) {
+  std::swap(start_, other.start_);
+  std::swap(end_, other.end_);
+  volume_ = other.volume_;
 }
 template <typename T>
-vector<T>::vector(T const* other) :vector(){
-  size_t N=std::string(other).size();
+vector<T>::vector(T const* other) : vector() {
+  size_t N = std::string(other).size();
   for (int i = 0; i < N; ++i) {
     push_back(other[i]);
   }
@@ -161,7 +161,7 @@ template <typename T>
 vector<T>& vector<T>::operator=(vector<T>&& other) noexcept {
   std::swap(this->start_, other.start_);
   std::swap(this->end_, other.end_);
-  std::swap(this->volume_,other.volume_);
+  std::swap(this->volume_, other.volume_);
   return *this;
 }
 template <typename T>
@@ -174,11 +174,11 @@ vector<T>& vector<T>::operator=(const std::initializer_list<T>& element_list) {
 }
 template <typename T>
 bool vector<T>::operator==(const vector<T>& other) const {
-  if(size()!=other.size()){
+  if (size() != other.size()) {
     return false;
   }
-  for(Index i=0;i<size();i++){
-    if(At(i)!=other.At(i)){
+  for (Index i = 0; i < size(); i++) {
+    if (At(i) != other.At(i)) {
       return false;
     }
   }
@@ -358,10 +358,10 @@ void vector<T>::push_back(T&& element) {
   *end_ = element;
   end_++;
 }
-//todo:只针对char
+// todo:只针对char
 template <typename T>
-vector<T>::vector(T* other) :vector(){
-  size_t N=sizeof(other)/sizeof(T);
+vector<T>::vector(T* other) : vector() {
+  size_t N = sizeof(other) / sizeof(T);
   for (int i = 0; i < N; ++i) {
     push_back(other[i]);
   }
@@ -382,7 +382,7 @@ void vector<T>::reserve(size_t size) {
   size_t ex_size = this->size();
   end_ = start_substitute + size;
   volume_ = size;
-  //todo:std::move
+  // todo:std::move
   for (int i = 0; i < ex_size; ++i) {
     start_substitute[i] = start_[i];
   }
@@ -416,15 +416,15 @@ void vector<T>::extend_volume() {
   start_ = start_substitute;
 }
 template <typename T>
-vector<T>&& operator+(vector<T> a, const vector<T>& b) {
+vector<T> operator+(vector<T> a, const vector<T>& b) {
   return a += b;
 }
 template <typename T>
-vector<T>&& operator&(vector<T> a, const vector<T>& b) {
+vector<T> operator&(vector<T> a, const vector<T>& b) {
   return a &= b;
 }
 template <typename T>
-vector<T>&& operator|(vector<T> a, const vector<T>& b) {
+vector<T> operator|(vector<T> a, const vector<T>& b) {
   return a |= b;
 }
 template <char_type T>

@@ -1,30 +1,15 @@
 //
 // Created by lhy on 23-10-8.
 //
+#ifndef MY_STL_STRINGS_H
+#define MY_STL_STRINGS_H
 #include <unordered_map>
 #include <unordered_set>
 
-#include "algorithm.h"
-#include "vector.h"
 #include "type_traits.h"
-#ifndef MY_STL_STRINGS_H
-#define MY_STL_STRINGS_H
+#include "vector.h"
 namespace lhy {
 using string = vector<char>;
-template <>
-class TypeTraits<string> {
- public:
-  static HashFuncType<string> hash_func;
-};
-HashFuncType<string> TypeTraits<string>::hash_func = [](const string& x, const size_t& mod) -> Index {
-  size_t hash = 0;
-  // todo:改成可自定义multiplier
-  const int multiplier = 233;
-  for (auto c : x) {
-    hash = (hash * multiplier + c) % mod;
-  }
-  return hash;
-};
 /**
  * @brief n时间复杂度的前缀函数
  * @tparam T vector元素的类型

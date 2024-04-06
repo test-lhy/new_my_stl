@@ -9,11 +9,11 @@
 #include <string>
 #include <utility>
 
-#include <string>
 #include "data_structure.h"
+#include "strings.h"
 #include "vector.h"
 namespace lhy {
-std::string ToString(int64_t);
+string ToString(int64_t);
 template <iter T>
 void reverse(T start, T end) {
   end--;
@@ -59,10 +59,10 @@ template <typename T>
   }
   return min_temp;
 }
-template <typename T,T_iter<T> Titer>
-Titer find(Titer start,Titer end,T num){
-  Titer ans=start;
-  while(*ans!=num&&ans!=end){
+template <typename T, T_iter<T> Titer>
+Titer find(Titer start, Titer end, T num) {
+  Titer ans = start;
+  while (*ans != num && ans != end) {
     ans++;
   }
   return ans;
