@@ -40,7 +40,7 @@ class BaseGraph {
   Index AddNode(Node_&& node);
   return_node GetNode(Index node);
   return_node GetNode(const Node_& node);
-  virtual return_node operator[](Index node);
+  return_node operator[](Index node);
   return_node operator[](Node_&& node);
   template <typename... Args>
   void DeleteEdge(Args&&... args);

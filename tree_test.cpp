@@ -9,5 +9,5 @@ int main() {
   a.AddNode(Node{1}, 0);
   a.AddNode(Node{3}, 1);
   a.AddNode(Node{2}, 0);
-  a.ChangeFatherWithCheck(1, 3);
+  a.ChangeFather(1, 3);
 }
