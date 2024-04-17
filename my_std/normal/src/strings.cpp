@@ -1,7 +1,9 @@
 //
 // Created by lhy on 24-4-6.
 //
-#include"strings.h"
+#include "strings.h"
+namespace lhy {
+
 template <>
 class TypeTraits<string> {
  public:
@@ -16,3 +18,4 @@ HashFuncType<string> TypeTraits<string>::hash_func = [](const string& x, const s
   }
   return hash;
 };
+}
