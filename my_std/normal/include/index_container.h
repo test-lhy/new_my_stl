@@ -27,8 +27,9 @@ IndexContainer<T>::IndexContainer(const IndexContainerMode mode) {
     container_ = new VectorIndexContainer<T>();
   } else if (mode == MapIndexContainerMode) {
     container_ = new MapIndexContainer<T>();
+  } else {
+    throw std::logic_error("Unsupported mode");
   }
-  throw std::logic_error("Unsupported mode");
 }
 template <typename T>
 T& IndexContainer<T>::operator[](Index index) {
