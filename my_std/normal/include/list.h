@@ -29,6 +29,7 @@ class list : public DataStructure<T, listNode<T>> {
   list(iterator, iterator);
   list(const list<T>&);
   list(list<T>&&);
+  list(const std::initializer_list<T>&);
   ~list() override;
   [[nodiscard]] iterator begin();
   [[nodiscard]] iterator end();
@@ -47,6 +48,7 @@ class list : public DataStructure<T, listNode<T>> {
   [[nodiscard]] bool empty() const;
   iterator erase(const T&);
   iterator erase(iterator);
+  reversed_iterator erase(reversed_iterator);
   [[nodiscard]] iterator find(const T&);
   [[nodiscard]] iterator find(const T&) const;
   void insert(iterator, const T&);
@@ -56,6 +58,7 @@ class list : public DataStructure<T, listNode<T>> {
   [[nodiscard]] size_t size() const;
 
  private:
+  std::pair<iterator, reversed_iterator> eraseImpl(iterator);
   iterator end_;
   reversed_iterator rend_;
   size_t size_{};
@@ -133,7 +136,9 @@ class list<T>::iterator : public TwoDirectionIterator<T, ListNode> {
 
   iterator& operator++(int i) override { return operator++(); }
   iterator& operator--(int i) override { return operator--(); }
+  virtual iterator& Next() { return this->getPointer()->next_; }
   virtual const iterator& Next() const { return this->getPointer()->next_; }
+  virtual iterator& Last() { return this->getPointer()->last_; }
   virtual const iterator& Last() const { return this->getPointer()->last_; }
 
  protected:
@@ -187,6 +192,12 @@ list<T>::list(list<T>&& other) {
   std::swap(rend_, other.rend_);
   std::swap(end_, other.end_);
   size_ = other.size();
+}
+template <typename T>
+list<T>::list(const std::initializer_list<T>& element_list) : list() {
+  for (auto& element : element_list) {
+    push_back(element);
+  }
 }
 
 template <typename T>
@@ -285,22 +296,30 @@ list<T>::iterator list<T>::erase(const T& content) {
 }
 
 template <typename T>
-list<T>::iterator list<T>::erase(list::iterator node) {
+std::pair<typename list<T>::iterator, typename list<T>::reversed_iterator> list<T>::eraseImpl(iterator node) {
   if (node == rend_ || node == end_) {
     throw std::logic_error("end iterator can not be erased");
   }
   if (empty()) {
     throw std::logic_error("nothing left to_ erase");
   }
-  auto node_behind = node.getNext();
-  auto node_before = node.getLast();
+  auto& node_behind = node.Next();
+  auto& node_before = node.Last();
   delete node;
-  node_behind.getLast() = node_before;
-  node_before.getNext() = node_behind;
+  node_behind.Last() = node_before;
+  node_before.Next() = node_behind;
   size_--;
-  return node_behind;
+  return {node_behind, node_before};
+}
+template <typename T>
+list<T>::iterator list<T>::erase(list::iterator node) {
+  return eraseImpl(node).first;
 }
 
+template <typename T>
+list<T>::reversed_iterator list<T>::erase(list::reversed_iterator node) {
+  return eraseImpl(node).second;
+}
 template <typename T>
 list<T>::iterator list<T>::find(const T& content) const {
   iterator answer = begin();
