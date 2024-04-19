@@ -36,7 +36,7 @@ class vector : public DataStructure<T> {
   vector(const vector<T>&);
   vector(vector<T>&&);
   vector(const std::initializer_list<T>&);
-  ~vector();
+  ~vector() override;
   vector<T>& operator=(const vector<T>&);
   vector<T>& operator=(vector<T>&&) noexcept;
   vector<T>& operator=(const std::initializer_list<T>&);

@@ -14,19 +14,20 @@ class stack : public DataStructure<T> {
   using reversed_iterator = vector<T>::iterator;
   using typename DataStructure<T>::Pointer;
   stack();
-  stack(const stack<T> &);
-  stack(stack<T> &&);
+  stack(const stack<T>&);
+  stack(stack<T>&&);
   stack(iterator, iterator);
-  ~stack();
+  ~stack() override;
   void clear();
   [[nodiscard]] bool empty() const;
-  void push(const T &);
+  void push(const T&);
   void pop();
-  [[nodiscard]] T &top();
+  [[nodiscard]] T& top();
   [[nodiscard]] std::string show(int count_limit = 20) const;
   stack<T>& operator=(const stack<T>&);
   stack<T>& operator=(stack<T>&&) noexcept;
   stack<T>& operator=(const std::initializer_list<T>&);
+
  private:
   vector<T> stack_;
   Pointer getBegin() override { return stack_.getBegin(); }
@@ -39,7 +40,7 @@ stack<T>& stack<T>::operator=(const stack<T>& other) {
     return *this;
   }
   this->clear();
-  this->stack_=other.stack_;
+  this->stack_ = other.stack_;
   return *this;
 }
 template <typename T>
@@ -56,12 +57,12 @@ stack<T>& stack<T>::operator=(const std::initializer_list<T>& element_list) {
   return *this;
 }
 template <typename T>
-stack<T>::stack(const stack<T> &other){
-  stack_=other.stack_;
+stack<T>::stack(const stack<T>& other) {
+  stack_ = other.stack_;
 }
 template <typename T>
-stack<T>::stack(stack<T> &&other){
-  std::swap(stack_,other.stack_);
+stack<T>::stack(stack<T>&& other) {
+  std::swap(stack_, other.stack_);
 }
 template <typename T>
 stack<T>::stack() = default;
@@ -82,7 +83,7 @@ bool stack<T>::empty() const {
   return stack_.empty();
 }
 template <typename T>
-void stack<T>::push(const T &data) {
+void stack<T>::push(const T& data) {
   stack_.push_back(data);
 }
 template <typename T>
@@ -90,7 +91,7 @@ void stack<T>::pop() {
   stack_.pop();
 }
 template <typename T>
-T &stack<T>::top() {
+T& stack<T>::top() {
   return stack_.back();
 }
 template <typename T>

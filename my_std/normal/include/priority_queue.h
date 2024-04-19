@@ -14,7 +14,7 @@ class priority_queue : public DataStructure<T> {
   using typename DataStructure<T>::Pointer;
   explicit priority_queue(const CmpType<T> &cmp = std::less<T>());
   priority_queue(iterator, iterator, const CmpType<T> &cmp = std::less<T>());
-  ~priority_queue();
+  ~priority_queue() override;
   [[nodiscard]] bool empty() const;
   void push(T);
   void pop();

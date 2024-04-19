@@ -13,10 +13,10 @@ class queue : public DataStructure<T, typename list<T>::ListNode> {
   using reversed_iterator = list<T>::reversed_iterator;
   using typename DataStructure<T, typename list<T>::ListNode>::Pointer;
   queue();
-  queue(const queue<T> &);
-  queue(queue<T> &&);
+  queue(const queue<T>&);
+  queue(queue<T>&&);
   queue(iterator, iterator);
-  ~queue();
+  ~queue() override;
   void clear();
   [[nodiscard]] bool empty() const;
   [[nodiscard]] T& front();
@@ -27,6 +27,7 @@ class queue : public DataStructure<T, typename list<T>::ListNode> {
   queue<T>& operator=(const queue<T>&);
   queue<T>& operator=(queue<T>&&) noexcept;
   queue<T>& operator=(const std::initializer_list<T>&);
+
  private:
   list<T> queue_;
   Pointer getBegin() override { return queue_.getBegin(); }
@@ -39,14 +40,14 @@ queue<T>& queue<T>::operator=(const queue<T>& other) {
     return *this;
   }
   this->clear();
-  this->queue_=other.queue_;
+  this->queue_ = other.queue_;
   return *this;
 }
 template <typename T>
 queue<T>& queue<T>::operator=(queue<T>&& other) noexcept {
-  if(this==&other) return *this;
+  if (this == &other) return *this;
   clear();
-  std::swap(queue_,other.queue_);
+  std::swap(queue_, other.queue_);
   return *this;
 }
 template <typename T>
@@ -57,13 +58,13 @@ queue<T>& queue<T>::operator=(const std::initializer_list<T>& element_list) {
   }
   return *this;
 }
-template<typename T>
-queue<T>::queue(const queue<T>& other){
- queue_=other.queue_;
+template <typename T>
+queue<T>::queue(const queue<T>& other) {
+  queue_ = other.queue_;
 }
-template<typename T>
-queue<T>::queue(queue<T>&& other){
- std::swap(queue_,other.queue_);
+template <typename T>
+queue<T>::queue(queue<T>&& other) {
+  std::swap(queue_, other.queue_);
 }
 template <typename T>
 queue<T>::queue() = default;
