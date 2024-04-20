@@ -55,14 +55,14 @@ class vector : public DataStructure<T> {
   [[nodiscard]] iterator end();
   [[nodiscard]] reversed_iterator rbegin();
   [[nodiscard]] reversed_iterator rend();
-  [[nodiscard]] const T& front() const;
-  [[nodiscard]] const T& back() const;
-  [[nodiscard]] const iterator begin() const;
-  [[nodiscard]] const iterator end() const;
-  [[nodiscard]] const reversed_iterator rbegin() const;
-  [[nodiscard]] const reversed_iterator rend() const;
-  [[nodiscard]] const iterator cbegin() const;
-  [[nodiscard]] const iterator cend() const;
+  [[nodiscard]] T& front() const;
+  [[nodiscard]] T& back() const;
+  [[nodiscard]] iterator begin() const;
+  [[nodiscard]] iterator end() const;
+  [[nodiscard]] reversed_iterator rbegin() const;
+  [[nodiscard]] reversed_iterator rend() const;
+  [[nodiscard]] iterator cbegin() const;
+  [[nodiscard]] iterator cend() const;
   void clear();
   [[nodiscard]] bool empty() const;
   void erase(iterator);
@@ -273,42 +273,42 @@ vector<T>::reversed_iterator vector<T>::rend() {
   return start_ - 1;
 }
 template <typename T>
-const T& vector<T>::front() const {
+T& vector<T>::front() const {
   if (empty()) {
     throw std::range_error("no element in vector");
   }
   return *start_;
 }
 template <typename T>
-const T& vector<T>::back() const {
+T& vector<T>::back() const {
   if (empty()) {
     throw std::range_error("no element in vector");
   }
   return *(end_ - 1);
 }
 template <typename T>
-const vector<T>::iterator vector<T>::begin() const {
+vector<T>::iterator vector<T>::begin() const {
   return start_;
 }
 template <typename T>
-const vector<T>::iterator vector<T>::end() const {
+vector<T>::iterator vector<T>::end() const {
   return end_;
 }
 template <typename T>
-const vector<T>::reversed_iterator vector<T>::rbegin() const {
+vector<T>::reversed_iterator vector<T>::rbegin() const {
   return end_ - 1;
 }
 template <typename T>
-const vector<T>::reversed_iterator vector<T>::rend() const {
+vector<T>::reversed_iterator vector<T>::rend() const {
   return start_ - 1;
 }
 template <typename T>
-const vector<T>::iterator vector<T>::cbegin() const {
-  return const_cast<const iterator>(end_);
+vector<T>::iterator vector<T>::cbegin() const {
+  return start_;
 }
 template <typename T>
-const vector<T>::iterator vector<T>::cend() const {
-  return const_cast<const iterator>(start_);
+vector<T>::iterator vector<T>::cend() const {
+  return end_;
 }
 // todo:这里的clear感觉有问题
 template <typename T>

@@ -35,12 +35,12 @@ class list : public DataStructure<T, listNode<T>> {
   [[nodiscard]] iterator end();
   [[nodiscard]] reversed_iterator rbegin();
   [[nodiscard]] reversed_iterator rend();
-  [[nodiscard]] const iterator begin() const;
-  [[nodiscard]] const iterator end() const;
-  [[nodiscard]] const reversed_iterator rbegin() const;
-  [[nodiscard]] const reversed_iterator rend() const;
-  [[nodiscard]] const iterator cbegin() const;
-  [[nodiscard]] const iterator cend() const;
+  [[nodiscard]] iterator begin() const;
+  [[nodiscard]] iterator end() const;
+  [[nodiscard]] reversed_iterator rbegin() const;
+  [[nodiscard]] reversed_iterator rend() const;
+  [[nodiscard]] iterator cbegin() const;
+  [[nodiscard]] iterator cend() const;
   void clear();
   list<T>& operator=(const list<T>&);
   list<T>& operator=(list<T>&&) noexcept;
@@ -244,32 +244,32 @@ list<T>::reversed_iterator list<T>::rend() {
 }
 
 template <typename T>
-const list<T>::iterator list<T>::begin() const {
+list<T>::iterator list<T>::begin() const {
   return rend_.getNext();
 }
 
 template <typename T>
-const list<T>::iterator list<T>::end() const {
+list<T>::iterator list<T>::end() const {
   return end_;
 }
 
 template <typename T>
-const list<T>::reversed_iterator list<T>::rbegin() const {
+list<T>::reversed_iterator list<T>::rbegin() const {
   return end_.getLast();
 }
 
 template <typename T>
-const list<T>::reversed_iterator list<T>::rend() const {
+list<T>::reversed_iterator list<T>::rend() const {
   return rend_;
 }
 
 template <typename T>
-const list<T>::iterator list<T>::cbegin() const {
+list<T>::iterator list<T>::cbegin() const {
   return rend_.getNext();
 }
 
 template <typename T>
-const list<T>::iterator list<T>::cend() const {
+list<T>::iterator list<T>::cend() const {
   return end_;
 }
 
