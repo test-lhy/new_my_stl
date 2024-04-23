@@ -80,8 +80,6 @@ class IndexContainerImpl<T>::reversed_iterator : public ReversedTwoDirectionIter
   using ReversedTwoDirectionIterator<T, reversed_iteratorImpl>::ReversedTwoDirectionIterator;
   using typename Iterator<T, reversed_iteratorImpl>::Pointer;
   using typename Iterator<T, reversed_iteratorImpl>::OutPointer;
-  reversed_iterator(reversed_iteratorImpl* _iterator)
-      : ReversedTwoDirectionIterator<T, reversed_iteratorImpl>(_iterator) {}
   reversed_iterator(const Iterator<T, reversed_iteratorImpl>& other) : Iterator<T, reversed_iteratorImpl>(other) {}
   OutPointer extract() override { return this->getPointer()->getPointer(); }
   reversed_iterator& operator++() override {

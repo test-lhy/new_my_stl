@@ -48,7 +48,7 @@ class VectorIndexContainer<T>::BaseIterator {
       : father_(father),
         base_iterator_(_iterator),
         base_reversed_iterator_(_iterator),
-        iterator_pointer_(&base_iterator_) {}
+        iterator_pointer_(&base_reversed_iterator_) {}
   void add() {
     if (!CheckRange()) {
       throw std::logic_error("out of range");
@@ -111,7 +111,6 @@ class VectorIndexContainer<T>::iterator : public IndexContainerImpl<T>::iterator
   void EraseMyself() override {
     BaseIterator::base_iterator_ = BaseIterator::father_->used_index.erase(BaseIterator::base_iterator_);
   }
-  ~iterator() {}
 };
 template <typename T>
 class VectorIndexContainer<T>::reversed_iterator : public IndexContainerImpl<T>::reversed_iteratorImpl,

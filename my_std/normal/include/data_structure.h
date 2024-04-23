@@ -70,7 +70,7 @@ class Iterator : public TIterator<T> {
     this->data_ = other.data_;
     return *this;
   }
-  bool operator==(const Iterator& other) const { return other.data_ == data_; }
+  bool operator==(const Iterator& other) const { return other.data_ == data_; }//要不要改成extract?
   bool operator!=(const Iterator& other) const { return other.data_ != data_; }
   virtual operator Pointer() { return data_; }
   virtual operator Pointer() const { return data_; }
