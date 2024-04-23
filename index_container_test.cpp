@@ -32,5 +32,9 @@ int main() {
       std::cout << each << " ";
     }
     std::cout << std::endl;
+    for (auto iter = a.rbegin(); iter != a.rend(); iter++) {
+      std::cout << *iter << " " << std::flush;
+    }
+    std::cout << std::endl;
   }
 }

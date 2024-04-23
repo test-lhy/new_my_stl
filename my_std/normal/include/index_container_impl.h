@@ -30,6 +30,7 @@ class IndexContainerImpl : public DataStructure<T> {
   [[nodiscard]] typename DataStructure<T>::Pointer getBegin() override = 0;
   [[nodiscard]] typename DataStructure<T>::Pointer getEnd() override = 0;
 };
+// 这个结构可能应该要改一下,太怪了
 template <typename T>
 class IndexContainerImpl<T>::iteratorImpl : public TwoDirectionIterator<T>, public StoredIteratorType<T> {
  public:
@@ -81,6 +82,10 @@ class IndexContainerImpl<T>::reversed_iterator : public ReversedTwoDirectionIter
   using typename Iterator<T, reversed_iteratorImpl>::Pointer;
   using typename Iterator<T, reversed_iteratorImpl>::OutPointer;
   reversed_iterator(const Iterator<T, reversed_iteratorImpl>& other) : Iterator<T, reversed_iteratorImpl>(other) {}
+  friend bool operator==(const reversed_iterator& lhs, const reversed_iterator& rhs) {
+    return lhs.getPointer()->getPointer() == rhs.getPointer()->getPointer();
+  }
+  friend bool operator!=(const reversed_iterator& lhs, const reversed_iterator& rhs) { return !(lhs == rhs); }
   OutPointer extract() override { return this->getPointer()->getPointer(); }
   reversed_iterator& operator++() override {
     this->getPointer()->operator++();
