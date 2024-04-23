@@ -239,30 +239,12 @@ class DataStructureIterator : public TForwardIterator<T> {
       : shared_cond_(false), not_shared_(not_shared), shared_(nullptr) {}
   DataStructureIterator(std::shared_ptr<TForwardIterator<T>> shared)
       : shared_cond_(true), not_shared_(nullptr), shared_(shared) {}
-  T& operator*() override {
-    if (shared_cond_) {
-      return shared_->operator*();
-    }
-    return not_shared_->operator*();
-  }
-  const T& operator*() const override {
-    if (shared_cond_) {
-      return shared_->operator*();
-    }
-    return not_shared_->operator*();
-  }
-  typename TIterator<T>::OutPointer operator->() override {
-    if (shared_cond_) {
-      return shared_->operator->();
-    }
-    return not_shared_->operator->();
-  }
-  TForwardIterator<T>& operator++() override {
-    if (shared_cond_) {
-      return shared_->operator++();
-    }
-    return not_shared_->operator++();
-  }
+  T& operator*() override { return get()->operator*(); }
+  const T& operator*() const override { return get()->operator*(); }
+  typename TIterator<T>::OutPointer operator->() override { return get()->operator->(); }
+  TForwardIterator<T>& operator++() override { return get()->operator++(); }
+  TForwardIterator<T>* get() { return shared_cond_ ? shared_.get() : not_shared_; }
+  TForwardIterator<T>* get() const { return shared_cond_ ? shared_.get() : not_shared_; }
 
  private:
   bool shared_cond_{};
