@@ -7,7 +7,7 @@
 #include "edge.h"
 #include "edge_allocator_factory.h"
 #include "node.h"
-#include "node_allocator_factory.h"
+#include "node_allocator.h"
 namespace lhy {
 template <node_c Node_ = Node, edge_c Edge_ = Edge>
 class BaseGraph {
@@ -49,7 +49,7 @@ class BaseGraph {
   void DeleteEdges(const Node_& first, const Node_& second);
   void DeleteNode(Index node);
   void DeleteNode(Node_&& node);
-  bool NodeExist(Index node) const;
+  [[nodiscard]] bool NodeExist(Index node) const;
 
  private:
   Node_& GetNodeImpl(Index node);
@@ -61,12 +61,9 @@ template <node_c Node_, edge_c Edge_>
 BaseGraph<Node_, Edge_>::return_node::~return_node() {}
 template <node_c Node_, edge_c Edge_>
 BaseGraph<Node_, Edge_>::BaseGraph(NodeAllocatorMode node_allocator_mode, EdgeAllocatorMode edge_allocator_mode) {
-  auto node_allocator_factory = new NodeAllocatorFactory<Node_>();
   auto edge_allocator_factory = new EdgeAllocatorFactory<Edge_>();
-  node_allocator_ = node_allocator_factory->Create(node_allocator_mode);
   edge_allocator_ = edge_allocator_factory->Create(edge_allocator_mode);
-  node_allocator_->SetEdgeReserveSync(edge_allocator_);
-  delete node_allocator_factory;
+  node_allocator_ = new NodeAllocator<Node_>(edge_allocator_, node_allocator_mode);
   delete edge_allocator_factory;
 }
 template <node_c Node_, edge_c Edge_>

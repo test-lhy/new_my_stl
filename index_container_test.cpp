@@ -12,11 +12,15 @@ int main() {
     a[4] = 2;
     a[100] = 3;
     a[56] = 4;
+    std::cout << "contain 56(1):" << a.Exist(56) << std::endl;
+    std::cout << "contain 50(0):" << a.Exist(50) << std::endl;
     for (auto each : a) {
       std::cout << each << " ";
     }
     std::cout << std::endl;
     a.erase(56);
+    std::cout << "contain 56(0):" << a.Exist(56) << std::endl;
+    std::cout << "contain 100(1):" << a.Exist(100) << std::endl;
     a.erase(4);
     for (auto each : a) {
       std::cout << each << " ";

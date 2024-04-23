@@ -16,19 +16,17 @@ class IndexContainer : public IndexContainerImpl<T> {
   T& operator[](Index index) override;
   const T& operator[](Index index) const override;
   void erase(Index index) override;
+  bool Exist(Index index) override;
   [[nodiscard]] typename IndexContainerImpl<T>::iterator begin() override;
   [[nodiscard]] typename IndexContainerImpl<T>::iterator end() override;
   [[nodiscard]] typename IndexContainerImpl<T>::reversed_iterator rbegin() override;
   [[nodiscard]] typename IndexContainerImpl<T>::reversed_iterator rend() override;
+  ~IndexContainer() override;
 
  private:
   [[nodiscard]] typename DataStructure<T>::Pointer getBegin() override;
   [[nodiscard]] typename DataStructure<T>::Pointer getEnd() override;
 
- public:
-  ~IndexContainer() override;
-
- private:
   IndexContainerImpl<T>* container_;
 };
 
@@ -53,6 +51,10 @@ const T& IndexContainer<T>::operator[](Index index) const {
 template <typename T>
 void IndexContainer<T>::erase(Index index) {
   container_->erase(index);
+}
+template <typename T>
+bool IndexContainer<T>::Exist(Index index) {
+  return container_->Exist(index);
 }
 template <typename T>
 typename IndexContainerImpl<T>::iterator IndexContainer<T>::begin() {

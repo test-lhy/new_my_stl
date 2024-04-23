@@ -19,6 +19,7 @@ class IndexContainerImpl : public DataStructure<T> {
   virtual T& operator[](Index index) = 0;
   virtual const T& operator[](Index index) const = 0;
   virtual void erase(Index index) = 0;
+  virtual bool Exist(Index index) = 0;
   ~IndexContainerImpl() override = default;
   [[nodiscard]] virtual iterator begin() = 0;
   [[nodiscard]] virtual iterator end() = 0;

@@ -19,20 +19,18 @@ class VectorIndexContainer : public IndexContainerImpl<T> {
   class iterator;
   class reversed_iterator;
   void erase(Index index) override;
+  bool Exist(Index index) override;
   [[nodiscard]] typename IndexContainerImpl<T>::iterator begin() override;
   [[nodiscard]] typename IndexContainerImpl<T>::iterator end() override;
   [[nodiscard]] typename IndexContainerImpl<T>::reversed_iterator rbegin() override;
   [[nodiscard]] typename IndexContainerImpl<T>::reversed_iterator rend() override;
   T& operator[](Index index) override;
+  const T& operator[](Index index) const override;
 
  private:
   [[nodiscard]] typename DataStructure<T>::Pointer getBegin() override;
   [[nodiscard]] typename DataStructure<T>::Pointer getEnd() override;
 
- public:
-  const T& operator[](Index index) const override;
-
- private:
   vector<std::pair<T, UseStatus>> container_;
   list<Index> used_index;
 };
@@ -144,6 +142,13 @@ void VectorIndexContainer<T>::erase(Index index) {
     throw std::logic_error("can't delete an element that does not exist");
   }
   container_[index].second = UsedBefore;
+}
+template <typename T>
+bool VectorIndexContainer<T>::Exist(Index index) {
+  if (index >= container_.size()) {
+    return false;
+  }
+  return container_[index].second == Used;
 }
 template <typename T>
 typename IndexContainerImpl<T>::iterator VectorIndexContainer<T>::begin() {

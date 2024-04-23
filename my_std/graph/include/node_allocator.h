@@ -8,34 +8,70 @@
 #include <stdexcept>
 
 #include "basic.h"
+#include "index_container.h"
 #include "node.h"
 #include "vector.h"
 namespace lhy {
+enum NodeAllocatorMode { NormalNodeAllocatorMode, MapNodeAllocatorMode };
 template <node_c Node_>
 class NodeAllocator {
  public:
-  virtual Index AddNode(const Node_& node) = 0;
+  NodeAllocator(EdgeReserveSync* edge_allocator_sync, const NodeAllocatorMode mode)
+      : edge_allocator_sync_(edge_allocator_sync) {
+    container_ = new IndexContainer<Node_>(relation_between_nodeallocator_indexcontainer.at(mode));
+    Sync(100);
+  }
+  Index AddNode(const Node_& node);
   template <typename... Args>
   Index EmplaceNode(Args&&... args);
-  virtual void DeleteNode(Index index) = 0;
-  virtual Node_& GetNode(Index index) = 0;
-  virtual bool Exist(Index index) = 0;
-  virtual void Sync(){};
-  void SetEdgeReserveSync(EdgeReserveSync* edge_allocator_sync);
-  EdgeReserveSync* GetEdgeReserveSync();
-  virtual ~NodeAllocator() = default;
+  void DeleteNode(Index index);
+  Node_& GetNode(Index index);
+  bool Exist(Index index);
+  void Sync(Index index);
+  ~NodeAllocator();
+
+  inline static std::map<NodeAllocatorMode, IndexContainerMode> relation_between_nodeallocator_indexcontainer = {
+      {NormalNodeAllocatorMode, VectorIndexContainerMode}, {MapNodeAllocatorMode, MapIndexContainerMode}};
 
  private:
   EdgeReserveSync* edge_allocator_sync_;
+  IndexContainer<Node_>* container_;
+  Index max_index_{};
 };
 template <node_c Node_>
-EdgeReserveSync* NodeAllocator<Node_>::GetEdgeReserveSync() {
-  return edge_allocator_sync_;
+Index NodeAllocator<Node_>::AddNode(const Node_& node) {
+  if (Exist(node.GetId()) && node != GetNode(node.GetId())) {
+    throw std::logic_error("can not add a node with the same id and different content");
+  }
+  Sync(node.GetId());
+  container_->operator[](node.GetId()) = node;
+  return node.GetId();
 }
 template <node_c Node_>
-void NodeAllocator<Node_>::SetEdgeReserveSync(EdgeReserveSync* edge_allocator_sync) {
-  edge_allocator_sync_ = edge_allocator_sync;
-  Sync();
+void NodeAllocator<Node_>::DeleteNode(Index index) {
+  container_->erase(index);
+}
+template <node_c Node_>
+Node_& NodeAllocator<Node_>::GetNode(Index index) {
+  if (Exist(index)) {
+    return container_->operator[](index);
+  }
+  throw std::logic_error("the node does not exist");
+}
+template <node_c Node_>
+bool NodeAllocator<Node_>::Exist(Index index) {
+  return container_->Exist(index);
+}
+template <node_c Node_>
+void NodeAllocator<Node_>::Sync(Index index) {
+  if (index > max_index_) {
+    max_index_ = index * 2 + 100;
+    edge_allocator_sync_->Reserve(max_index_);
+  }
+}
+template <node_c Node_>
+NodeAllocator<Node_>::~NodeAllocator() {
+  delete container_;
 }
 template <node_c Node_>
 template <typename... Args>
