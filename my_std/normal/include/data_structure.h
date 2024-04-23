@@ -35,22 +35,22 @@ class StoredIteratorType {
  public:
   StoredIteratorType() = default;
   virtual T* extract() = 0;
-  virtual ~StoredIteratorType() {}
+  virtual ~StoredIteratorType() = default;
 };
 template <typename T>
 class TIterator {
  public:
   using OutPointer = T*;
-  virtual T& operator*() {}
-  virtual const T& operator*() const {}
-  virtual OutPointer operator->() {}
-  virtual ~TIterator() {}
+  virtual T& operator*() = 0;
+  virtual const T& operator*() const = 0;
+  virtual OutPointer operator->() = 0;
+  virtual ~TIterator() = default;
 };
 template <typename T>
 class TForwardIterator : public TIterator<T> {
  public:
   using TIterator<T>::OutPointer;
-  virtual TForwardIterator& operator++() {}
+  virtual TForwardIterator& operator++() = 0;
   virtual TForwardIterator& operator++(int) { return operator++(); }
   [[nodiscard]] virtual TForwardIterator* next() {
     this->operator++();
