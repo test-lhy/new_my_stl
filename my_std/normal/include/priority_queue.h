@@ -10,7 +10,7 @@ namespace lhy {
 template <typename T>
 class priority_queue : public DataStructure<T> {
  public:
-  using iterator = vector<T>::iterator;
+  using iterator = typename vector<T>::iterator;
   using typename DataStructure<T>::Pointer;
   explicit priority_queue(const CmpType<T> &cmp = std::less<T>());
   priority_queue(iterator, iterator, const CmpType<T> &cmp = std::less<T>());

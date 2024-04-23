@@ -7,11 +7,11 @@
 #include "list.h"
 namespace lhy {
 template <typename T>
-class queue : public DataStructure<T, typename list<T>::ListNode> {
+class queue : public DataStructure<T> {
  public:
-  using iterator = list<T>::iterator;
-  using reversed_iterator = list<T>::reversed_iterator;
-  using typename DataStructure<T, typename list<T>::ListNode>::Pointer;
+  using iterator = typename list<T>::iterator;
+  using reversed_iterator = typename list<T>::reversed_iterator;
+  using typename DataStructure<T>::Pointer;
   queue();
   queue(const queue<T>&);
   queue(queue<T>&&);

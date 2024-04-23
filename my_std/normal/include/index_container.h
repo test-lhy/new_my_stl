@@ -14,7 +14,18 @@ class IndexContainer : public IndexContainerImpl<T> {
  public:
   explicit IndexContainer(IndexContainerMode mode = VectorIndexContainerMode);
   T& operator[](Index index) override;
-  T& operator[](Index index) const override;
+  const T& operator[](Index index) const override;
+  void erase(Index index) override;
+  [[nodiscard]] typename IndexContainerImpl<T>::iterator begin() override;
+  [[nodiscard]] typename IndexContainerImpl<T>::iterator end() override;
+  [[nodiscard]] typename IndexContainerImpl<T>::reversed_iterator rbegin() override;
+  [[nodiscard]] typename IndexContainerImpl<T>::reversed_iterator rend() override;
+
+ private:
+  [[nodiscard]] typename DataStructure<T>::Pointer getBegin() override;
+  [[nodiscard]] typename DataStructure<T>::Pointer getEnd() override;
+
+ public:
   ~IndexContainer() override;
 
  private:
@@ -36,8 +47,36 @@ T& IndexContainer<T>::operator[](Index index) {
   return container_->operator[](index);
 }
 template <typename T>
-T& IndexContainer<T>::operator[](Index index) const {
+const T& IndexContainer<T>::operator[](Index index) const {
   return container_->operator[](index);
+}
+template <typename T>
+void IndexContainer<T>::erase(Index index) {
+  container_->erase(index);
+}
+template <typename T>
+typename IndexContainerImpl<T>::iterator IndexContainer<T>::begin() {
+  return container_->begin();
+}
+template <typename T>
+typename IndexContainerImpl<T>::iterator IndexContainer<T>::end() {
+  return container_->end();
+}
+template <typename T>
+typename IndexContainerImpl<T>::reversed_iterator IndexContainer<T>::rbegin() {
+  return container_->rbegin();
+}
+template <typename T>
+typename IndexContainerImpl<T>::reversed_iterator IndexContainer<T>::rend() {
+  return container_->rend();
+}
+template <typename T>
+typename DataStructure<T>::Pointer IndexContainer<T>::getBegin() {
+  return container_->getBegin();
+}
+template <typename T>
+typename DataStructure<T>::Pointer IndexContainer<T>::getEnd() {
+  return container_->getEnd();
 }
 template <typename T>
 IndexContainer<T>::~IndexContainer() {

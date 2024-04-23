@@ -1,6 +1,8 @@
 //
 // Created by lhy on 23-9-20.
 //
+#include <iostream>
+#include <memory>
 #include <stdexcept>
 
 #include "basic.h"
@@ -33,17 +35,38 @@ class StoredIteratorType {
  public:
   StoredIteratorType() = default;
   virtual T* extract() = 0;
-  virtual ~StoredIteratorType() = default;
+  virtual ~StoredIteratorType() {}
+};
+template <typename T>
+class TIterator {
+ public:
+  using OutPointer = T*;
+  virtual T& operator*() {}
+  virtual const T& operator*() const {}
+  virtual OutPointer operator->() {}
+  virtual ~TIterator() {}
+};
+template <typename T>
+class TForwardIterator : public TIterator<T> {
+ public:
+  using TIterator<T>::OutPointer;
+  virtual TForwardIterator& operator++() {}
+  virtual TForwardIterator& operator++(int) { return operator++(); }
+  [[nodiscard]] virtual TForwardIterator* next() {
+    this->operator++();
+    return this;
+  }
 };
 // note:*出来是T类型,->使用的时候应该也是T*，但内部存储的是U类型
 template <typename T, typename U = T>
-class Iterator {
+class Iterator : public TIterator<T> {
  public:
   using Pointer = U*;
-  using OutPointer = T*;
+  using OutPointer = typename TIterator<T>::OutPointer;
   Iterator() : data_(nullptr){};
   Iterator(Pointer data) : data_(data) {}
-  Iterator<T, U>& operator=(const Iterator<T, U>& other) {
+  Iterator(const Iterator& other) : data_(other.data_){};
+  Iterator& operator=(const Iterator& other) {
     this->data_ = other.data_;
     return *this;
   }
@@ -51,9 +74,9 @@ class Iterator {
   bool operator!=(const Iterator& other) const { return other.data_ != data_; }
   virtual operator Pointer() { return data_; }
   virtual operator Pointer() const { return data_; }
-  virtual T& operator*() { return *Extract(); }
-  virtual const T& operator*() const { return *Extract(); }
-  virtual OutPointer operator->() { return Extract(); }
+  T& operator*() override { return *Extract(); }
+  const T& operator*() const override { return *Extract(); }
+  OutPointer operator->() override { return Extract(); }
   template <typename T1 = T, typename U1 = U>
   OutPointer Extract() {
     return data_;
@@ -72,33 +95,32 @@ class Iterator {
   }
   [[nodiscard]] Pointer& getPointer() { return data_; }
   [[nodiscard]] const Pointer& getPointer() const { return data_; }
-  [[nodiscard]] virtual Iterator* next() = 0;
 
  private:
   Pointer data_;
 };
 template <typename T, typename U = T>
-class ForwardIterator : virtual public Iterator<T, U> {
+class ForwardIterator : virtual public Iterator<T, U>, virtual public TForwardIterator<T> {
  public:
   using lhy::Iterator<T, U>::Iterator;
-  using Iterator<T, U>::Pointer;
-  using Iterator<T, U>::OutPointer;
+  using typename Iterator<T, U>::Pointer;
+  using typename Iterator<T, U>::OutPointer;
   ForwardIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
+  T& operator*() override { return Iterator<T, U>::operator*(); }
+  const T& operator*() const override { return Iterator<T, U>::operator*(); }
+  TIterator<T>::OutPointer operator->() override { return Iterator<T, U>::operator->(); }
   virtual ForwardIterator& operator++() {
     this->getPointer()++;
     return *this;
   }
   virtual ForwardIterator& operator++(int) { return operator++(); }
-  Iterator<T, U>* next() override {
-    operator++();
-    return this;
-  }
 };
+
 template <typename T, typename U = T>
 class ReversedForwardIterator : public ForwardIterator<T, U> {
  public:
-  using Iterator<T, U>::Pointer;
-  using Iterator<T, U>::OutPointer;
+  using typename Iterator<T, U>::Pointer;
+  using typename Iterator<T, U>::OutPointer;
   using ForwardIterator<T, U>::ForwardIterator;
   ReversedForwardIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
   ReversedForwardIterator& operator++() override {
@@ -110,8 +132,8 @@ class ReversedForwardIterator : public ForwardIterator<T, U> {
 template <typename T, typename U = T>
 class BackwardIterator : virtual public Iterator<T, U> {
  public:
-  using Iterator<T, U>::Pointer;
-  using Iterator<T, U>::OutPointer;
+  using typename Iterator<T, U>::Pointer;
+  using typename Iterator<T, U>::OutPointer;
   using lhy::Iterator<T, U>::Iterator;
   BackwardIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
   virtual BackwardIterator& operator--() {
@@ -119,13 +141,12 @@ class BackwardIterator : virtual public Iterator<T, U> {
     return *this;
   }
   virtual BackwardIterator& operator--(int) { return operator--(); }
-  Iterator<T, U>* next() override { throw std::logic_error("BackwardIterator can't not use next function"); }
 };
 template <typename T, typename U = T>
 class ReversedBackwardIterator : public BackwardIterator<T, U> {
  public:
-  using Iterator<T, U>::Pointer;
-  using Iterator<T, U>::OutPointer;
+  using typename Iterator<T, U>::Pointer;
+  using typename Iterator<T, U>::OutPointer;
   using BackwardIterator<T, U>::BackwardIterator;
   ReversedBackwardIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
   ReversedBackwardIterator& operator--() override {
@@ -137,8 +158,8 @@ class ReversedBackwardIterator : public BackwardIterator<T, U> {
 template <typename T, typename U = T>
 class TwoDirectionIterator : public ForwardIterator<T, U>, public BackwardIterator<T, U> {
  public:
-  using Iterator<T, U>::Pointer;
-  using Iterator<T, U>::OutPointer;
+  using typename Iterator<T, U>::Pointer;
+  using typename Iterator<T, U>::OutPointer;
   using lhy::ForwardIterator<T, U>::ForwardIterator;
   using lhy::BackwardIterator<T, U>::BackwardIterator;
   TwoDirectionIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
@@ -152,16 +173,12 @@ class TwoDirectionIterator : public ForwardIterator<T, U>, public BackwardIterat
     return *this;
   }
   TwoDirectionIterator& operator--(int) override { return operator--(); }
-  Iterator<T, U>* next() override {
-    operator++();
-    return this;
-  }
 };
 template <typename T, typename U = T>
-class ReversedTwoDirectionIterator : TwoDirectionIterator<T, U> {
+class ReversedTwoDirectionIterator : public TwoDirectionIterator<T, U> {
  public:
-  using Iterator<T, U>::Pointer;
-  using Iterator<T, U>::OutPointer;
+  using typename Iterator<T, U>::Pointer;
+  using typename Iterator<T, U>::OutPointer;
   using TwoDirectionIterator<T, U>::TwoDirectionIterator;
   ReversedTwoDirectionIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
   ReversedTwoDirectionIterator& operator++() override {
@@ -178,8 +195,8 @@ class ReversedTwoDirectionIterator : TwoDirectionIterator<T, U> {
 template <typename T, typename U = T>
 class NormIterator : public TwoDirectionIterator<T, U> {
  public:
-  using Iterator<T, U>::Pointer;
-  using Iterator<T, U>::OutPointer;
+  using typename Iterator<T, U>::Pointer;
+  using typename Iterator<T, U>::OutPointer;
   using lhy::TwoDirectionIterator<T, U>::TwoDirectionIterator;
   NormIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
   NormIterator& operator++() override {
@@ -198,8 +215,8 @@ class NormIterator : public TwoDirectionIterator<T, U> {
 template <typename T, typename U = T>
 class ReversedNormIterator : public NormIterator<T, U> {
  public:
-  using Iterator<T, U>::Pointer;
-  using Iterator<T, U>::OutPointer;
+  using typename Iterator<T, U>::Pointer;
+  using typename Iterator<T, U>::OutPointer;
   using NormIterator<T, U>::NormIterator;
   ReversedNormIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
   ReversedNormIterator& operator++() override {
@@ -215,10 +232,47 @@ class ReversedNormIterator : public NormIterator<T, U> {
   ReversedNormIterator operator+(Index index) { return this->getPointer() - index; }
   ReversedNormIterator operator-(Index index) { return this->getPointer() + index; }
 };
-template <typename T, typename U = T>
+template <typename T>
+class DataStructureIterator : public TForwardIterator<T> {
+ public:
+  DataStructureIterator(TForwardIterator<T>* not_shared)
+      : shared_cond_(false), not_shared_(not_shared), shared_(nullptr) {}
+  DataStructureIterator(std::shared_ptr<TForwardIterator<T>> shared)
+      : shared_cond_(true), not_shared_(nullptr), shared_(shared) {}
+  T& operator*() override {
+    if (shared_cond_) {
+      return shared_->operator*();
+    }
+    return not_shared_->operator*();
+  }
+  const T& operator*() const override {
+    if (shared_cond_) {
+      return shared_->operator*();
+    }
+    return not_shared_->operator*();
+  }
+  typename TIterator<T>::OutPointer operator->() override {
+    if (shared_cond_) {
+      return shared_->operator->();
+    }
+    return not_shared_->operator->();
+  }
+  TForwardIterator<T>& operator++() override {
+    if (shared_cond_) {
+      return shared_->operator++();
+    }
+    return not_shared_->operator++();
+  }
+
+ private:
+  bool shared_cond_{};
+  TForwardIterator<T>* not_shared_{nullptr};
+  std::shared_ptr<TForwardIterator<T>> shared_;
+};
+template <typename T>
 class DataStructure {
  public:
-  using Pointer = Iterator<T, U>*;
+  using Pointer = DataStructureIterator<T>;
   virtual ~DataStructure() = default;
 
  private:
@@ -227,8 +281,8 @@ class DataStructure {
   [[nodiscard]] virtual Pointer getEnd() = 0;
   void inform();
 };
-template <typename T, typename U>
-void DataStructure<T, U>::inform() {
+template <typename T>
+void DataStructure<T>::inform() {
   for (auto& each_observer : observers) {
     //    each_observer->update(*this);
   }

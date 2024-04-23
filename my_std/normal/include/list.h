@@ -12,18 +12,18 @@
 
 namespace lhy {
 template <typename T>
-struct listNode;
+class listNode;
 template <typename T>
 class queue;
 
 template <typename T>
-class list : public DataStructure<T, listNode<T>> {
+class list : public DataStructure<T> {
  public:
   friend class queue<T>;
   class iterator;
   class reversed_iterator;
   using ListNode = listNode<T>;
-  using typename DataStructure<T, ListNode>::Pointer;
+  using typename DataStructure<T>::Pointer;
 
   list();
   list(iterator, iterator);
@@ -101,7 +101,8 @@ list<T>& list<T>::operator=(const std::initializer_list<T>& element_list) {
 }
 
 template <typename T>
-struct listNode : public StoredIteratorType<T> {
+class listNode : public StoredIteratorType<T> {
+ public:
   listNode() : next_(nullptr), last_(nullptr){};
   explicit listNode(const T& content) : listNode() { content_ = content; };
   T& operator*() { return content_; }
@@ -113,16 +114,13 @@ struct listNode : public StoredIteratorType<T> {
 template <typename T>
 class list<T>::iterator : public TwoDirectionIterator<T, ListNode> {
   friend class list<T>;
-  using Iterator<T, ListNode>::Pointer;
-  using Iterator<T, ListNode>::OutPointer;
+  using typename Iterator<T, ListNode>::Pointer;
+  using typename Iterator<T, ListNode>::OutPointer;
 
  public:
   using TwoDirectionIterator<T, ListNode>::TwoDirectionIterator;
 
   iterator(const Iterator<T, ListNode>& other) : Iterator<T, ListNode>(other) {}
-  T& operator*() override { return this->getPointer()->content_; }
-  const T& operator*() const override { return this->getPointer()->content_; }
-  T* operator->() override { return &(this->getPointer()->content_); }
 
   iterator& operator++() override {
     this->getPointer() = this->getNext();
@@ -140,6 +138,7 @@ class list<T>::iterator : public TwoDirectionIterator<T, ListNode> {
   virtual const iterator& Next() const { return this->getPointer()->next_; }
   virtual iterator& Last() { return this->getPointer()->last_; }
   virtual const iterator& Last() const { return this->getPointer()->last_; }
+  ~iterator() override = default;
 
  protected:
   iterator& getNext() { return this->getPointer()->next_; }
@@ -151,8 +150,8 @@ class list<T>::iterator : public TwoDirectionIterator<T, ListNode> {
 template <typename T>
 class list<T>::reversed_iterator : public list<T>::iterator {
   friend class list<T>;
-  using Iterator<T, ListNode>::Pointer;
-  using Iterator<T, ListNode>::OutPointer;
+  using typename Iterator<T, ListNode>::Pointer;
+  using typename Iterator<T, ListNode>::OutPointer;
 
  public:
   using iterator::iterator;
@@ -168,7 +167,7 @@ class list<T>::reversed_iterator : public list<T>::iterator {
     this->getPointer() = this->getNext();
     return *this;
   }
-
+  ~reversed_iterator() override = default;
   reversed_iterator& operator++(int i) override { return operator++(); }
   reversed_iterator& operator--(int i) override { return operator--(); }
   const reversed_iterator& Next() const override { return this->getPointer()->last_; }
@@ -303,8 +302,9 @@ std::pair<typename list<T>::iterator, typename list<T>::reversed_iterator> list<
   if (empty()) {
     throw std::logic_error("nothing left to_ erase");
   }
-  auto& node_behind = node.Next();
-  auto& node_before = node.Last();
+  // 当这边是auto&的时候，由于node被删掉会出问题，但是，在Iterator基类没有写析构函数的时候没有出问题，但是在其写了析构函数之后即便是default也会出现虚表找不到的问题
+  auto node_behind = node.Next();
+  auto node_before = node.Last();
   delete node;
   node_behind.Last() = node_before;
   node_before.Next() = node_behind;
