@@ -15,7 +15,7 @@ using DirectedGraphWeightedNode = DirectedGraph<WeightedNode<NodeWeightType>, Ed
 template <typename NodeWeightType, edge_c Edge_ = Edge>
 using DGN = DirectedGraphWeightedNode<NodeWeightType, Edge_>;
 template <typename EdgeWeightType, node_c Node_ = Node>
-using DirectedGraphWeightedEdge = DirectedGraph<WeightedNode<EdgeWeightType>, Node_>;
+using DirectedGraphWeightedEdge = DirectedGraph<Node_, WeightedEdge<EdgeWeightType>>;
 template <typename EdgeWeightType, node_c Node_ = Node>
 using DGE = DirectedGraphWeightedEdge<EdgeWeightType, Node_>;
 template <typename NodeWeightType, typename EdgeWeightType>

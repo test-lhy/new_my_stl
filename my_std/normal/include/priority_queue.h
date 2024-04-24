@@ -18,7 +18,8 @@ class priority_queue : public DataStructure<T> {
   [[nodiscard]] bool empty() const;
   void push(T);
   void pop();
-  T &top();
+  T top();
+  T TopAndPop();
 
  private:
   void Up(Index);
@@ -69,8 +70,14 @@ void priority_queue<T>::pop() {
   Down(0);
 }
 template <typename T>
-T &priority_queue<T>::top() {
+T priority_queue<T>::top() {
   return priority_queue_.front();
+}
+template <typename T>
+T priority_queue<T>::TopAndPop() {
+  T ret = top();
+  pop();
+  return ret;
 }
 template <typename T>
 void priority_queue<T>::Up(Index index) {

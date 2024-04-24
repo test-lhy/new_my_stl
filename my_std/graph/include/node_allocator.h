@@ -32,6 +32,7 @@ class NodeAllocator : public DataStructure<Node_> {
   Node_& GetNode(Index index);
   bool Exist(Index index);
   void Sync(Index index);
+  [[nodiscard]] IndexContainerMode GetContainerMode() const;
   [[nodiscard]] iterator begin();
   [[nodiscard]] iterator end();
   [[nodiscard]] reversed_iterator rbegin();
@@ -82,6 +83,10 @@ void NodeAllocator<Node_>::Sync(Index index) {
     max_index_ = index * 2 + 100;
     edge_allocator_sync_->Reserve(max_index_);
   }
+}
+template <node_c Node_>
+IndexContainerMode NodeAllocator<Node_>::GetContainerMode() const {
+  return container_->GetMode();
 }
 template <node_c Node_>
 typename NodeAllocator<Node_>::iterator NodeAllocator<Node_>::begin() {

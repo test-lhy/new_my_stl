@@ -20,6 +20,7 @@ class VectorIndexContainer : public IndexContainerImpl<T> {
   class reversed_iterator;
   void erase(Index index) override;
   bool Exist(Index index) override;
+  [[nodiscard]] IndexContainerMode GetMode() const override;
   [[nodiscard]] typename IndexContainerImpl<T>::iterator begin() override;
   [[nodiscard]] typename IndexContainerImpl<T>::iterator end() override;
   [[nodiscard]] typename IndexContainerImpl<T>::reversed_iterator rbegin() override;
@@ -149,6 +150,10 @@ bool VectorIndexContainer<T>::Exist(Index index) {
     return false;
   }
   return container_[index].second == Used;
+}
+template <typename T>
+IndexContainerMode VectorIndexContainer<T>::GetMode() const {
+  return VectorIndexContainerMode;
 }
 template <typename T>
 typename IndexContainerImpl<T>::iterator VectorIndexContainer<T>::begin() {

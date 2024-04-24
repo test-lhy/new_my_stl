@@ -19,9 +19,9 @@ class MapEdgeAllocator : public EdgeAllocator<Edge_> {
   ~MapEdgeAllocator() override = default;
 
  private:
-  std::map<std::pair<Index, Index>, list<Edge>> edges_;
+  std::map<std::pair<Index, Index>, list<Edge_>> edges_;
   std::map<Index, list<Edge_>> vec_edges_;
-  list<Edge> no_edges_;
+  list<Edge_> no_edges_;
 };
 template <edge_c Edge_>
 void MapEdgeAllocator<Edge_>::AddEdge(const Edge_& edge) {

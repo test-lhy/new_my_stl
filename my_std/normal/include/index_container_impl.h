@@ -6,6 +6,7 @@
 #define INDEX_CONTAINER_IMPL_H
 #include "basic.h"
 #include "data_structure.h"
+enum IndexContainerMode { VectorIndexContainerMode, MapIndexContainerMode };
 namespace lhy {
 template <typename T>
 class IndexContainerImpl : public DataStructure<T> {
@@ -25,6 +26,7 @@ class IndexContainerImpl : public DataStructure<T> {
   [[nodiscard]] virtual iterator end() = 0;
   [[nodiscard]] virtual reversed_iterator rbegin() = 0;
   [[nodiscard]] virtual reversed_iterator rend() = 0;
+  [[nodiscard]] virtual IndexContainerMode GetMode() const = 0;
   // 草了，傻逼const，感觉如果要const可能要写一个const_iterator
 
  private:

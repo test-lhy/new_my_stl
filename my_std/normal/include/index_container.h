@@ -9,7 +9,6 @@
 #include "node.h"
 #include "vector_index_container.h"
 namespace lhy {
-enum IndexContainerMode { VectorIndexContainerMode, MapIndexContainerMode };
 template <typename T>
 class IndexContainer : public IndexContainerImpl<T> {
  public:
@@ -24,6 +23,7 @@ class IndexContainer : public IndexContainerImpl<T> {
   [[nodiscard]] typename IndexContainerImpl<T>::iterator end() override;
   [[nodiscard]] typename IndexContainerImpl<T>::reversed_iterator rbegin() override;
   [[nodiscard]] typename IndexContainerImpl<T>::reversed_iterator rend() override;
+  [[nodiscard]] IndexContainerMode GetMode() const override;
   ~IndexContainer() override;
 
  private:
@@ -74,6 +74,10 @@ typename IndexContainerImpl<T>::reversed_iterator IndexContainer<T>::rbegin() {
 template <typename T>
 typename IndexContainerImpl<T>::reversed_iterator IndexContainer<T>::rend() {
   return container_->rend();
+}
+template <typename T>
+IndexContainerMode IndexContainer<T>::GetMode() const {
+  return container_->GetMode();
 }
 template <typename T>
 typename DataStructure<T>::Pointer IndexContainer<T>::getBegin() {

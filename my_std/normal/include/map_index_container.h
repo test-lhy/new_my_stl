@@ -17,6 +17,7 @@ class MapIndexContainer : public IndexContainerImpl<T> {
   const T& operator[](Index index) const override;
   void erase(Index index) override;
   bool Exist(Index index) override;
+  [[nodiscard]] IndexContainerMode GetMode() const override;
   [[nodiscard]] typename IndexContainerImpl<T>::iterator begin() override;
   [[nodiscard]] typename IndexContainerImpl<T>::iterator end() override;
   [[nodiscard]] typename IndexContainerImpl<T>::reversed_iterator rbegin() override;
@@ -86,6 +87,10 @@ void MapIndexContainer<T>::erase(Index index) {
 template <typename T>
 bool MapIndexContainer<T>::Exist(Index index) {
   return container_.contains(index);
+}
+template <typename T>
+IndexContainerMode MapIndexContainer<T>::GetMode() const {
+  return MapIndexContainerMode;
 }
 template <typename T>
 typename IndexContainerImpl<T>::iterator MapIndexContainer<T>::begin() {

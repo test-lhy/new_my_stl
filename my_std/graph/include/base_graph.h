@@ -53,6 +53,7 @@ class BaseGraph : public DataStructure<Node_> {
   void DeleteNode(Index node);
   void DeleteNode(Node_&& node);
   [[nodiscard]] bool NodeExist(Index node) const;
+  [[nodiscard]] IndexContainerMode GetNodeContainerMode() const;
   [[nodiscard]] iterator begin();
   [[nodiscard]] iterator end();
   [[nodiscard]] reversed_iterator rbegin();
@@ -82,6 +83,10 @@ void BaseGraph<Node_, Edge_>::DeleteNode(Node_&& node) {
 template <node_c Node_, edge_c Edge_>
 bool BaseGraph<Node_, Edge_>::NodeExist(Index node) const {
   return node_allocator_->Exist(node);
+}
+template <node_c Node_, edge_c Edge_>
+IndexContainerMode BaseGraph<Node_, Edge_>::GetNodeContainerMode() const {
+  return node_allocator_->GetContainerMode();
 }
 template <node_c Node_, edge_c Edge_>
 typename BaseGraph<Node_, Edge_>::iterator BaseGraph<Node_, Edge_>::begin() {
