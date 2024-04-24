@@ -12,6 +12,7 @@ namespace lhy {
 template <typename T>
 class IndexContainer : public IndexContainerImpl<T> {
  public:
+  using typename IndexContainerImpl<T>::RealT;
   template <node_c Node_>
   friend class NodeAllocator;
   explicit IndexContainer(IndexContainerMode mode = VectorIndexContainerMode);
@@ -27,8 +28,8 @@ class IndexContainer : public IndexContainerImpl<T> {
   ~IndexContainer() override;
 
  private:
-  [[nodiscard]] typename DataStructure<T>::Pointer getBegin() override;
-  [[nodiscard]] typename DataStructure<T>::Pointer getEnd() override;
+  [[nodiscard]] typename DataStructure<RealT>::Pointer getBegin() override;
+  [[nodiscard]] typename DataStructure<RealT>::Pointer getEnd() override;
 
   IndexContainerImpl<T>* container_;
 };
@@ -80,11 +81,11 @@ IndexContainerMode IndexContainer<T>::GetMode() const {
   return container_->GetMode();
 }
 template <typename T>
-typename DataStructure<T>::Pointer IndexContainer<T>::getBegin() {
+typename DataStructure<typename IndexContainer<T>::RealT>::Pointer IndexContainer<T>::getBegin() {
   return container_->getBegin();
 }
 template <typename T>
-typename DataStructure<T>::Pointer IndexContainer<T>::getEnd() {
+typename DataStructure<typename IndexContainer<T>::RealT>::Pointer IndexContainer<T>::getEnd() {
   return container_->getEnd();
 }
 template <typename T>

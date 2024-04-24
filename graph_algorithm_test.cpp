@@ -18,8 +18,8 @@ int main() {
   a.AddEdge(WeightedEdge<double>{4, a[3].GetNode(), a[5].GetNode()});
   a.AddEdge(WeightedEdge<double>{8, a[4].GetNode(), a[3].GetNode()});
   a.AddEdge(WeightedEdge<double>{3, a[5].GetNode(), a[3].GetNode()});
-  for (auto each : Dijkstra(&a, 1)) {
-    cout << each << " ";
+  for (auto [index, dis] : Dijkstra(&a, 1)) {
+    cout << index << " " << dis << endl;
   }
   cout << endl;
 }

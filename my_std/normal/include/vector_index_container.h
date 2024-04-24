@@ -13,6 +13,7 @@ namespace lhy {
 template <typename T>
 class VectorIndexContainer : public IndexContainerImpl<T> {
   enum UseStatus { NotUsed, Used, UsedBefore };
+  using typename IndexContainerImpl<T>::RealT;
 
  public:
   class BaseIterator;
@@ -29,10 +30,10 @@ class VectorIndexContainer : public IndexContainerImpl<T> {
   const T& operator[](Index index) const override;
 
  private:
-  [[nodiscard]] typename DataStructure<T>::Pointer getBegin() override;
-  [[nodiscard]] typename DataStructure<T>::Pointer getEnd() override;
+  [[nodiscard]] typename DataStructure<RealT>::Pointer getBegin() override;
+  [[nodiscard]] typename DataStructure<RealT>::Pointer getEnd() override;
 
-  vector<std::pair<T, UseStatus>> container_;
+  vector<std::pair<RealT, UseStatus>> container_;
   list<Index> used_index;
 };
 template <typename T>
@@ -68,7 +69,7 @@ class VectorIndexContainer<T>::BaseIterator {
   bool CheckRange() {
     return *iterator_pointer_ != father_->used_index.end() && *iterator_pointer_ != father_->used_index.rend();
   }
-  virtual T*& GetPointer() = 0;
+  virtual RealT*& GetPointer() = 0;
   void UpdatePointer() {
     if (CheckRange()) {
       this->GetPointer() = &(father_->container_[*(*iterator_pointer_)].first);
@@ -106,7 +107,7 @@ class VectorIndexContainer<T>::iterator : public IndexContainerImpl<T>::iterator
     BaseIterator::sub();
     return *this;
   }
-  T*& GetPointer() override { return this->getPointer(); }
+  RealT*& GetPointer() override { return this->getPointer(); }
   void EraseMyself() override {
     BaseIterator::base_iterator_ = BaseIterator::father_->used_index.erase(BaseIterator::base_iterator_);
   }
@@ -128,7 +129,7 @@ class VectorIndexContainer<T>::reversed_iterator : public IndexContainerImpl<T>:
     BaseIterator::sub();
     return *this;
   }
-  T*& GetPointer() override { return this->getPointer(); }
+  RealT*& GetPointer() override { return this->getPointer(); }
   void EraseMyself() override {
     BaseIterator::base_reversed_iterator_ =
         BaseIterator::father_->used_index.erase(BaseIterator::base_reversed_iterator_);
@@ -180,23 +181,24 @@ T& VectorIndexContainer<T>::operator[](Index index) {
     if (container_[index].second == NotUsed) {
       used_index.push_back(index);
     }
+    container_[index].first.first = index;
     container_[index].second = Used;
   }
-  return container_[index].first;
+  return container_[index].first.second;
 }
 template <typename T>
-typename DataStructure<T>::Pointer VectorIndexContainer<T>::getBegin() {
-  return std::dynamic_pointer_cast<TForwardIterator<T>>(
+typename DataStructure<typename VectorIndexContainer<T>::RealT>::Pointer VectorIndexContainer<T>::getBegin() {
+  return std::dynamic_pointer_cast<TForwardIterator<RealT>>(
       std::make_shared<typename IndexContainerImpl<T>::iterator>(new iterator(this, used_index.begin())));
 }
 template <typename T>
-typename DataStructure<T>::Pointer VectorIndexContainer<T>::getEnd() {
-  return std::dynamic_pointer_cast<TForwardIterator<T>>(
+typename DataStructure<typename VectorIndexContainer<T>::RealT>::Pointer VectorIndexContainer<T>::getEnd() {
+  return std::dynamic_pointer_cast<TForwardIterator<RealT>>(
       std::make_shared<typename IndexContainerImpl<T>::iterator>(new iterator(this, used_index.end())));
 }
 template <typename T>
 const T& VectorIndexContainer<T>::operator[](Index index) const {
-  return container_[index].first;
+  return container_[index].first.second;
 }
 }  // namespace lhy
 

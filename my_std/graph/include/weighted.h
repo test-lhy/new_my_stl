@@ -6,6 +6,7 @@
 #define WEIGHTED_H
 #include <utility>
 namespace lhy {
+// todo:需要进一步调整，现在的WeightedEdge的初始化蠢到家了
 template <typename WeightType, typename ObjectType>
 class Weighted : public ObjectType {
  public:

@@ -14,8 +14,9 @@
 namespace lhy {
 enum NodeAllocatorMode { NormalNodeAllocatorMode, MapNodeAllocatorMode };
 template <node_c Node_>
-class NodeAllocator : public DataStructure<Node_> {
+class NodeAllocator : public DataStructure<std::pair<Index, Node_>> {
  public:
+  using RealNode_ = std::pair<Index, Node_>;
   template <node_c Nodee, edge_c Edge_>
   friend class BaseGraph;
   using iterator = typename IndexContainer<Node_>::iterator;
@@ -39,8 +40,8 @@ class NodeAllocator : public DataStructure<Node_> {
   [[nodiscard]] reversed_iterator rend();
 
  private:
-  [[nodiscard]] typename DataStructure<Node_>::Pointer getBegin() override;
-  [[nodiscard]] typename DataStructure<Node_>::Pointer getEnd() override;
+  [[nodiscard]] typename DataStructure<RealNode_>::Pointer getBegin() override;
+  [[nodiscard]] typename DataStructure<RealNode_>::Pointer getEnd() override;
 
  public:
   ~NodeAllocator();
@@ -105,11 +106,11 @@ typename NodeAllocator<Node_>::reversed_iterator NodeAllocator<Node_>::rend() {
   return container_->rend();
 }
 template <node_c Node_>
-typename DataStructure<Node_>::Pointer NodeAllocator<Node_>::getBegin() {
+typename DataStructure<typename NodeAllocator<Node_>::RealNode_>::Pointer NodeAllocator<Node_>::getBegin() {
   return container_->getBegin();
 }
 template <node_c Node_>
-typename DataStructure<Node_>::Pointer NodeAllocator<Node_>::getEnd() {
+typename DataStructure<typename NodeAllocator<Node_>::RealNode_>::Pointer NodeAllocator<Node_>::getEnd() {
   return container_->getEnd();
 }
 template <node_c Node_>

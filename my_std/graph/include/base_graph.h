@@ -10,9 +10,10 @@
 #include "node_allocator.h"
 namespace lhy {
 template <node_c Node_ = Node, edge_c Edge_ = Edge>
-class BaseGraph : public DataStructure<Node_> {
+class BaseGraph : public DataStructure<std::pair<Index, Node_>> {
  public:
   // 使用return node作为iterator不是不能做，但是，需要提前将return_node声明，暂时不想这么做,并且比较麻烦
+  using RealNode_ = std::pair<Index, Node_>;
   using iterator = typename IndexContainer<Node_>::iterator;
   using reversed_iterator = typename IndexContainer<Node_>::reversed_iterator;
   class return_node {
@@ -60,8 +61,8 @@ class BaseGraph : public DataStructure<Node_> {
   [[nodiscard]] reversed_iterator rend();
 
  private:
-  [[nodiscard]] typename DataStructure<Node_>::Pointer getBegin() override;
-  [[nodiscard]] typename DataStructure<Node_>::Pointer getEnd() override;
+  [[nodiscard]] typename DataStructure<RealNode_>::Pointer getBegin() override;
+  [[nodiscard]] typename DataStructure<RealNode_>::Pointer getEnd() override;
   Node_& GetNodeImpl(Index node);
   const list<Edge_>& GetEdgesImpl(Index node);
   NodeAllocator<Node_>* node_allocator_;
@@ -105,11 +106,11 @@ typename BaseGraph<Node_, Edge_>::reversed_iterator BaseGraph<Node_, Edge_>::ren
   return node_allocator_.rend();
 }
 template <node_c Node_, edge_c Edge_>
-typename DataStructure<Node_>::Pointer BaseGraph<Node_, Edge_>::getBegin() {
+typename DataStructure<typename BaseGraph<Node_, Edge_>::RealNode_>::Pointer BaseGraph<Node_, Edge_>::getBegin() {
   return node_allocator_->getBegin();
 }
 template <node_c Node_, edge_c Edge_>
-typename DataStructure<Node_>::Pointer BaseGraph<Node_, Edge_>::getEnd() {
+typename DataStructure<typename BaseGraph<Node_, Edge_>::RealNode_>::Pointer BaseGraph<Node_, Edge_>::getEnd() {
   return node_allocator_->getEnd();
 }
 template <node_c Node_, edge_c Edge_>
