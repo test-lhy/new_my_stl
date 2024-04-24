@@ -10,13 +10,16 @@
 #include "node_allocator.h"
 namespace lhy {
 template <node_c Node_ = Node, edge_c Edge_ = Edge>
-class BaseGraph {
+class BaseGraph : public DataStructure<Node_> {
  public:
+  // 使用return node作为iterator不是不能做，但是，需要提前将return_node声明，暂时不想这么做,并且比较麻烦
+  using iterator = typename IndexContainer<Node_>::iterator;
+  using reversed_iterator = typename IndexContainer<Node_>::reversed_iterator;
   class return_node {
    public:
     return_node(Index node, BaseGraph* graph) : node_(node), graph_(graph) {}
     Node_& GetNode() { return graph_->GetNodeImpl(node_); }
-    const list<Edge_>& GetEdges() const { return graph_->GetEdgesImpl(node_); }
+    const list<Edge_>& GetEdges() const { return graph_->GetEdgesImpl(node_); }  // const &应该问题不大吧
     bool operator==(const return_node& other) const { return node_ == other.node_; }
     bool operator!=(const return_node& other) const { return node_ != other.node_; }
     virtual ~return_node();
@@ -50,8 +53,14 @@ class BaseGraph {
   void DeleteNode(Index node);
   void DeleteNode(Node_&& node);
   [[nodiscard]] bool NodeExist(Index node) const;
+  [[nodiscard]] iterator begin();
+  [[nodiscard]] iterator end();
+  [[nodiscard]] reversed_iterator rbegin();
+  [[nodiscard]] reversed_iterator rend();
 
  private:
+  [[nodiscard]] typename DataStructure<Node_>::Pointer getBegin() override;
+  [[nodiscard]] typename DataStructure<Node_>::Pointer getEnd() override;
   Node_& GetNodeImpl(Index node);
   const list<Edge_>& GetEdgesImpl(Index node);
   NodeAllocator<Node_>* node_allocator_;
@@ -73,6 +82,30 @@ void BaseGraph<Node_, Edge_>::DeleteNode(Node_&& node) {
 template <node_c Node_, edge_c Edge_>
 bool BaseGraph<Node_, Edge_>::NodeExist(Index node) const {
   return node_allocator_->Exist(node);
+}
+template <node_c Node_, edge_c Edge_>
+typename BaseGraph<Node_, Edge_>::iterator BaseGraph<Node_, Edge_>::begin() {
+  return node_allocator_->begin();
+}
+template <node_c Node_, edge_c Edge_>
+typename BaseGraph<Node_, Edge_>::iterator BaseGraph<Node_, Edge_>::end() {
+  return node_allocator_->end();
+}
+template <node_c Node_, edge_c Edge_>
+typename BaseGraph<Node_, Edge_>::reversed_iterator BaseGraph<Node_, Edge_>::rbegin() {
+  return node_allocator_->rbegin();
+}
+template <node_c Node_, edge_c Edge_>
+typename BaseGraph<Node_, Edge_>::reversed_iterator BaseGraph<Node_, Edge_>::rend() {
+  return node_allocator_.rend();
+}
+template <node_c Node_, edge_c Edge_>
+typename DataStructure<Node_>::Pointer BaseGraph<Node_, Edge_>::getBegin() {
+  return node_allocator_->getBegin();
+}
+template <node_c Node_, edge_c Edge_>
+typename DataStructure<Node_>::Pointer BaseGraph<Node_, Edge_>::getEnd() {
+  return node_allocator_->getEnd();
 }
 template <node_c Node_, edge_c Edge_>
 void BaseGraph<Node_, Edge_>::DeleteNode(Index node) {

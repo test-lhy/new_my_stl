@@ -14,7 +14,7 @@
 namespace lhy {
 class EdgeReserveSync {
  public:
-  virtual void Reserve(size_t size) { size; };
+  virtual void Reserve(size_t size) {}
 };
 template <edge_c Edge_>
 class EdgeAllocator : public EdgeReserveSync {
@@ -27,6 +27,7 @@ class EdgeAllocator : public EdgeReserveSync {
   virtual void DeleteEdges(Index first, Index second) = 0;
   virtual const list<Edge_>& GetEdges(Index node) = 0;
   virtual void DeleteNode(Index node) = 0;
+  virtual bool NeedRegetEdges(Index node) { return false; }
   virtual ~EdgeAllocator() = default;
 };
 template <edge_c Edge_>

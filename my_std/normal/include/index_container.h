@@ -6,12 +6,15 @@
 #define INDEX_CONTAINER_H
 #include "index_container_impl.h"
 #include "map_index_container.h"
+#include "node.h"
 #include "vector_index_container.h"
 namespace lhy {
 enum IndexContainerMode { VectorIndexContainerMode, MapIndexContainerMode };
 template <typename T>
 class IndexContainer : public IndexContainerImpl<T> {
  public:
+  template <node_c Node_>
+  friend class NodeAllocator;
   explicit IndexContainer(IndexContainerMode mode = VectorIndexContainerMode);
   T& operator[](Index index) override;
   const T& operator[](Index index) const override;

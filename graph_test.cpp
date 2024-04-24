@@ -40,31 +40,21 @@ int main() {
       int n1 = 1;
       int n2 = 2;
       int n3 = 3;
-      for (auto& edge : graph[n1].GetEdges()) {
-        std::cout << edge.GetFirst().GetId() << " -> " << edge.GetSecond().GetId() << std::endl;
-      }
-      for (auto& edge : graph[n2].GetEdges()) {
-        std::cout << edge.GetFirst().GetId() << " -> " << edge.GetSecond().GetId() << std::endl;
-      }
-      for (auto& edge : graph[n3].GetEdges()) {
-        std::cout << edge.GetFirst().GetId() << " -> " << edge.GetSecond().GetId() << std::endl;
-      }
-      graph.DeleteEdge(graph[1].GetNode(), graph[3].GetNode());
-      std::cout << "after detete node 2" << std::endl;
-      graph.DeleteNode(n2);
-
-      for (auto& edge : graph[n1].GetEdges()) {
-        std::cout << edge.GetFirst().GetId() << " -> " << edge.GetSecond().GetId() << std::endl;
-      }
-      try {
-        for (auto& edge : graph[n2].GetEdges()) {
+      for (auto& each : graph) {
+        std::cout << "node" << each.GetId() << std::endl;
+        for (auto& edge : graph[each.GetId()].GetEdges()) {
           std::cout << edge.GetFirst().GetId() << " -> " << edge.GetSecond().GetId() << std::endl;
         }
-      } catch (...) {
-        std::cout << "node 2 does not exist" << std::endl;
       }
-      for (auto& edge : graph[n3].GetEdges()) {
-        std::cout << edge.GetFirst().GetId() << " -> " << edge.GetSecond().GetId() << std::endl;
+      graph.DeleteEdge(graph[1].GetNode(), graph[3].GetNode());
+      graph.DeleteNode(n2);
+      std::cout << "after detete node 2 and the edge from 1 to 3" << std::endl;
+
+      for (auto& each : graph) {
+        std::cout << "node" << each.GetId() << std::endl;
+        for (auto& edge : graph[each.GetId()].GetEdges()) {
+          std::cout << edge.GetFirst().GetId() << " -> " << edge.GetSecond().GetId() << std::endl;
+        }
       }
       std::cout << "finished one test" << std::endl;
       end = clock();                                                                       // 结束时间

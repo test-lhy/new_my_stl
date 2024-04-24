@@ -14,8 +14,12 @@
 namespace lhy {
 enum NodeAllocatorMode { NormalNodeAllocatorMode, MapNodeAllocatorMode };
 template <node_c Node_>
-class NodeAllocator {
+class NodeAllocator : public DataStructure<Node_> {
  public:
+  template <node_c Nodee, edge_c Edge_>
+  friend class BaseGraph;
+  using iterator = typename IndexContainer<Node_>::iterator;
+  using reversed_iterator = typename IndexContainer<Node_>::reversed_iterator;
   NodeAllocator(EdgeReserveSync* edge_allocator_sync, const NodeAllocatorMode mode)
       : edge_allocator_sync_(edge_allocator_sync) {
     container_ = new IndexContainer<Node_>(relation_between_nodeallocator_indexcontainer.at(mode));
@@ -28,6 +32,16 @@ class NodeAllocator {
   Node_& GetNode(Index index);
   bool Exist(Index index);
   void Sync(Index index);
+  [[nodiscard]] iterator begin();
+  [[nodiscard]] iterator end();
+  [[nodiscard]] reversed_iterator rbegin();
+  [[nodiscard]] reversed_iterator rend();
+
+ private:
+  [[nodiscard]] typename DataStructure<Node_>::Pointer getBegin() override;
+  [[nodiscard]] typename DataStructure<Node_>::Pointer getEnd() override;
+
+ public:
   ~NodeAllocator();
 
   inline static std::map<NodeAllocatorMode, IndexContainerMode> relation_between_nodeallocator_indexcontainer = {
@@ -68,6 +82,30 @@ void NodeAllocator<Node_>::Sync(Index index) {
     max_index_ = index * 2 + 100;
     edge_allocator_sync_->Reserve(max_index_);
   }
+}
+template <node_c Node_>
+typename NodeAllocator<Node_>::iterator NodeAllocator<Node_>::begin() {
+  return container_->begin();
+}
+template <node_c Node_>
+typename NodeAllocator<Node_>::iterator NodeAllocator<Node_>::end() {
+  return container_->end();
+}
+template <node_c Node_>
+typename NodeAllocator<Node_>::reversed_iterator NodeAllocator<Node_>::rbegin() {
+  return container_->rbegin();
+}
+template <node_c Node_>
+typename NodeAllocator<Node_>::reversed_iterator NodeAllocator<Node_>::rend() {
+  return container_->rend();
+}
+template <node_c Node_>
+typename DataStructure<Node_>::Pointer NodeAllocator<Node_>::getBegin() {
+  return container_->getBegin();
+}
+template <node_c Node_>
+typename DataStructure<Node_>::Pointer NodeAllocator<Node_>::getEnd() {
+  return container_->getEnd();
 }
 template <node_c Node_>
 NodeAllocator<Node_>::~NodeAllocator() {
