@@ -216,11 +216,11 @@ void InsertSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& co
 template <typename T>
 void QuickSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function, int64_t depth,
                int64_t limit_depth) {
-  if (limit_depth != -1 && depth >= limit_depth) {
-    HeapSort(start, end, compare_function);
+  if (end - start == 0) {
     return;
   }
-  if (end - start == 0) {
+  if ((limit_depth != -1 && depth >= limit_depth) || end - start < 64) {
+    HeapSort(start, end, compare_function);
     return;
   }
   if (depth == 0) {
