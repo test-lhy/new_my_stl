@@ -1,0 +1,160 @@
+\hypertarget{classlhy_1_1Trees}{}\doxysection{lhy\+::Trees$<$ Origin\+\_\+\+Node\+\_\+, Edge\+\_\+ $>$ Class Template Reference}
+\label{classlhy_1_1Trees}\index{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}}
+
+
+{\ttfamily \#include $<$trees.\+h$>$}
+
+
+
+Inheritance diagram for lhy\+::Trees$<$ Origin\+\_\+\+Node\+\_\+, Edge\+\_\+ $>$\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[height=550pt]{classlhy_1_1Trees__inherit__graph}
+    \end{center}
+\end{figure}
+
+
+Collaboration diagram for lhy\+::Trees$<$ Origin\+\_\+\+Node\+\_\+, Edge\+\_\+ $>$\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[height=550pt]{classlhy_1_1Trees__coll__graph}
+    \end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1Trees_1_1return__node}{return\+\_\+node}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+    \item
+    \mbox{\hyperlink{classlhy_1_1Trees_a53528cdf77d1d3d7da59ade9b59bcf0d}{Trees}} (\mbox{\hyperlink{namespacelhy_a8dd45e35cdeb23237d34a598a1f0aa33}{Node\+Allocator\+Mode}} node\+\_\+allocator\+\_\+mode=Node\+Allocator\+Mode\+::\+Normal\+Node\+Allocator\+Mode, \mbox{\hyperlink{namespacelhy_ac0e60d71d470da69cbaa990726ec889f}{Edge\+Allocator\+Mode}} edge\+\_\+allocator\+\_\+mode=Edge\+Allocator\+Mode\+::\+Link\+List\+Edge\+Allocator\+Mode)
+    \item
+    void \mbox{\hyperlink{classlhy_1_1Trees_adff3372a3b73922c8be4f207c43952c3}{Add\+Root}} (Origin\+\_\+\+Node\+\_\+ \&\&node)
+    \item
+    {\footnotesize template$<$typename... Args$>$ }\\void \mbox{\hyperlink{classlhy_1_1Trees_a61f74a401932290215dee054abc55eb2}{Add\+Node}} (Origin\+\_\+\+Node\+\_\+ \&\&node, \mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} father, Args \&\&... args)
+    \item
+    {\footnotesize template$<$typename... Args$>$ }\\void \mbox{\hyperlink{classlhy_1_1Trees_a934df4da6b2ede1ccc3ca4b4a41005ba}{Change\+Father}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} node, \mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} father, Args \&\&... args)
+    \item
+    {\footnotesize template$<$typename... Args$>$ }\\void \mbox{\hyperlink{classlhy_1_1Trees_a4d6e3dfa51c831cde2bb1df0420c7e87}{Change\+Father\+With\+Check}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} node, \mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} father, Args \&\&... args)
+    \item
+    \mbox{\hyperlink{classlhy_1_1Trees_1_1return__node}{return\+\_\+node}} \mbox{\hyperlink{classlhy_1_1Trees_a52ffed73f56684417ea4c8bb2410b053}{operator\mbox{[}$\,$\mbox{]}}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} node)
+    \item
+    \mbox{\hyperlink{classlhy_1_1Trees_1_1return__node}{return\+\_\+node}} \mbox{\hyperlink{classlhy_1_1Trees_ae8a6ecac02859cc1051dc0a10bf78af0}{Get\+Node}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} node)
+    \item
+    bool \mbox{\hyperlink{classlhy_1_1Trees_ac5ee0c6a0f2d56e6da72f5a317f5af6e}{Is\+Father}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} father, \mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} node)
+    \item
+    void \mbox{\hyperlink{classlhy_1_1Trees_aaba8d236d6bc166348ed316bd64f0b8e}{Check\+Node\+Exist}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} node) const
+    \item
+    void \mbox{\hyperlink{classlhy_1_1Trees_a43ee807f53af287b48b1b74e9b36c3c7}{Set\+Root}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} node)
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlhy_1_1Trees_a53528cdf77d1d3d7da59ade9b59bcf0d}\label{classlhy_1_1Trees_a53528cdf77d1d3d7da59ade9b59bcf0d}}
+\index{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}!Trees@{Trees}}
+\index{Trees@{Trees}!lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{Trees()}{Trees()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Origin\+\_\+\+Node\+\_\+ = Node, edge\+\_\+c Edge\+\_\+ = Edge$>$ \\
+\mbox{\hyperlink{classlhy_1_1Trees}{lhy\+::\+Trees}}$<$ Origin\+\_\+\+Node\+\_\+, Edge\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1Trees}{Trees}} (\begin{DoxyParamCaption}
+                                                                                                                                                     \item[{\mbox{\hyperlink{namespacelhy_a8dd45e35cdeb23237d34a598a1f0aa33}{Node\+Allocator\+Mode}}}]{node\+\_\+allocator\+\_\+mode = {\ttfamily NodeAllocatorMode\+:\+:NormalNodeAllocatorMode},  }\item[{\mbox{\hyperlink{namespacelhy_ac0e60d71d470da69cbaa990726ec889f}{Edge\+Allocator\+Mode}}}]{edge\+\_\+allocator\+\_\+mode = {\ttfamily EdgeAllocatorMode\+:\+:LinkListEdgeAllocatorMode} }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlhy_1_1Trees_a61f74a401932290215dee054abc55eb2}\label{classlhy_1_1Trees_a61f74a401932290215dee054abc55eb2}}
+\index{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}!AddNode@{AddNode}}
+\index{AddNode@{AddNode}!lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{AddNode()}{AddNode()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Origin\+\_\+\+Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+template$<$typename... Args$>$ \\
+void \mbox{\hyperlink{classlhy_1_1Trees}{lhy\+::\+Trees}}$<$ Origin\+\_\+\+Node\+\_\+, Edge\+\_\+ $>$\+::Add\+Node (\begin{DoxyParamCaption}
+                                                                                                                        \item[{Origin\+\_\+\+Node\+\_\+ \&\&}]{node,  }\item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{father,  }\item[{Args \&\&...}]{args }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1Trees_adff3372a3b73922c8be4f207c43952c3}\label{classlhy_1_1Trees_adff3372a3b73922c8be4f207c43952c3}}
+\index{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}!AddRoot@{AddRoot}}
+\index{AddRoot@{AddRoot}!lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{AddRoot()}{AddRoot()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Origin\+\_\+\+Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+void \mbox{\hyperlink{classlhy_1_1Trees}{lhy\+::\+Trees}}$<$ Origin\+\_\+\+Node\+\_\+, Edge\+\_\+ $>$\+::Add\+Root (\begin{DoxyParamCaption}
+                                                                                                                        \item[{Origin\+\_\+\+Node\+\_\+ \&\&}]{node }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1Trees_a934df4da6b2ede1ccc3ca4b4a41005ba}\label{classlhy_1_1Trees_a934df4da6b2ede1ccc3ca4b4a41005ba}}
+\index{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}!ChangeFather@{ChangeFather}}
+\index{ChangeFather@{ChangeFather}!lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{ChangeFather()}{ChangeFather()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Origin\+\_\+\+Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+template$<$typename... Args$>$ \\
+void \mbox{\hyperlink{classlhy_1_1Trees}{lhy\+::\+Trees}}$<$ Origin\+\_\+\+Node\+\_\+, Edge\+\_\+ $>$\+::Change\+Father (\begin{DoxyParamCaption}
+                                                                                                                             \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{node,  }\item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{father,  }\item[{Args \&\&...}]{args }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1Trees_a4d6e3dfa51c831cde2bb1df0420c7e87}\label{classlhy_1_1Trees_a4d6e3dfa51c831cde2bb1df0420c7e87}}
+\index{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}!ChangeFatherWithCheck@{ChangeFatherWithCheck}}
+\index{ChangeFatherWithCheck@{ChangeFatherWithCheck}!lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{ChangeFatherWithCheck()}{ChangeFatherWithCheck()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Origin\+\_\+\+Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+template$<$typename... Args$>$ \\
+void \mbox{\hyperlink{classlhy_1_1Trees}{lhy\+::\+Trees}}$<$ Origin\+\_\+\+Node\+\_\+, Edge\+\_\+ $>$\+::Change\+Father\+With\+Check (\begin{DoxyParamCaption}
+                                                                                                                                          \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{node,  }\item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{father,  }\item[{Args \&\&...}]{args }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1Trees_aaba8d236d6bc166348ed316bd64f0b8e}\label{classlhy_1_1Trees_aaba8d236d6bc166348ed316bd64f0b8e}}
+\index{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}!CheckNodeExist@{CheckNodeExist}}
+\index{CheckNodeExist@{CheckNodeExist}!lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{CheckNodeExist()}{CheckNodeExist()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Origin\+\_\+\+Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+void \mbox{\hyperlink{classlhy_1_1Trees}{lhy\+::\+Trees}}$<$ Origin\+\_\+\+Node\+\_\+, Edge\+\_\+ $>$\+::Check\+Node\+Exist (\begin{DoxyParamCaption}
+                                                                                                                                 \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{node }
+\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlhy_1_1Trees_ae8a6ecac02859cc1051dc0a10bf78af0}\label{classlhy_1_1Trees_ae8a6ecac02859cc1051dc0a10bf78af0}}
+\index{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}!GetNode@{GetNode}}
+\index{GetNode@{GetNode}!lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{GetNode()}{GetNode()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Origin\+\_\+\+Node\+\_\+ = Node, edge\+\_\+c Edge\+\_\+ = Edge$>$ \\
+\mbox{\hyperlink{classlhy_1_1Trees_1_1return__node}{return\+\_\+node}} \mbox{\hyperlink{classlhy_1_1Trees}{lhy\+::\+Trees}}$<$ Origin\+\_\+\+Node\+\_\+, Edge\+\_\+ $>$\+::Get\+Node (\begin{DoxyParamCaption}
+                                                                                                                                                                                          \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{node }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlhy_1_1Trees_ac5ee0c6a0f2d56e6da72f5a317f5af6e}\label{classlhy_1_1Trees_ac5ee0c6a0f2d56e6da72f5a317f5af6e}}
+\index{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}!IsFather@{IsFather}}
+\index{IsFather@{IsFather}!lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{IsFather()}{IsFather()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Origin\+\_\+\+Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+bool \mbox{\hyperlink{classlhy_1_1Trees}{lhy\+::\+Trees}}$<$ Origin\+\_\+\+Node\+\_\+, Edge\+\_\+ $>$\+::Is\+Father (\begin{DoxyParamCaption}
+                                                                                                                         \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{father,  }\item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{node }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1Trees_a52ffed73f56684417ea4c8bb2410b053}\label{classlhy_1_1Trees_a52ffed73f56684417ea4c8bb2410b053}}
+\index{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Origin\+\_\+\+Node\+\_\+ = Node, edge\+\_\+c Edge\+\_\+ = Edge$>$ \\
+\mbox{\hyperlink{classlhy_1_1Trees_1_1return__node}{return\+\_\+node}} \mbox{\hyperlink{classlhy_1_1Trees}{lhy\+::\+Trees}}$<$ Origin\+\_\+\+Node\+\_\+, Edge\+\_\+ $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}
+                                                                                                                                                                                                             \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{node }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlhy_1_1Trees_a43ee807f53af287b48b1b74e9b36c3c7}\label{classlhy_1_1Trees_a43ee807f53af287b48b1b74e9b36c3c7}}
+\index{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}!SetRoot@{SetRoot}}
+\index{SetRoot@{SetRoot}!lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$@{lhy::Trees$<$ Origin\_Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{SetRoot()}{SetRoot()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Origin\+\_\+\+Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+void \mbox{\hyperlink{classlhy_1_1Trees}{lhy\+::\+Trees}}$<$ Origin\+\_\+\+Node\+\_\+, Edge\+\_\+ $>$\+::Set\+Root (\begin{DoxyParamCaption}
+                                                                                                                        \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{node }
+\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+                                                                             \item
+                                                                             my\+\_\+std/graph/include/\mbox{\hyperlink{trees_8h}{trees.\+h}}
+\end{DoxyCompactItemize}

@@ -1,0 +1,61 @@
+\hypertarget{type__traits_8h}{}\doxysection{my\+\_\+std/normal/include/type\+\_\+traits.h File Reference}
+\label{type__traits_8h}\index{my\_std/normal/include/type\_traits.h@{my\_std/normal/include/type\_traits.h}}
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include \char`\"{}basic.\+h\char`\"{}}\newline
+Include dependency graph for type\+\_\+traits.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=234pt]{type__traits_8h__incl}
+    \end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=350pt]{type__traits_8h__dep__incl}
+    \end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1TypeTraits}{lhy\+::\+Type\+Traits$<$ T $>$}}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1TypeTraitsForInt}{lhy\+::\+Type\+Traits\+For\+Int}}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1TypeTraitsForChar}{lhy\+::\+Type\+Traits\+For\+Char}}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1TypeTraits_3_01int_01_4}{lhy\+::\+Type\+Traits$<$ int $>$}}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1TypeTraits_3_01long_01_4}{lhy\+::\+Type\+Traits$<$ long $>$}}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1TypeTraits_3_01long_01long_01_4}{lhy\+::\+Type\+Traits$<$ long long $>$}}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1TypeTraits_3_01unsigned_01int_01_4}{lhy\+::\+Type\+Traits$<$ unsigned int $>$}}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1TypeTraits_3_01unsigned_01long_01_4}{lhy\+::\+Type\+Traits$<$ unsigned long $>$}}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1TypeTraits_3_01unsigned_01long_01long_01_4}{lhy\+::\+Type\+Traits$<$ unsigned long long $>$}}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1TypeTraits_3_01std_1_1string_01_4}{lhy\+::\+Type\+Traits$<$ std\+::string $>$}}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1TypeTraits_3_01char_01_4}{lhy\+::\+Type\+Traits$<$ char $>$}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+    \item
+    \mbox{\hyperlink{namespacelhy}{lhy}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+    \item
+    {\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacelhy_ad13db8054482e7211f9c5dbf5c583981}{lhy\+::int\+\_\+type}} = requires() \{ Type\+Traits$<$T$>$\+::is\+Integer; \}
+    \item
+    {\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacelhy_ac1b2f92f7041203d6baaf04c33f21e4b}{lhy\+::not\+\_\+int\+\_\+type}} = not int\+\_\+type$<$T$>$
+    \item
+    {\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacelhy_a93e98a5c7da03f0ac3228703af9d82b9}{lhy\+::char\+\_\+type}} = requires() \{ Type\+Traits$<$T$>$\+::is\+Char; \}
+    \item
+    {\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{namespacelhy_a6dc9c11a95b2a6880cf18f6093c9362d}{lhy\+::not\+\_\+char\+\_\+type}} = not char\+\_\+type$<$T$>$
+\end{DoxyCompactItemize}

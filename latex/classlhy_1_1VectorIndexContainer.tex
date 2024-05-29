@@ -1,0 +1,172 @@
+\hypertarget{classlhy_1_1VectorIndexContainer}{}\doxysection{lhy\+::Vector\+Index\+Container$<$ T $>$ Class Template Reference}
+\label{classlhy_1_1VectorIndexContainer}\index{lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}}
+
+
+{\ttfamily \#include $<$vector\+\_\+index\+\_\+container.\+h$>$}
+
+
+
+Inheritance diagram for lhy\+::Vector\+Index\+Container$<$ T $>$\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=234pt]{classlhy_1_1VectorIndexContainer__inherit__graph}
+    \end{center}
+\end{figure}
+
+
+Collaboration diagram for lhy\+::Vector\+Index\+Container$<$ T $>$\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=234pt]{classlhy_1_1VectorIndexContainer__coll__graph}
+    \end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1VectorIndexContainer_1_1BaseIterator}{Base\+Iterator}}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1VectorIndexContainer_1_1iterator}{iterator}}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1VectorIndexContainer_1_1reversed__iterator}{reversed\+\_\+iterator}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+    \item
+    void \mbox{\hyperlink{classlhy_1_1VectorIndexContainer_a4c27761693b30e55637ce1e7145bc76d}{erase}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} index) override
+    \item
+    bool \mbox{\hyperlink{classlhy_1_1VectorIndexContainer_abfc6d531895eb6282177257f26043c2f}{Exist}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} index) override
+    \item
+    \mbox{\hyperlink{index__container__impl_8h_adc072f85e3472fd9742a0a6302fd9daa}{Index\+Container\+Mode}} \mbox{\hyperlink{classlhy_1_1VectorIndexContainer_a2a12e143542153be2937556cb652a489}{Get\+Mode}} () const override
+    \item
+    \mbox{\hyperlink{classlhy_1_1IndexContainerImpl}{Index\+Container\+Impl}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1VectorIndexContainer_1_1iterator}{iterator}} \mbox{\hyperlink{classlhy_1_1VectorIndexContainer_a476e785423b13cf0e89a0ec657a87e59}{begin}} () override
+    \item
+    \mbox{\hyperlink{classlhy_1_1IndexContainerImpl}{Index\+Container\+Impl}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1VectorIndexContainer_1_1iterator}{iterator}} \mbox{\hyperlink{classlhy_1_1VectorIndexContainer_af0eeb328e5c2dfc70bcdcc9d22ed103e}{end}} () override
+    \item
+    \mbox{\hyperlink{classlhy_1_1IndexContainerImpl}{Index\+Container\+Impl}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1VectorIndexContainer_1_1reversed__iterator}{reversed\+\_\+iterator}} \mbox{\hyperlink{classlhy_1_1VectorIndexContainer_a9e583d5d6b366210e8e2f11fac9a4438}{rbegin}} () override
+    \item
+    \mbox{\hyperlink{classlhy_1_1IndexContainerImpl}{Index\+Container\+Impl}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1VectorIndexContainer_1_1reversed__iterator}{reversed\+\_\+iterator}} \mbox{\hyperlink{classlhy_1_1VectorIndexContainer_a8f6aa2739af0605ed4321894fdda13a5}{rend}} () override
+    \item
+    T \& \mbox{\hyperlink{classlhy_1_1VectorIndexContainer_a7751bb956d8dfb3980c1a873f3e0ea37}{operator\mbox{[}$\,$\mbox{]}}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} index) override
+    \item
+    const T \& \mbox{\hyperlink{classlhy_1_1VectorIndexContainer_a15d05c4533307bb7ee51aeaaba2b1dbf}{operator\mbox{[}$\,$\mbox{]}}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} index) const override
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlhy_1_1VectorIndexContainer_a476e785423b13cf0e89a0ec657a87e59}\label{classlhy_1_1VectorIndexContainer_a476e785423b13cf0e89a0ec657a87e59}}
+\index{lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}!begin@{begin}}
+\index{begin@{begin}!lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{begin()}{begin()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1IndexContainerImpl}{Index\+Container\+Impl}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1VectorIndexContainer_1_1iterator}{iterator}} \mbox{\hyperlink{classlhy_1_1VectorIndexContainer}{lhy\+::\+Vector\+Index\+Container}}$<$ T $>$\+::begin\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlhy_1_1IndexContainerImpl_a58dad677bfaf97e12d171f9bb36f81fa}{lhy\+::\+Index\+Container\+Impl$<$ T $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1VectorIndexContainer_af0eeb328e5c2dfc70bcdcc9d22ed103e}\label{classlhy_1_1VectorIndexContainer_af0eeb328e5c2dfc70bcdcc9d22ed103e}}
+\index{lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}!end@{end}}
+\index{end@{end}!lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1IndexContainerImpl}{Index\+Container\+Impl}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1VectorIndexContainer_1_1iterator}{iterator}} \mbox{\hyperlink{classlhy_1_1VectorIndexContainer}{lhy\+::\+Vector\+Index\+Container}}$<$ T $>$\+::end\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlhy_1_1IndexContainerImpl_af339368618b41711a2683bd043edcd01}{lhy\+::\+Index\+Container\+Impl$<$ T $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1VectorIndexContainer_a4c27761693b30e55637ce1e7145bc76d}\label{classlhy_1_1VectorIndexContainer_a4c27761693b30e55637ce1e7145bc76d}}
+\index{lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}!erase@{erase}}
+\index{erase@{erase}!lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{erase()}{erase()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classlhy_1_1VectorIndexContainer}{lhy\+::\+Vector\+Index\+Container}}$<$ T $>$\+::erase (\begin{DoxyParamCaption}
+                                                                                                                   \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{index }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlhy_1_1IndexContainerImpl_ad8057ae10cbec8ce9ac228bd3ab1c03c}{lhy\+::\+Index\+Container\+Impl$<$ T $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1VectorIndexContainer_abfc6d531895eb6282177257f26043c2f}\label{classlhy_1_1VectorIndexContainer_abfc6d531895eb6282177257f26043c2f}}
+\index{lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}!Exist@{Exist}}
+\index{Exist@{Exist}!lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Exist()}{Exist()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{classlhy_1_1VectorIndexContainer}{lhy\+::\+Vector\+Index\+Container}}$<$ T $>$\+::Exist (\begin{DoxyParamCaption}
+                                                                                                                   \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{index }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlhy_1_1IndexContainerImpl_aa0e5e000f80c77b20cdef517e0fc800d}{lhy\+::\+Index\+Container\+Impl$<$ T $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1VectorIndexContainer_a2a12e143542153be2937556cb652a489}\label{classlhy_1_1VectorIndexContainer_a2a12e143542153be2937556cb652a489}}
+\index{lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}!GetMode@{GetMode}}
+\index{GetMode@{GetMode}!lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{GetMode()}{GetMode()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{index__container__impl_8h_adc072f85e3472fd9742a0a6302fd9daa}{Index\+Container\+Mode}} \mbox{\hyperlink{classlhy_1_1VectorIndexContainer}{lhy\+::\+Vector\+Index\+Container}}$<$ T $>$\+::Get\+Mode\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlhy_1_1IndexContainerImpl_a06a9affe4b4061c580dd20bcdad9686f}{lhy\+::\+Index\+Container\+Impl$<$ T $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1VectorIndexContainer_a15d05c4533307bb7ee51aeaaba2b1dbf}\label{classlhy_1_1VectorIndexContainer_a15d05c4533307bb7ee51aeaaba2b1dbf}}
+\index{lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const T \& \mbox{\hyperlink{classlhy_1_1VectorIndexContainer}{lhy\+::\+Vector\+Index\+Container}}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}
+                                                                                                                                                \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{index }
+\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlhy_1_1IndexContainerImpl_a6db89b5dff69180d0764d1c9bcc77d0b}{lhy\+::\+Index\+Container\+Impl$<$ T $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1VectorIndexContainer_a7751bb956d8dfb3980c1a873f3e0ea37}\label{classlhy_1_1VectorIndexContainer_a7751bb956d8dfb3980c1a873f3e0ea37}}
+\index{lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \& \mbox{\hyperlink{classlhy_1_1VectorIndexContainer}{lhy\+::\+Vector\+Index\+Container}}$<$ T $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}
+                                                                                                                                          \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{index }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlhy_1_1IndexContainerImpl_a740bc16430e1ac568c83292544a020e9}{lhy\+::\+Index\+Container\+Impl$<$ T $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1VectorIndexContainer_a9e583d5d6b366210e8e2f11fac9a4438}\label{classlhy_1_1VectorIndexContainer_a9e583d5d6b366210e8e2f11fac9a4438}}
+\index{lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}!rbegin@{rbegin}}
+\index{rbegin@{rbegin}!lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{rbegin()}{rbegin()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1IndexContainerImpl}{Index\+Container\+Impl}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1VectorIndexContainer_1_1reversed__iterator}{reversed\+\_\+iterator}} \mbox{\hyperlink{classlhy_1_1VectorIndexContainer}{lhy\+::\+Vector\+Index\+Container}}$<$ T $>$\+::rbegin\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlhy_1_1IndexContainerImpl_aa577e723ca161040c44a15a059cee7b4}{lhy\+::\+Index\+Container\+Impl$<$ T $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1VectorIndexContainer_a8f6aa2739af0605ed4321894fdda13a5}\label{classlhy_1_1VectorIndexContainer_a8f6aa2739af0605ed4321894fdda13a5}}
+\index{lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}!rend@{rend}}
+\index{rend@{rend}!lhy::VectorIndexContainer$<$ T $>$@{lhy::VectorIndexContainer$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{rend()}{rend()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1IndexContainerImpl}{Index\+Container\+Impl}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1VectorIndexContainer_1_1reversed__iterator}{reversed\+\_\+iterator}} \mbox{\hyperlink{classlhy_1_1VectorIndexContainer}{lhy\+::\+Vector\+Index\+Container}}$<$ T $>$\+::rend\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classlhy_1_1IndexContainerImpl_abbc94d3f9392086e16957b56f1e9a1a4}{lhy\+::\+Index\+Container\+Impl$<$ T $>$}}.
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+                                                                             \item
+                                                                             my\+\_\+std/normal/include/\mbox{\hyperlink{vector__index__container_8h}{vector\+\_\+index\+\_\+container.\+h}}
+\end{DoxyCompactItemize}

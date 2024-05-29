@@ -1,0 +1,196 @@
+\hypertarget{classlhy_1_1stack}{}\doxysection{lhy\+::stack$<$ T $>$ Class Template Reference}
+\label{classlhy_1_1stack}\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+
+
+{\ttfamily \#include $<$stack.\+h$>$}
+
+
+
+Inheritance diagram for lhy\+::stack$<$ T $>$\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=200pt]{classlhy_1_1stack__inherit__graph}
+    \end{center}
+\end{figure}
+
+
+Collaboration diagram for lhy\+::stack$<$ T $>$\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=200pt]{classlhy_1_1stack__coll__graph}
+    \end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+    \item
+    using \mbox{\hyperlink{classlhy_1_1stack_ad8a552003d40184cf328c2c5974e9b0d}{iterator}} = \mbox{\hyperlink{classlhy_1_1vector}{vector}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1stack_ad8a552003d40184cf328c2c5974e9b0d}{iterator}}
+    \item
+    using \mbox{\hyperlink{classlhy_1_1stack_a3bdc92e014a60e1f773261809105d4a6}{reversed\+\_\+iterator}} = \mbox{\hyperlink{classlhy_1_1vector}{vector}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1stack_ad8a552003d40184cf328c2c5974e9b0d}{iterator}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+    \item
+    \mbox{\hyperlink{classlhy_1_1stack_a582917fec210e285c33e761fe1e7a212}{stack}} ()
+    \item
+    \mbox{\hyperlink{classlhy_1_1stack_ad90630f77d001c61aacd6f545bc3e198}{stack}} (const \mbox{\hyperlink{classlhy_1_1stack}{stack}}$<$ T $>$ \&)
+    \item
+    \mbox{\hyperlink{classlhy_1_1stack_ae49db0e11245ba6b46c98e816a16faf4}{stack}} (\mbox{\hyperlink{classlhy_1_1stack}{stack}}$<$ T $>$ \&\&)
+    \item
+    \mbox{\hyperlink{classlhy_1_1stack_af416bcd6e619d2ce4c31e0c951a589d6}{stack}} (\mbox{\hyperlink{classlhy_1_1stack_ad8a552003d40184cf328c2c5974e9b0d}{iterator}}, \mbox{\hyperlink{classlhy_1_1stack_ad8a552003d40184cf328c2c5974e9b0d}{iterator}})
+    \item
+    \mbox{\hyperlink{classlhy_1_1stack_a5761a34abe5ade564d19331387caa0d0}{$\sim$stack}} () override
+    \item
+    void \mbox{\hyperlink{classlhy_1_1stack_a9bceb592d5761925ca6e8993bc3f894a}{clear}} ()
+    \item
+    bool \mbox{\hyperlink{classlhy_1_1stack_a31572f31b0fcb19d334bdc6a2567b5c6}{empty}} () const
+    \item
+    void \mbox{\hyperlink{classlhy_1_1stack_a611d95be399e4c518273383e96984fb8}{push}} (const T \&)
+    \item
+    void \mbox{\hyperlink{classlhy_1_1stack_aace85a09486c998948cc4bcc992dd5ae}{pop}} ()
+    \item
+    T \& \mbox{\hyperlink{classlhy_1_1stack_ae2dbb1efe4374b59e32ba7f3fa9810e4}{top}} ()
+    \item
+    std\+::string \mbox{\hyperlink{classlhy_1_1stack_a564a14966f10b01dd150b7ee7228a460}{show}} (int count\+\_\+limit=20) const
+    \item
+    \mbox{\hyperlink{classlhy_1_1stack}{stack}}$<$ T $>$ \& \mbox{\hyperlink{classlhy_1_1stack_a842db7c5f3c602148dd2c34beb5a5bd3}{operator=}} (const \mbox{\hyperlink{classlhy_1_1stack}{stack}}$<$ T $>$ \&)
+    \item
+    \mbox{\hyperlink{classlhy_1_1stack}{stack}}$<$ T $>$ \& \mbox{\hyperlink{classlhy_1_1stack_a7f4d27253e011bb7a5ba5a544be429cb}{operator=}} (\mbox{\hyperlink{classlhy_1_1stack}{stack}}$<$ T $>$ \&\&) noexcept
+    \item
+    \mbox{\hyperlink{classlhy_1_1stack}{stack}}$<$ T $>$ \& \mbox{\hyperlink{classlhy_1_1stack_a164e01cb2510c40601cda2b026f73e2b}{operator=}} (const std\+::initializer\+\_\+list$<$ T $>$ \&)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classlhy_1_1stack_ad8a552003d40184cf328c2c5974e9b0d}\label{classlhy_1_1stack_ad8a552003d40184cf328c2c5974e9b0d}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!iterator@{iterator}}
+\index{iterator@{iterator}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{iterator}{iterator}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+using \mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1stack_ad8a552003d40184cf328c2c5974e9b0d}{iterator}} =  \mbox{\hyperlink{classlhy_1_1vector}{vector}}$<$T$>$\+::\mbox{\hyperlink{classlhy_1_1stack_ad8a552003d40184cf328c2c5974e9b0d}{iterator}}}
+
+\mbox{\Hypertarget{classlhy_1_1stack_a3bdc92e014a60e1f773261809105d4a6}\label{classlhy_1_1stack_a3bdc92e014a60e1f773261809105d4a6}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!reversed\_iterator@{reversed\_iterator}}
+\index{reversed\_iterator@{reversed\_iterator}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{reversed\_iterator}{reversed\_iterator}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+using \mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1stack_a3bdc92e014a60e1f773261809105d4a6}{reversed\+\_\+iterator}} =  \mbox{\hyperlink{classlhy_1_1vector}{vector}}$<$T$>$\+::\mbox{\hyperlink{classlhy_1_1stack_ad8a552003d40184cf328c2c5974e9b0d}{iterator}}}
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlhy_1_1stack_a582917fec210e285c33e761fe1e7a212}\label{classlhy_1_1stack_a582917fec210e285c33e761fe1e7a212}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!stack@{stack}}
+\index{stack@{stack}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{stack()}{stack()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1stack}{stack}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+\mbox{\Hypertarget{classlhy_1_1stack_ad90630f77d001c61aacd6f545bc3e198}\label{classlhy_1_1stack_ad90630f77d001c61aacd6f545bc3e198}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!stack@{stack}}
+\index{stack@{stack}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{stack()}{stack()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1stack}{stack}} (\begin{DoxyParamCaption}
+                                                                                                                \item[{const \mbox{\hyperlink{classlhy_1_1stack}{stack}}$<$ T $>$ \&}]{other }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1stack_ae49db0e11245ba6b46c98e816a16faf4}\label{classlhy_1_1stack_ae49db0e11245ba6b46c98e816a16faf4}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!stack@{stack}}
+\index{stack@{stack}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{stack()}{stack()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1stack}{stack}} (\begin{DoxyParamCaption}
+                                                                                                                \item[{\mbox{\hyperlink{classlhy_1_1stack}{stack}}$<$ T $>$ \&\&}]{other }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1stack_af416bcd6e619d2ce4c31e0c951a589d6}\label{classlhy_1_1stack_af416bcd6e619d2ce4c31e0c951a589d6}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!stack@{stack}}
+\index{stack@{stack}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{stack()}{stack()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::\mbox{\hyperlink{classlhy_1_1stack}{stack}} (\begin{DoxyParamCaption}
+                                                                                                                \item[{\mbox{\hyperlink{classlhy_1_1stack_ad8a552003d40184cf328c2c5974e9b0d}{iterator}}}]{start,  }\item[{\mbox{\hyperlink{classlhy_1_1stack_ad8a552003d40184cf328c2c5974e9b0d}{iterator}}}]{end }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1stack_a5761a34abe5ade564d19331387caa0d0}\label{classlhy_1_1stack_a5761a34abe5ade564d19331387caa0d0}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!````~stack@{$\sim$stack}}
+\index{````~stack@{$\sim$stack}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{$\sim$stack()}{~stack()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::$\sim$\mbox{\hyperlink{classlhy_1_1stack}{stack}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlhy_1_1stack_a9bceb592d5761925ca6e8993bc3f894a}\label{classlhy_1_1stack_a9bceb592d5761925ca6e8993bc3f894a}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!clear@{clear}}
+\index{clear@{clear}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::clear}
+
+\mbox{\Hypertarget{classlhy_1_1stack_a31572f31b0fcb19d334bdc6a2567b5c6}\label{classlhy_1_1stack_a31572f31b0fcb19d334bdc6a2567b5c6}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!empty@{empty}}
+\index{empty@{empty}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{empty()}{empty()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+bool \mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::empty}
+
+\mbox{\Hypertarget{classlhy_1_1stack_a842db7c5f3c602148dd2c34beb5a5bd3}\label{classlhy_1_1stack_a842db7c5f3c602148dd2c34beb5a5bd3}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1stack}{stack}}$<$ T $>$ \& \mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classlhy_1_1stack}{stack}}$<$ T $>$ \&}]{other }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1stack_a164e01cb2510c40601cda2b026f73e2b}\label{classlhy_1_1stack_a164e01cb2510c40601cda2b026f73e2b}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1stack}{stack}}$<$ T $>$ \& \mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{const std\+::initializer\+\_\+list$<$ T $>$ \&}]{element\+\_\+list }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1stack_a7f4d27253e011bb7a5ba5a544be429cb}\label{classlhy_1_1stack_a7f4d27253e011bb7a5ba5a544be429cb}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1stack}{stack}}$<$ T $>$ \& \mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlhy_1_1stack}{stack}}$<$ T $>$ \&\&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+\mbox{\Hypertarget{classlhy_1_1stack_aace85a09486c998948cc4bcc992dd5ae}\label{classlhy_1_1stack_aace85a09486c998948cc4bcc992dd5ae}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!pop@{pop}}
+\index{pop@{pop}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{pop()}{pop()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::pop}
+
+\mbox{\Hypertarget{classlhy_1_1stack_a611d95be399e4c518273383e96984fb8}\label{classlhy_1_1stack_a611d95be399e4c518273383e96984fb8}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!push@{push}}
+\index{push@{push}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{push()}{push()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::push (\begin{DoxyParamCaption}\item[{const T \&}]{data }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1stack_a564a14966f10b01dd150b7ee7228a460}\label{classlhy_1_1stack_a564a14966f10b01dd150b7ee7228a460}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!show@{show}}
+\index{show@{show}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{show()}{show()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::string \mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::show (\begin{DoxyParamCaption}\item[{int}]{count\+\_\+limit = {\ttfamily 20} }\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlhy_1_1stack_ae2dbb1efe4374b59e32ba7f3fa9810e4}\label{classlhy_1_1stack_ae2dbb1efe4374b59e32ba7f3fa9810e4}}
+\index{lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}!top@{top}}
+\index{top@{top}!lhy::stack$<$ T $>$@{lhy::stack$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{top()}{top()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \& \mbox{\hyperlink{classlhy_1_1stack}{lhy\+::stack}}$<$ T $>$\+::top}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item
+my\+\_\+std/normal/include/\mbox{\hyperlink{stack_8h}{stack.\+h}}\end{DoxyCompactItemize}
