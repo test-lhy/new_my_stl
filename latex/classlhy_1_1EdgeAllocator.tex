@@ -1,0 +1,166 @@
+\hypertarget{classlhy_1_1EdgeAllocator}{}\doxysection{lhy\+::Edge\+Allocator$<$ Edge\+\_\+ $>$ Class Template Reference}
+\label{classlhy_1_1EdgeAllocator}\index{lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}}
+
+
+{\ttfamily \#include $<$edge\+\_\+allocator.\+h$>$}
+
+
+
+Inheritance diagram for lhy\+::Edge\+Allocator$<$ Edge\+\_\+ $>$\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=350pt]{classlhy_1_1EdgeAllocator__inherit__graph}
+    \end{center}
+\end{figure}
+
+
+Collaboration diagram for lhy\+::Edge\+Allocator$<$ Edge\+\_\+ $>$\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=197pt]{classlhy_1_1EdgeAllocator__coll__graph}
+    \end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+    \item
+    virtual void \mbox{\hyperlink{classlhy_1_1EdgeAllocator_adb79b1735732013a649bc075de75e7e7}{Add\+Edge}} (const Edge\+\_\+ \&edge)=0
+    \item
+    {\footnotesize template$<$typename... Args$>$ }\\void \mbox{\hyperlink{classlhy_1_1EdgeAllocator_a7681ae365c700bf60795cf6101ec9065}{Emplace\+Edge}} (Args \&\&... args)
+    \item
+    virtual bool \mbox{\hyperlink{classlhy_1_1EdgeAllocator_af4d969e2b12514afe81ee7e6e9cbdcab}{Exist}} (const Edge\+\_\+ \&edge)=0
+    \item
+    virtual void \mbox{\hyperlink{classlhy_1_1EdgeAllocator_a03e5196214ca93f11b9c4f8e6a4ea039}{Delete\+Edge}} (const Edge\+\_\+ \&edge)=0
+    \item
+    virtual void \mbox{\hyperlink{classlhy_1_1EdgeAllocator_a0c3b7a32f1d1d55b54c9e01800cb9616}{Delete\+Edges}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} first, \mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} second)=0
+    \item
+    virtual const \mbox{\hyperlink{classlhy_1_1list}{list}}$<$ Edge\+\_\+ $>$ \& \mbox{\hyperlink{classlhy_1_1EdgeAllocator_ac185a92d6f232301eaf7d6c598806c03}{Get\+Edges}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} node)=0
+    \item
+    virtual void \mbox{\hyperlink{classlhy_1_1EdgeAllocator_a4d02481328b4111765a380bd8118451e}{Delete\+Node}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} node)=0
+    \item
+    virtual bool \mbox{\hyperlink{classlhy_1_1EdgeAllocator_a12bcbcd0cc3625e5372b220645127ddc}{Need\+Reget\+Edges}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} node)
+    \item
+    virtual \mbox{\hyperlink{classlhy_1_1EdgeAllocator_a71928306567408d8d79fc81ad1b01fd5}{$\sim$\+Edge\+Allocator}} ()=default
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlhy_1_1EdgeAllocator_a71928306567408d8d79fc81ad1b01fd5}\label{classlhy_1_1EdgeAllocator_a71928306567408d8d79fc81ad1b01fd5}}
+\index{lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}!````~EdgeAllocator@{$\sim$EdgeAllocator}}
+\index{````~EdgeAllocator@{$\sim$EdgeAllocator}!lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{$\sim$EdgeAllocator()}{~EdgeAllocator()}}
+{\footnotesize\ttfamily template$<$edge\+\_\+c Edge\+\_\+$>$ \\
+virtual \mbox{\hyperlink{classlhy_1_1EdgeAllocator}{lhy\+::\+Edge\+Allocator}}$<$ Edge\+\_\+ $>$\+::$\sim$\mbox{\hyperlink{classlhy_1_1EdgeAllocator}{Edge\+Allocator}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlhy_1_1EdgeAllocator_adb79b1735732013a649bc075de75e7e7}\label{classlhy_1_1EdgeAllocator_adb79b1735732013a649bc075de75e7e7}}
+\index{lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}!AddEdge@{AddEdge}}
+\index{AddEdge@{AddEdge}!lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{AddEdge()}{AddEdge()}}
+{\footnotesize\ttfamily template$<$edge\+\_\+c Edge\+\_\+$>$ \\
+virtual void \mbox{\hyperlink{classlhy_1_1EdgeAllocator}{lhy\+::\+Edge\+Allocator}}$<$ Edge\+\_\+ $>$\+::Add\+Edge (\begin{DoxyParamCaption}
+                                                                                                                        \item[{const Edge\+\_\+ \&}]{edge }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlhy_1_1MatrixEdgeAllocator_a286d9b086191fac649e692e4eb5cf325}{lhy\+::\+Matrix\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}, \mbox{\hyperlink{classlhy_1_1MapEdgeAllocator_ab45afd3ab227c1c035cfa0359ec9fa0a}{lhy\+::\+Map\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}, and \mbox{\hyperlink{classlhy_1_1LinkListEdgeAllocator_aa107c3128039bea30d317f059d844f38}{lhy\+::\+Link\+List\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1EdgeAllocator_a03e5196214ca93f11b9c4f8e6a4ea039}\label{classlhy_1_1EdgeAllocator_a03e5196214ca93f11b9c4f8e6a4ea039}}
+\index{lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}!DeleteEdge@{DeleteEdge}}
+\index{DeleteEdge@{DeleteEdge}!lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{DeleteEdge()}{DeleteEdge()}}
+{\footnotesize\ttfamily template$<$edge\+\_\+c Edge\+\_\+$>$ \\
+virtual void \mbox{\hyperlink{classlhy_1_1EdgeAllocator}{lhy\+::\+Edge\+Allocator}}$<$ Edge\+\_\+ $>$\+::Delete\+Edge (\begin{DoxyParamCaption}
+                                                                                                                           \item[{const Edge\+\_\+ \&}]{edge }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlhy_1_1MatrixEdgeAllocator_a4b2f862e818b6889be6f02f40d3be025}{lhy\+::\+Matrix\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}, \mbox{\hyperlink{classlhy_1_1MapEdgeAllocator_a91735f7c586f1501dda9092fc81ca0c8}{lhy\+::\+Map\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}, and \mbox{\hyperlink{classlhy_1_1LinkListEdgeAllocator_a0c7a9bd47a2f7afb79b72b93528484d4}{lhy\+::\+Link\+List\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1EdgeAllocator_a0c3b7a32f1d1d55b54c9e01800cb9616}\label{classlhy_1_1EdgeAllocator_a0c3b7a32f1d1d55b54c9e01800cb9616}}
+\index{lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}!DeleteEdges@{DeleteEdges}}
+\index{DeleteEdges@{DeleteEdges}!lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{DeleteEdges()}{DeleteEdges()}}
+{\footnotesize\ttfamily template$<$edge\+\_\+c Edge\+\_\+$>$ \\
+virtual void \mbox{\hyperlink{classlhy_1_1EdgeAllocator}{lhy\+::\+Edge\+Allocator}}$<$ Edge\+\_\+ $>$\+::Delete\+Edges (\begin{DoxyParamCaption}
+                                                                                                                            \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{first,  }\item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{second }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlhy_1_1MatrixEdgeAllocator_a53d613e748a1aaf250530c6a6e54508b}{lhy\+::\+Matrix\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}, \mbox{\hyperlink{classlhy_1_1MapEdgeAllocator_ad55adab49d0461de872a07690ee73e81}{lhy\+::\+Map\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}, and \mbox{\hyperlink{classlhy_1_1LinkListEdgeAllocator_abbb7fa864c5507e05965ddfc26a6147c}{lhy\+::\+Link\+List\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1EdgeAllocator_a4d02481328b4111765a380bd8118451e}\label{classlhy_1_1EdgeAllocator_a4d02481328b4111765a380bd8118451e}}
+\index{lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}!DeleteNode@{DeleteNode}}
+\index{DeleteNode@{DeleteNode}!lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{DeleteNode()}{DeleteNode()}}
+{\footnotesize\ttfamily template$<$edge\+\_\+c Edge\+\_\+$>$ \\
+virtual void \mbox{\hyperlink{classlhy_1_1EdgeAllocator}{lhy\+::\+Edge\+Allocator}}$<$ Edge\+\_\+ $>$\+::Delete\+Node (\begin{DoxyParamCaption}
+                                                                                                                           \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{node }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlhy_1_1MatrixEdgeAllocator_a4c61021301a78f832bc17c85865ecd57}{lhy\+::\+Matrix\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}, \mbox{\hyperlink{classlhy_1_1MapEdgeAllocator_a844cc5ca46847969369cc782f32822cc}{lhy\+::\+Map\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}, and \mbox{\hyperlink{classlhy_1_1LinkListEdgeAllocator_ac709ff5867aff0ce57ec2610fb730ac0}{lhy\+::\+Link\+List\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1EdgeAllocator_a7681ae365c700bf60795cf6101ec9065}\label{classlhy_1_1EdgeAllocator_a7681ae365c700bf60795cf6101ec9065}}
+\index{lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}!EmplaceEdge@{EmplaceEdge}}
+\index{EmplaceEdge@{EmplaceEdge}!lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{EmplaceEdge()}{EmplaceEdge()}}
+{\footnotesize\ttfamily template$<$edge\+\_\+c Edge\+\_\+$>$ \\
+template$<$typename... Args$>$ \\
+void \mbox{\hyperlink{classlhy_1_1EdgeAllocator}{lhy\+::\+Edge\+Allocator}}$<$ Edge\+\_\+ $>$\+::Emplace\+Edge (\begin{DoxyParamCaption}
+                                                                                                                    \item[{Args \&\&...}]{args }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1EdgeAllocator_af4d969e2b12514afe81ee7e6e9cbdcab}\label{classlhy_1_1EdgeAllocator_af4d969e2b12514afe81ee7e6e9cbdcab}}
+\index{lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}!Exist@{Exist}}
+\index{Exist@{Exist}!lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{Exist()}{Exist()}}
+{\footnotesize\ttfamily template$<$edge\+\_\+c Edge\+\_\+$>$ \\
+virtual bool \mbox{\hyperlink{classlhy_1_1EdgeAllocator}{lhy\+::\+Edge\+Allocator}}$<$ Edge\+\_\+ $>$\+::Exist (\begin{DoxyParamCaption}
+                                                                                                                    \item[{const Edge\+\_\+ \&}]{edge }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlhy_1_1MatrixEdgeAllocator_a47be5c483f28ef8cfe3fe922afe644b3}{lhy\+::\+Matrix\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}, \mbox{\hyperlink{classlhy_1_1MapEdgeAllocator_a027cd66feacb8233e99d1dc1a5575ad7}{lhy\+::\+Map\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}, and \mbox{\hyperlink{classlhy_1_1LinkListEdgeAllocator_abc916b3e192e4f5f98e96790e1f01f2a}{lhy\+::\+Link\+List\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1EdgeAllocator_ac185a92d6f232301eaf7d6c598806c03}\label{classlhy_1_1EdgeAllocator_ac185a92d6f232301eaf7d6c598806c03}}
+\index{lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}!GetEdges@{GetEdges}}
+\index{GetEdges@{GetEdges}!lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{GetEdges()}{GetEdges()}}
+{\footnotesize\ttfamily template$<$edge\+\_\+c Edge\+\_\+$>$ \\
+virtual const \mbox{\hyperlink{classlhy_1_1list}{list}}$<$Edge\+\_\+$>$\& \mbox{\hyperlink{classlhy_1_1EdgeAllocator}{lhy\+::\+Edge\+Allocator}}$<$ Edge\+\_\+ $>$\+::Get\+Edges (\begin{DoxyParamCaption}
+                                                                                                                                                                                      \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{node }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{classlhy_1_1MatrixEdgeAllocator_ab77cf6213f64e32f5a98c58e6dd95af4}{lhy\+::\+Matrix\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}, \mbox{\hyperlink{classlhy_1_1MapEdgeAllocator_ab75f4151ac465a8291dfdf1fd6c1773d}{lhy\+::\+Map\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}, and \mbox{\hyperlink{classlhy_1_1LinkListEdgeAllocator_ab981ea5d7f1bb009592dc24453d81fa3}{lhy\+::\+Link\+List\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1EdgeAllocator_a12bcbcd0cc3625e5372b220645127ddc}\label{classlhy_1_1EdgeAllocator_a12bcbcd0cc3625e5372b220645127ddc}}
+\index{lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}!NeedRegetEdges@{NeedRegetEdges}}
+\index{NeedRegetEdges@{NeedRegetEdges}!lhy::EdgeAllocator$<$ Edge\_ $>$@{lhy::EdgeAllocator$<$ Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{NeedRegetEdges()}{NeedRegetEdges()}}
+{\footnotesize\ttfamily template$<$edge\+\_\+c Edge\+\_\+$>$ \\
+virtual bool \mbox{\hyperlink{classlhy_1_1EdgeAllocator}{lhy\+::\+Edge\+Allocator}}$<$ Edge\+\_\+ $>$\+::Need\+Reget\+Edges (\begin{DoxyParamCaption}
+                                                                                                                                 \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{node }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classlhy_1_1MatrixEdgeAllocator_a5cdfc3bc6c4b7a3fa44c69fec5aff21d}{lhy\+::\+Matrix\+Edge\+Allocator$<$ Edge\+\_\+ $>$}}.
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+                                                                             \item
+                                                                             my\+\_\+std/graph/include/\mbox{\hyperlink{edge__allocator_8h}{edge\+\_\+allocator.\+h}}
+\end{DoxyCompactItemize}

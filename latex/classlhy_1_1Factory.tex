@@ -1,0 +1,121 @@
+\hypertarget{classlhy_1_1Factory}{}\doxysection{lhy\+::Factory$<$ B $>$ Class Template Reference}
+\label{classlhy_1_1Factory}\index{lhy::Factory$<$ B $>$@{lhy::Factory$<$ B $>$}}
+
+
+实际基类所属工厂类
+
+
+
+
+    {\ttfamily \#include $<$factory.\+hpp$>$}
+
+
+
+Collaboration diagram for lhy\+::Factory$<$ B $>$\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=173pt]{classlhy_1_1Factory__coll__graph}
+    \end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+    \item
+    void \mbox{\hyperlink{classlhy_1_1Factory_a268ff2e1b322b25ec6ad93c4cbf5d531}{Register}} (const \mbox{\hyperlink{namespacelhy_a767f44a6993a3d74949ec444d7240ff7}{string}} \&type\+\_\+name, \mbox{\hyperlink{classlhy_1_1RegistryBase}{Registry\+Base}}$<$ B $>$ $\ast$registry)
+    \begin{DoxyCompactList}
+        \small\item\em 向工厂类注册信息
+    \end{DoxyCompactList}\item
+    B $\ast$ \mbox{\hyperlink{classlhy_1_1Factory_aa5c777244557d6a0ba491c11c33b59a5}{Create}} (const \mbox{\hyperlink{namespacelhy_a767f44a6993a3d74949ec444d7240ff7}{string}} \&type\+\_\+name)
+    \begin{DoxyCompactList}
+        \small\item\em 实际构造子类对象
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+    \item
+    static \mbox{\hyperlink{classlhy_1_1Factory}{Factory}} \& \mbox{\hyperlink{classlhy_1_1Factory_a452f70625e804844e1458cba82662d48}{Instance}} ()
+    \begin{DoxyCompactList}
+        \small\item\em 获取工厂类唯一实例
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class B$>$\newline
+class lhy\+::\+Factory$<$ B $>$}
+
+实际基类所属工厂类
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em B}
+    & 实际基类名称 \\
+    \hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlhy_1_1Factory_aa5c777244557d6a0ba491c11c33b59a5}\label{classlhy_1_1Factory_aa5c777244557d6a0ba491c11c33b59a5}}
+\index{lhy::Factory$<$ B $>$@{lhy::Factory$<$ B $>$}!Create@{Create}}
+\index{Create@{Create}!lhy::Factory$<$ B $>$@{lhy::Factory$<$ B $>$}}
+\doxysubsubsection{\texorpdfstring{Create()}{Create()}}
+{\footnotesize\ttfamily template$<$class B $>$ \\
+B$\ast$ \mbox{\hyperlink{classlhy_1_1Factory}{lhy\+::\+Factory}}$<$ B $>$\+::Create (\begin{DoxyParamCaption}
+                                                                                         \item[{const \mbox{\hyperlink{namespacelhy_a767f44a6993a3d74949ec444d7240ff7}{string}} \&}]{type\+\_\+name }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+实际构造子类对象
+
+
+\begin{DoxyParams}{Parameters}
+{\em type\+\_\+name}
+    & 实际子类所属标识符 \\
+    \hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+    指向实际子类对象的基类指针
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlhy_1_1Factory_a452f70625e804844e1458cba82662d48}\label{classlhy_1_1Factory_a452f70625e804844e1458cba82662d48}}
+\index{lhy::Factory$<$ B $>$@{lhy::Factory$<$ B $>$}!Instance@{Instance}}
+\index{Instance@{Instance}!lhy::Factory$<$ B $>$@{lhy::Factory$<$ B $>$}}
+\doxysubsubsection{\texorpdfstring{Instance()}{Instance()}}
+{\footnotesize\ttfamily template$<$class B $>$ \\
+static \mbox{\hyperlink{classlhy_1_1Factory}{Factory}}\& \mbox{\hyperlink{classlhy_1_1Factory}{lhy\+::\+Factory}}$<$ B $>$\+::Instance (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+获取工厂类唯一实例
+
+\begin{DoxyReturn}{Returns}
+    唯一实例的引用
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlhy_1_1Factory_a268ff2e1b322b25ec6ad93c4cbf5d531}\label{classlhy_1_1Factory_a268ff2e1b322b25ec6ad93c4cbf5d531}}
+\index{lhy::Factory$<$ B $>$@{lhy::Factory$<$ B $>$}!Register@{Register}}
+\index{Register@{Register}!lhy::Factory$<$ B $>$@{lhy::Factory$<$ B $>$}}
+\doxysubsubsection{\texorpdfstring{Register()}{Register()}}
+{\footnotesize\ttfamily template$<$class B $>$ \\
+void \mbox{\hyperlink{classlhy_1_1Factory}{lhy\+::\+Factory}}$<$ B $>$\+::Register (\begin{DoxyParamCaption}
+                                                                                        \item[{const \mbox{\hyperlink{namespacelhy_a767f44a6993a3d74949ec444d7240ff7}{string}} \&}]{type\+\_\+name,  }\item[{\mbox{\hyperlink{classlhy_1_1RegistryBase}{Registry\+Base}}$<$ B $>$ $\ast$}]{registry }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+向工厂类注册信息
+
+
+\begin{DoxyParams}{Parameters}
+{\em type\+\_\+name}
+    & 实际子类所属标识符 \\
+    \hline
+    {\em registry} & 实际子类所属注册信息子类指针 \\
+    \hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+                                                                             \item
+                                                                             my\+\_\+std/normal/include/\mbox{\hyperlink{factory_8hpp}{factory.\+hpp}}
+\end{DoxyCompactItemize}

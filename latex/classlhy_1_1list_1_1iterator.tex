@@ -1,0 +1,228 @@
+\hypertarget{classlhy_1_1list_1_1iterator}{}\doxysection{lhy\+::list$<$ T $>$\+::iterator Class Reference}
+\label{classlhy_1_1list_1_1iterator}\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+
+
+{\ttfamily \#include $<$list.\+h$>$}
+
+
+
+Inheritance diagram for lhy\+::list$<$ T $>$\+::iterator\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[height=550pt]{classlhy_1_1list_1_1iterator__inherit__graph}
+    \end{center}
+\end{figure}
+
+
+Collaboration diagram for lhy\+::list$<$ T $>$\+::iterator\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[height=550pt]{classlhy_1_1list_1_1iterator__coll__graph}
+    \end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+    \item
+    \mbox{\hyperlink{classlhy_1_1list_1_1iterator_a02ccb63e0cfdacc97d19773722be3e66}{iterator}} (const \mbox{\hyperlink{classlhy_1_1Iterator}{Iterator}}$<$ T, \mbox{\hyperlink{classlhy_1_1list_a727cefb4099a88e7fe1f5c1597c0b4dc}{List\+Node}} $>$ \&other)
+    \item
+    \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}} \& \mbox{\hyperlink{classlhy_1_1list_1_1iterator_a36e80a7359b4d52f8d0b6429d0141c23}{operator++}} () override
+    \item
+    \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}} \& \mbox{\hyperlink{classlhy_1_1list_1_1iterator_ac18a365a821746b4c83008285437b985}{operator-\/-\/}} () override
+    \item
+    \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}} \& \mbox{\hyperlink{classlhy_1_1list_1_1iterator_a1a57609ab8dcac6a0bf2a6acf8aa79dc}{operator++}} (int i) override
+    \item
+    \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}} \& \mbox{\hyperlink{classlhy_1_1list_1_1iterator_af4391625f1eca6989c32a6f0ddb56c0a}{operator-\/-\/}} (int i) override
+    \item
+    virtual \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}} \& \mbox{\hyperlink{classlhy_1_1list_1_1iterator_a6d251e240ae2ab119ab6457f198a09db}{Next}} ()
+    \item
+    virtual const \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}} \& \mbox{\hyperlink{classlhy_1_1list_1_1iterator_aaefcd6d34860b2d93e02cc1a49052464}{Next}} () const
+    \item
+    virtual \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}} \& \mbox{\hyperlink{classlhy_1_1list_1_1iterator_a36a141c7269845a18272c4b82fa54d42}{Last}} ()
+    \item
+    virtual const \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}} \& \mbox{\hyperlink{classlhy_1_1list_1_1iterator_a296a5fa20441cfef6ec57b269e5ab226}{Last}} () const
+    \item
+    \mbox{\hyperlink{classlhy_1_1list_1_1iterator_a139279165bfe6b098d9dbab95fd1d68e}{$\sim$iterator}} () override=default
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+    \item
+    \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}} \& \mbox{\hyperlink{classlhy_1_1list_1_1iterator_a18cd9b1e0f31602f77b122d4b2a32064}{get\+Next}} ()
+    \item
+    const \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}} \& \mbox{\hyperlink{classlhy_1_1list_1_1iterator_a331142c9371abad41837d34d8aed0bd3}{get\+Next}} () const
+    \item
+    \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}} \& \mbox{\hyperlink{classlhy_1_1list_1_1iterator_a1bb6307dbe5cf03b2dc606e97f65f54c}{get\+Last}} ()
+    \item
+    const \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}} \& \mbox{\hyperlink{classlhy_1_1list_1_1iterator_aba6ab5054342ace6f6bf58d6d124975b}{get\+Last}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1list_1_1iterator_ab6cf03d50c50087700b0fb872accfa7b}{list$<$ T $>$}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlhy_1_1list_1_1iterator_a02ccb63e0cfdacc97d19773722be3e66}\label{classlhy_1_1list_1_1iterator_a02ccb63e0cfdacc97d19773722be3e66}}
+\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}!iterator@{iterator}}
+\index{iterator@{iterator}!lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{iterator()}{iterator()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1list}{lhy\+::list}}$<$ T $>$\+::iterator\+::iterator (\begin{DoxyParamCaption}
+                                                                                       \item[{const \mbox{\hyperlink{classlhy_1_1Iterator}{Iterator}}$<$ T, \mbox{\hyperlink{classlhy_1_1list_a727cefb4099a88e7fe1f5c1597c0b4dc}{List\+Node}} $>$ \&}]{other }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlhy_1_1list_1_1iterator_a139279165bfe6b098d9dbab95fd1d68e}\label{classlhy_1_1list_1_1iterator_a139279165bfe6b098d9dbab95fd1d68e}}
+\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}!````~iterator@{$\sim$iterator}}
+\index{````~iterator@{$\sim$iterator}!lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{$\sim$iterator()}{~iterator()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1list}{lhy\+::list}}$<$ T $>$\+::iterator\+::$\sim$iterator (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlhy_1_1list_1_1iterator_a1bb6307dbe5cf03b2dc606e97f65f54c}\label{classlhy_1_1list_1_1iterator_a1bb6307dbe5cf03b2dc606e97f65f54c}}
+\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}!getLast@{getLast}}
+\index{getLast@{getLast}!lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{getLast()}{getLast()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}}\& \mbox{\hyperlink{classlhy_1_1list}{lhy\+::list}}$<$ T $>$\+::iterator\+::get\+Last (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlhy_1_1list_1_1iterator_aba6ab5054342ace6f6bf58d6d124975b}\label{classlhy_1_1list_1_1iterator_aba6ab5054342ace6f6bf58d6d124975b}}
+\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}!getLast@{getLast}}
+\index{getLast@{getLast}!lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{getLast()}{getLast()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}}\& \mbox{\hyperlink{classlhy_1_1list}{lhy\+::list}}$<$ T $>$\+::iterator\+::get\+Last (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlhy_1_1list_1_1iterator_a18cd9b1e0f31602f77b122d4b2a32064}\label{classlhy_1_1list_1_1iterator_a18cd9b1e0f31602f77b122d4b2a32064}}
+\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}!getNext@{getNext}}
+\index{getNext@{getNext}!lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{getNext()}{getNext()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}}\& \mbox{\hyperlink{classlhy_1_1list}{lhy\+::list}}$<$ T $>$\+::iterator\+::get\+Next (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlhy_1_1list_1_1iterator_a331142c9371abad41837d34d8aed0bd3}\label{classlhy_1_1list_1_1iterator_a331142c9371abad41837d34d8aed0bd3}}
+\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}!getNext@{getNext}}
+\index{getNext@{getNext}!lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{getNext()}{getNext()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}}\& \mbox{\hyperlink{classlhy_1_1list}{lhy\+::list}}$<$ T $>$\+::iterator\+::get\+Next (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+\mbox{\Hypertarget{classlhy_1_1list_1_1iterator_a36a141c7269845a18272c4b82fa54d42}\label{classlhy_1_1list_1_1iterator_a36a141c7269845a18272c4b82fa54d42}}
+\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}!Last@{Last}}
+\index{Last@{Last}!lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{Last()}{Last()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+virtual \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}}\& \mbox{\hyperlink{classlhy_1_1list}{lhy\+::list}}$<$ T $>$\+::iterator\+::\+Last (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{classlhy_1_1list_1_1iterator_a296a5fa20441cfef6ec57b269e5ab226}\label{classlhy_1_1list_1_1iterator_a296a5fa20441cfef6ec57b269e5ab226}}
+\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}!Last@{Last}}
+\index{Last@{Last}!lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{Last()}{Last()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+virtual const \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}}\& \mbox{\hyperlink{classlhy_1_1list}{lhy\+::list}}$<$ T $>$\+::iterator\+::\+Last (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classlhy_1_1list_1_1reversed__iterator_a8ab529f68984463d94420e17c32a4cdd}{lhy\+::list$<$ T $>$\+::reversed\+\_\+iterator}}.
+
+\mbox{\Hypertarget{classlhy_1_1list_1_1iterator_a6d251e240ae2ab119ab6457f198a09db}\label{classlhy_1_1list_1_1iterator_a6d251e240ae2ab119ab6457f198a09db}}
+\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}!Next@{Next}}
+\index{Next@{Next}!lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{Next()}{Next()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+virtual \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}}\& \mbox{\hyperlink{classlhy_1_1list}{lhy\+::list}}$<$ T $>$\+::iterator\+::\+Next (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+\mbox{\Hypertarget{classlhy_1_1list_1_1iterator_aaefcd6d34860b2d93e02cc1a49052464}\label{classlhy_1_1list_1_1iterator_aaefcd6d34860b2d93e02cc1a49052464}}
+\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}!Next@{Next}}
+\index{Next@{Next}!lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{Next()}{Next()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+virtual const \mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}}\& \mbox{\hyperlink{classlhy_1_1list}{lhy\+::list}}$<$ T $>$\+::iterator\+::\+Next (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classlhy_1_1list_1_1reversed__iterator_ab077e179ace5c1473d2eca4c6b7328d0}{lhy\+::list$<$ T $>$\+::reversed\+\_\+iterator}}.
+
+\mbox{\Hypertarget{classlhy_1_1list_1_1iterator_a36e80a7359b4d52f8d0b6429d0141c23}\label{classlhy_1_1list_1_1iterator_a36e80a7359b4d52f8d0b6429d0141c23}}
+\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}!operator++@{operator++}}
+\index{operator++@{operator++}!lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{operator++()}{operator++()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}}\& \mbox{\hyperlink{classlhy_1_1list}{lhy\+::list}}$<$ T $>$\+::iterator\+::operator++ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlhy_1_1ForwardIterator_ab5a0182dee7e7edc91cf9254168c52ef}{lhy\+::\+Forward\+Iterator$<$ T, U $>$}}.
+
+
+Reimplemented in \mbox{\hyperlink{classlhy_1_1list_1_1reversed__iterator_a9f69ee0dc53de437cb7cd282f3aaeb58}{lhy\+::list$<$ T $>$\+::reversed\+\_\+iterator}}.
+
+\mbox{\Hypertarget{classlhy_1_1list_1_1iterator_a1a57609ab8dcac6a0bf2a6acf8aa79dc}\label{classlhy_1_1list_1_1iterator_a1a57609ab8dcac6a0bf2a6acf8aa79dc}}
+\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}!operator++@{operator++}}
+\index{operator++@{operator++}!lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{operator++()}{operator++()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}}\& \mbox{\hyperlink{classlhy_1_1list}{lhy\+::list}}$<$ T $>$\+::iterator\+::operator++ (\begin{DoxyParamCaption}
+                                                                                                                                                     \item[{int}]{i }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlhy_1_1ForwardIterator_a3d381b36a589ed02d56f2880da65ab0b}{lhy\+::\+Forward\+Iterator$<$ T, U $>$}}.
+
+
+Reimplemented in \mbox{\hyperlink{classlhy_1_1list_1_1reversed__iterator_abe126ec077ca1d778aa79a31a512e704}{lhy\+::list$<$ T $>$\+::reversed\+\_\+iterator}}.
+
+\mbox{\Hypertarget{classlhy_1_1list_1_1iterator_ac18a365a821746b4c83008285437b985}\label{classlhy_1_1list_1_1iterator_ac18a365a821746b4c83008285437b985}}
+\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}!operator-\/-\/@{operator-\/-\/}}
+\index{operator-\/-\/@{operator-\/-\/}!lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{operator-\/-\/()}{operator--()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}}\& \mbox{\hyperlink{classlhy_1_1list}{lhy\+::list}}$<$ T $>$\+::iterator\+::operator-\/-\/ (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlhy_1_1BackwardIterator_abbdefc427b09b4ac86e62e892456db83}{lhy\+::\+Backward\+Iterator$<$ T, U $>$}}.
+
+
+Reimplemented in \mbox{\hyperlink{classlhy_1_1list_1_1reversed__iterator_abe2e42fe065b25d92217b5c21bd290b1}{lhy\+::list$<$ T $>$\+::reversed\+\_\+iterator}}.
+
+\mbox{\Hypertarget{classlhy_1_1list_1_1iterator_af4391625f1eca6989c32a6f0ddb56c0a}\label{classlhy_1_1list_1_1iterator_af4391625f1eca6989c32a6f0ddb56c0a}}
+\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}!operator-\/-\/@{operator-\/-\/}}
+\index{operator-\/-\/@{operator-\/-\/}!lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{operator-\/-\/()}{operator--()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classlhy_1_1list_1_1iterator}{iterator}}\& \mbox{\hyperlink{classlhy_1_1list}{lhy\+::list}}$<$ T $>$\+::iterator\+::operator-\/-\/ (\begin{DoxyParamCaption}
+                                                                                                                                                         \item[{int}]{i }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classlhy_1_1BackwardIterator_a17d05bc56f2c8adf892a815790a7f199}{lhy\+::\+Backward\+Iterator$<$ T, U $>$}}.
+
+
+Reimplemented in \mbox{\hyperlink{classlhy_1_1list_1_1reversed__iterator_a426d1e0e5db79c2dd26ec5e822902f2e}{lhy\+::list$<$ T $>$\+::reversed\+\_\+iterator}}.
+
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classlhy_1_1list_1_1iterator_ab6cf03d50c50087700b0fb872accfa7b}\label{classlhy_1_1list_1_1iterator_ab6cf03d50c50087700b0fb872accfa7b}}
+\index{lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}!list$<$ T $>$@{list$<$ T $>$}}
+\index{list$<$ T $>$@{list$<$ T $>$}!lhy::list$<$ T $>$::iterator@{lhy::list$<$ T $>$::iterator}}
+\doxysubsubsection{\texorpdfstring{list$<$ T $>$}{list< T >}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+friend class \mbox{\hyperlink{classlhy_1_1list}{list}}$<$ T $>$\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+                                                                             \item
+                                                                             my\+\_\+std/normal/include/\mbox{\hyperlink{list_8h}{list.\+h}}
+\end{DoxyCompactItemize}

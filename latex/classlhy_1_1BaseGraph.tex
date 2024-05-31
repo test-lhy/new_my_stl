@@ -1,0 +1,339 @@
+\hypertarget{classlhy_1_1BaseGraph}{}\doxysection{lhy\+::Base\+Graph$<$ Node\+\_\+, Edge\+\_\+ $>$ Class Template Reference}
+\label{classlhy_1_1BaseGraph}\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+
+
+{\ttfamily \#include $<$base\+\_\+graph.\+h$>$}
+
+
+
+Inheritance diagram for lhy\+::Base\+Graph$<$ Node\+\_\+, Edge\+\_\+ $>$\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=196pt]{classlhy_1_1BaseGraph__inherit__graph}
+    \end{center}
+\end{figure}
+
+
+Collaboration diagram for lhy\+::Base\+Graph$<$ Node\+\_\+, Edge\+\_\+ $>$\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=196pt]{classlhy_1_1BaseGraph__coll__graph}
+    \end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1BaseGraph_1_1return__node}{return\+\_\+node}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+    \item
+    using \mbox{\hyperlink{classlhy_1_1BaseGraph_aeb7ff2ca877ffd13bba9960d6afedf7e}{Real\+Node\+\_\+}} = std\+::pair$<$ \mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}, Node\+\_\+ $>$
+    \item
+    using \mbox{\hyperlink{classlhy_1_1BaseGraph_aa7d3be583f4bb7a311eebf4acf165f06}{iterator}} = typename \mbox{\hyperlink{classlhy_1_1IndexContainer}{Index\+Container}}$<$ Node\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_aa7d3be583f4bb7a311eebf4acf165f06}{iterator}}
+    \item
+    using \mbox{\hyperlink{classlhy_1_1BaseGraph_a65a6b9dfb41515b4c6e2e989364329bf}{reversed\+\_\+iterator}} = typename \mbox{\hyperlink{classlhy_1_1IndexContainer}{Index\+Container}}$<$ Node\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_a65a6b9dfb41515b4c6e2e989364329bf}{reversed\+\_\+iterator}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+    \item
+    \mbox{\hyperlink{classlhy_1_1BaseGraph_ae66af0fe5da7d5ada69dea33651a7091}{Base\+Graph}} (\mbox{\hyperlink{namespacelhy_a8dd45e35cdeb23237d34a598a1f0aa33}{Node\+Allocator\+Mode}} node\+\_\+allocator\+\_\+mode=Node\+Allocator\+Mode\+::\+Normal\+Node\+Allocator\+Mode, \mbox{\hyperlink{namespacelhy_ac0e60d71d470da69cbaa990726ec889f}{Edge\+Allocator\+Mode}} edge\+\_\+allocator\+\_\+mode=Edge\+Allocator\+Mode\+::\+Link\+List\+Edge\+Allocator\+Mode)
+    \item
+    virtual \mbox{\hyperlink{classlhy_1_1BaseGraph_aa9829db9e072f0709c16a49fc0f2ddde}{$\sim$\+Base\+Graph}} ()
+    \item
+    {\footnotesize template$<$typename... Args$>$ }\\void \mbox{\hyperlink{classlhy_1_1BaseGraph_ace1bdf7adb08c61a10eef2b07c5e59bd}{Add\+Edge}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} first, \mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} second, Args \&\&... args)
+    \item
+    virtual void \mbox{\hyperlink{classlhy_1_1BaseGraph_a99d67a60f7d5f34079d39779d61de743}{Add\+Edge}} (Edge\+\_\+ \&\&edge)
+    \item
+    {\footnotesize template$<$typename... Args$>$ }\\\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} \mbox{\hyperlink{classlhy_1_1BaseGraph_a090e929fa84bd92990781be6ba33eff5}{Add\+Node}} (Args \&\&... args)
+    \item
+    \mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} \mbox{\hyperlink{classlhy_1_1BaseGraph_aa6baaad880f02e3e88a85d3ee7479f4c}{Add\+Node}} (Node\+\_\+ \&\&node)
+    \item
+    \mbox{\hyperlink{classlhy_1_1BaseGraph_1_1return__node}{return\+\_\+node}} \mbox{\hyperlink{classlhy_1_1BaseGraph_adec71a8a105b61d73408afb610210103}{Get\+Node}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} node)
+    \item
+    \mbox{\hyperlink{classlhy_1_1BaseGraph_1_1return__node}{return\+\_\+node}} \mbox{\hyperlink{classlhy_1_1BaseGraph_aa7d5fc91fc092aa6d64447458c2d5c22}{Get\+Node}} (const Node\+\_\+ \&node)
+    \item
+    \mbox{\hyperlink{classlhy_1_1BaseGraph_1_1return__node}{return\+\_\+node}} \mbox{\hyperlink{classlhy_1_1BaseGraph_af4bb5f24c9916c24f049c3fff230df40}{operator\mbox{[}$\,$\mbox{]}}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} node)
+    \item
+    \mbox{\hyperlink{classlhy_1_1BaseGraph_1_1return__node}{return\+\_\+node}} \mbox{\hyperlink{classlhy_1_1BaseGraph_a2ca8ec1424b52bf251e5f3ca04cce964}{operator\mbox{[}$\,$\mbox{]}}} (Node\+\_\+ \&\&node)
+    \item
+    {\footnotesize template$<$typename... Args$>$ }\\void \mbox{\hyperlink{classlhy_1_1BaseGraph_a64d831b863f0c78009a6373101c63270}{Delete\+Edge}} (Args \&\&... args)
+    \item
+    virtual void \mbox{\hyperlink{classlhy_1_1BaseGraph_a4fd10274fc28b5e8abda54dbf2e005ef}{Delete\+Edge}} (Edge\+\_\+ \&\&edge)
+    \item
+    virtual void \mbox{\hyperlink{classlhy_1_1BaseGraph_a61a37ecb99eead20d8f04e6007f10c87}{Delete\+Edges}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} first, \mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} second)
+    \item
+    void \mbox{\hyperlink{classlhy_1_1BaseGraph_ad525109f5ba1b40cf0816cb4146a20e3}{Delete\+Edges}} (const Node\+\_\+ \&first, const Node\+\_\+ \&second)
+    \item
+    void \mbox{\hyperlink{classlhy_1_1BaseGraph_ad9e9d287ee7504fad8bcd7a2fab71758}{Delete\+Node}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} node)
+    \item
+    void \mbox{\hyperlink{classlhy_1_1BaseGraph_aad00371837cf84a65edb09df0879bc65}{Delete\+Node}} (Node\+\_\+ \&\&node)
+    \item
+    bool \mbox{\hyperlink{classlhy_1_1BaseGraph_afa819fefe9ae3ae68c830aeadccfc8d8}{Node\+Exist}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} node) const
+    \item
+    \mbox{\hyperlink{index__container__impl_8h_adc072f85e3472fd9742a0a6302fd9daa}{Index\+Container\+Mode}} \mbox{\hyperlink{classlhy_1_1BaseGraph_a116d1d6e512d31b72e34e7b51ce42bad}{Get\+Node\+Container\+Mode}} () const
+    \item
+    \mbox{\hyperlink{classlhy_1_1BaseGraph_aa7d3be583f4bb7a311eebf4acf165f06}{iterator}} \mbox{\hyperlink{classlhy_1_1BaseGraph_a007b6ad80ef11d060434029b54045969}{begin}} ()
+    \item
+    \mbox{\hyperlink{classlhy_1_1BaseGraph_aa7d3be583f4bb7a311eebf4acf165f06}{iterator}} \mbox{\hyperlink{classlhy_1_1BaseGraph_a1c9ebe0b5467d4077a74125dd66f57a1}{end}} ()
+    \item
+    \mbox{\hyperlink{classlhy_1_1BaseGraph_a65a6b9dfb41515b4c6e2e989364329bf}{reversed\+\_\+iterator}} \mbox{\hyperlink{classlhy_1_1BaseGraph_ae942e3549d08a88e928fd1f1490bc4b8}{rbegin}} ()
+    \item
+    \mbox{\hyperlink{classlhy_1_1BaseGraph_a65a6b9dfb41515b4c6e2e989364329bf}{reversed\+\_\+iterator}} \mbox{\hyperlink{classlhy_1_1BaseGraph_a3e6a8a255effb0763339bc90478a5de8}{rend}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+    \item
+    friend \mbox{\hyperlink{classlhy_1_1BaseGraph_ac18ffe2383db0df66943367dc1906f23}{return\+\_\+node}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_aa7d3be583f4bb7a311eebf4acf165f06}\label{classlhy_1_1BaseGraph_aa7d3be583f4bb7a311eebf4acf165f06}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!iterator@{iterator}}
+\index{iterator@{iterator}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{iterator}{iterator}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+ = Node, edge\+\_\+c Edge\+\_\+ = Edge$>$ \\
+using \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_aa7d3be583f4bb7a311eebf4acf165f06}{iterator}} =  typename \mbox{\hyperlink{classlhy_1_1IndexContainer}{Index\+Container}}$<$Node\+\_\+$>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_aa7d3be583f4bb7a311eebf4acf165f06}{iterator}}}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_aeb7ff2ca877ffd13bba9960d6afedf7e}\label{classlhy_1_1BaseGraph_aeb7ff2ca877ffd13bba9960d6afedf7e}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!RealNode\_@{RealNode\_}}
+\index{RealNode\_@{RealNode\_}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{RealNode\_}{RealNode\_}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+ = Node, edge\+\_\+c Edge\+\_\+ = Edge$>$ \\
+using \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_aeb7ff2ca877ffd13bba9960d6afedf7e}{Real\+Node\+\_\+}} =  std\+::pair$<$\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}, Node\+\_\+$>$}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_a65a6b9dfb41515b4c6e2e989364329bf}\label{classlhy_1_1BaseGraph_a65a6b9dfb41515b4c6e2e989364329bf}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!reversed\_iterator@{reversed\_iterator}}
+\index{reversed\_iterator@{reversed\_iterator}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{reversed\_iterator}{reversed\_iterator}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+ = Node, edge\+\_\+c Edge\+\_\+ = Edge$>$ \\
+using \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_a65a6b9dfb41515b4c6e2e989364329bf}{reversed\+\_\+iterator}} =  typename \mbox{\hyperlink{classlhy_1_1IndexContainer}{Index\+Container}}$<$Node\+\_\+$>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_a65a6b9dfb41515b4c6e2e989364329bf}{reversed\+\_\+iterator}}}
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_ae66af0fe5da7d5ada69dea33651a7091}\label{classlhy_1_1BaseGraph_ae66af0fe5da7d5ada69dea33651a7091}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!BaseGraph@{BaseGraph}}
+\index{BaseGraph@{BaseGraph}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{BaseGraph()}{BaseGraph()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph}{Base\+Graph}} (\begin{DoxyParamCaption}
+                                                                                                                                                           \item[{\mbox{\hyperlink{namespacelhy_a8dd45e35cdeb23237d34a598a1f0aa33}{Node\+Allocator\+Mode}}}]{node\+\_\+allocator\+\_\+mode = {\ttfamily NodeAllocatorMode\+:\+:NormalNodeAllocatorMode},  }\item[{\mbox{\hyperlink{namespacelhy_ac0e60d71d470da69cbaa990726ec889f}{Edge\+Allocator\+Mode}}}]{edge\+\_\+allocator\+\_\+mode = {\ttfamily EdgeAllocatorMode\+:\+:LinkListEdgeAllocatorMode} }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_aa9829db9e072f0709c16a49fc0f2ddde}\label{classlhy_1_1BaseGraph_aa9829db9e072f0709c16a49fc0f2ddde}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!````~BaseGraph@{$\sim$BaseGraph}}
+\index{````~BaseGraph@{$\sim$BaseGraph}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{$\sim$BaseGraph()}{~BaseGraph()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::$\sim$\mbox{\hyperlink{classlhy_1_1BaseGraph}{Base\+Graph}}\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_a99d67a60f7d5f34079d39779d61de743}\label{classlhy_1_1BaseGraph_a99d67a60f7d5f34079d39779d61de743}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!AddEdge@{AddEdge}}
+\index{AddEdge@{AddEdge}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{AddEdge()}{AddEdge()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+void \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::Add\+Edge (\begin{DoxyParamCaption}
+                                                                                                                    \item[{Edge\+\_\+ \&\&}]{edge }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classlhy_1_1UndirectedGraph_a3b6aae1a44fc5cf37dc502fe4a9dc72a}{lhy\+::\+Undirected\+Graph$<$ Node\+\_\+, Edge\+\_\+ $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_ace1bdf7adb08c61a10eef2b07c5e59bd}\label{classlhy_1_1BaseGraph_ace1bdf7adb08c61a10eef2b07c5e59bd}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!AddEdge@{AddEdge}}
+\index{AddEdge@{AddEdge}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{AddEdge()}{AddEdge()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+template$<$typename... Args$>$ \\
+void \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::Add\+Edge (\begin{DoxyParamCaption}
+                                                                                                                    \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{first,  }\item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{second,  }\item[{Args \&\&...}]{args }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_a090e929fa84bd92990781be6ba33eff5}\label{classlhy_1_1BaseGraph_a090e929fa84bd92990781be6ba33eff5}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!AddNode@{AddNode}}
+\index{AddNode@{AddNode}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{AddNode()}{AddNode()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+template$<$typename... Args$>$ \\
+\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::Add\+Node (\begin{DoxyParamCaption}
+                                                                                                                                                                                        \item[{Args \&\&...}]{args }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_aa6baaad880f02e3e88a85d3ee7479f4c}\label{classlhy_1_1BaseGraph_aa6baaad880f02e3e88a85d3ee7479f4c}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!AddNode@{AddNode}}
+\index{AddNode@{AddNode}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{AddNode()}{AddNode()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::Add\+Node (\begin{DoxyParamCaption}
+                                                                                                                                                                                        \item[{Node\+\_\+ \&\&}]{node }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_a007b6ad80ef11d060434029b54045969}\label{classlhy_1_1BaseGraph_a007b6ad80ef11d060434029b54045969}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!begin@{begin}}
+\index{begin@{begin}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{begin()}{begin()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1BaseGraph}{Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_aa7d3be583f4bb7a311eebf4acf165f06}{iterator}} \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::begin}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_a64d831b863f0c78009a6373101c63270}\label{classlhy_1_1BaseGraph_a64d831b863f0c78009a6373101c63270}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!DeleteEdge@{DeleteEdge}}
+\index{DeleteEdge@{DeleteEdge}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{DeleteEdge()}{DeleteEdge()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+template$<$typename... Args$>$ \\
+void \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::Delete\+Edge (\begin{DoxyParamCaption}
+                                                                                                                       \item[{Args \&\&...}]{args }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_a4fd10274fc28b5e8abda54dbf2e005ef}\label{classlhy_1_1BaseGraph_a4fd10274fc28b5e8abda54dbf2e005ef}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!DeleteEdge@{DeleteEdge}}
+\index{DeleteEdge@{DeleteEdge}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{DeleteEdge()}{DeleteEdge()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+void \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::Delete\+Edge (\begin{DoxyParamCaption}
+                                                                                                                       \item[{Edge\+\_\+ \&\&}]{edge }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classlhy_1_1UndirectedGraph_a67ea1700d88c856740e250bc9b652912}{lhy\+::\+Undirected\+Graph$<$ Node\+\_\+, Edge\+\_\+ $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_ad525109f5ba1b40cf0816cb4146a20e3}\label{classlhy_1_1BaseGraph_ad525109f5ba1b40cf0816cb4146a20e3}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!DeleteEdges@{DeleteEdges}}
+\index{DeleteEdges@{DeleteEdges}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{DeleteEdges()}{DeleteEdges()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+void \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::Delete\+Edges (\begin{DoxyParamCaption}
+                                                                                                                        \item[{const Node\+\_\+ \&}]{first,  }\item[{const Node\+\_\+ \&}]{second }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_a61a37ecb99eead20d8f04e6007f10c87}\label{classlhy_1_1BaseGraph_a61a37ecb99eead20d8f04e6007f10c87}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!DeleteEdges@{DeleteEdges}}
+\index{DeleteEdges@{DeleteEdges}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{DeleteEdges()}{DeleteEdges()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+void \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::Delete\+Edges (\begin{DoxyParamCaption}
+                                                                                                                        \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{first,  }\item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{second }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{classlhy_1_1UndirectedGraph_a257ed1b97cc490c5c6997a2bfe8bcd22}{lhy\+::\+Undirected\+Graph$<$ Node\+\_\+, Edge\+\_\+ $>$}}.
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_ad9e9d287ee7504fad8bcd7a2fab71758}\label{classlhy_1_1BaseGraph_ad9e9d287ee7504fad8bcd7a2fab71758}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!DeleteNode@{DeleteNode}}
+\index{DeleteNode@{DeleteNode}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{DeleteNode()}{DeleteNode()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+void \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::Delete\+Node (\begin{DoxyParamCaption}
+                                                                                                                       \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{node }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_aad00371837cf84a65edb09df0879bc65}\label{classlhy_1_1BaseGraph_aad00371837cf84a65edb09df0879bc65}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!DeleteNode@{DeleteNode}}
+\index{DeleteNode@{DeleteNode}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{DeleteNode()}{DeleteNode()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+void \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::Delete\+Node (\begin{DoxyParamCaption}
+                                                                                                                       \item[{Node\+\_\+ \&\&}]{node }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_a1c9ebe0b5467d4077a74125dd66f57a1}\label{classlhy_1_1BaseGraph_a1c9ebe0b5467d4077a74125dd66f57a1}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!end@{end}}
+\index{end@{end}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1BaseGraph}{Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_aa7d3be583f4bb7a311eebf4acf165f06}{iterator}} \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::end}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_aa7d5fc91fc092aa6d64447458c2d5c22}\label{classlhy_1_1BaseGraph_aa7d5fc91fc092aa6d64447458c2d5c22}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!GetNode@{GetNode}}
+\index{GetNode@{GetNode}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{GetNode()}{GetNode()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1BaseGraph}{Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_1_1return__node}{return\+\_\+node}} \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::Get\+Node (\begin{DoxyParamCaption}
+                                                                                                                                                                                                                                                                                 \item[{const Node\+\_\+ \&}]{node }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_adec71a8a105b61d73408afb610210103}\label{classlhy_1_1BaseGraph_adec71a8a105b61d73408afb610210103}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!GetNode@{GetNode}}
+\index{GetNode@{GetNode}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{GetNode()}{GetNode()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1BaseGraph}{Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_1_1return__node}{return\+\_\+node}} \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::Get\+Node (\begin{DoxyParamCaption}
+                                                                                                                                                                                                                                                                                 \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{node }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_a116d1d6e512d31b72e34e7b51ce42bad}\label{classlhy_1_1BaseGraph_a116d1d6e512d31b72e34e7b51ce42bad}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!GetNodeContainerMode@{GetNodeContainerMode}}
+\index{GetNodeContainerMode@{GetNodeContainerMode}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{GetNodeContainerMode()}{GetNodeContainerMode()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+\mbox{\hyperlink{index__container__impl_8h_adc072f85e3472fd9742a0a6302fd9daa}{Index\+Container\+Mode}} \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::Get\+Node\+Container\+Mode}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_afa819fefe9ae3ae68c830aeadccfc8d8}\label{classlhy_1_1BaseGraph_afa819fefe9ae3ae68c830aeadccfc8d8}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!NodeExist@{NodeExist}}
+\index{NodeExist@{NodeExist}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{NodeExist()}{NodeExist()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+bool \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::Node\+Exist (\begin{DoxyParamCaption}
+                                                                                                                      \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{node }
+\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_af4bb5f24c9916c24f049c3fff230df40}\label{classlhy_1_1BaseGraph_af4bb5f24c9916c24f049c3fff230df40}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1BaseGraph}{Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_1_1return__node}{return\+\_\+node}} \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}
+                                                                                                                                                                                                                                                                                                    \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{node }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_a2ca8ec1424b52bf251e5f3ca04cce964}\label{classlhy_1_1BaseGraph_a2ca8ec1424b52bf251e5f3ca04cce964}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1BaseGraph}{Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_1_1return__node}{return\+\_\+node}} \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}
+                                                                                                                                                                                                                                                                                                    \item[{Node\+\_\+ \&\&}]{node }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_ae942e3549d08a88e928fd1f1490bc4b8}\label{classlhy_1_1BaseGraph_ae942e3549d08a88e928fd1f1490bc4b8}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!rbegin@{rbegin}}
+\index{rbegin@{rbegin}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{rbegin()}{rbegin()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1BaseGraph}{Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_a65a6b9dfb41515b4c6e2e989364329bf}{reversed\+\_\+iterator}} \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::rbegin}
+
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_a3e6a8a255effb0763339bc90478a5de8}\label{classlhy_1_1BaseGraph_a3e6a8a255effb0763339bc90478a5de8}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!rend@{rend}}
+\index{rend@{rend}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{rend()}{rend()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+, edge\+\_\+c Edge\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1BaseGraph}{Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_a65a6b9dfb41515b4c6e2e989364329bf}{reversed\+\_\+iterator}} \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::rend}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlhy_1_1BaseGraph_ac18ffe2383db0df66943367dc1906f23}\label{classlhy_1_1BaseGraph_ac18ffe2383db0df66943367dc1906f23}}
+\index{lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}!return\_node@{return\_node}}
+\index{return\_node@{return\_node}!lhy::BaseGraph$<$ Node\_, Edge\_ $>$@{lhy::BaseGraph$<$ Node\_, Edge\_ $>$}}
+\doxysubsubsection{\texorpdfstring{return\_node}{return\_node}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+ = Node, edge\+\_\+c Edge\+\_\+ = Edge$>$ \\
+friend \mbox{\hyperlink{classlhy_1_1BaseGraph}{lhy\+::\+Base\+Graph}}$<$ Node\+\_\+, Edge\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1BaseGraph_1_1return__node}{return\+\_\+node}}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+                                                                             \item
+                                                                             my\+\_\+std/graph/include/\mbox{\hyperlink{base__graph_8h}{base\+\_\+graph.\+h}}
+\end{DoxyCompactItemize}

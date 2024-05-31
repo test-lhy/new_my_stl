@@ -1,0 +1,124 @@
+\hypertarget{factory_8hpp}{}\doxysection{my\+\_\+std/normal/include/factory.hpp File Reference}
+\label{factory_8hpp}\index{my\_std/normal/include/factory.hpp@{my\_std/normal/include/factory.hpp}}
+{\ttfamily \#include \char`\"{}strings.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}unordered\+\_\+map.\+h\char`\"{}}\newline
+Include dependency graph for factory.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=350pt]{factory_8hpp__incl}
+    \end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+    \item
+    class \mbox{\hyperlink{classlhy_1_1RegistryBase}{lhy\+::\+Registry\+Base$<$ B $>$}}
+    \begin{DoxyCompactList}
+        \small\item\em 实际基类所属注册信息基类
+    \end{DoxyCompactList}\item
+    class \mbox{\hyperlink{classlhy_1_1Factory}{lhy\+::\+Factory$<$ B $>$}}
+    \begin{DoxyCompactList}
+        \small\item\em 实际基类所属工厂类
+    \end{DoxyCompactList}\item
+    class \mbox{\hyperlink{classlhy_1_1RegistrySub}{lhy\+::\+Registry\+Sub$<$ B, S $>$}}
+    \begin{DoxyCompactList}
+        \small\item\em 实际子类所属注册信息子类
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+    \item
+    \mbox{\hyperlink{namespacelhy}{lhy}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+    \item
+    \#define \mbox{\hyperlink{factory_8hpp_adac52ea675ec6f96b8da7f03b528dc5e}{enable\+\_\+factory}}(\+\_\+namespace,  \+\_\+type,  \+\_\+func)
+    \begin{DoxyCompactList}
+        \small\item\em 创建函数为命名空间中的基类启用自动注册工厂模式
+    \end{DoxyCompactList}\item
+    \#define \mbox{\hyperlink{factory_8hpp_a5e27a3b823bab8e35499be87a3f756aa}{enable\+\_\+single\+\_\+template\+\_\+factory}}(\+\_\+namespace,  \+\_\+ctype,  \+\_\+ttype,  \+\_\+type,  \+\_\+func)
+    \begin{DoxyCompactList}
+        \small\item\em 创建函数为命名空间中的基类启用自动注册工厂模式
+    \end{DoxyCompactList}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{factory_8hpp_adac52ea675ec6f96b8da7f03b528dc5e}\label{factory_8hpp_adac52ea675ec6f96b8da7f03b528dc5e}}
+\index{factory.hpp@{factory.hpp}!enable\_factory@{enable\_factory}}
+\index{enable\_factory@{enable\_factory}!factory.hpp@{factory.hpp}}
+\doxysubsubsection{\texorpdfstring{enable\_factory}{enable\_factory}}
+{\footnotesize\ttfamily \#define enable\+\_\+factory(\begin{DoxyParamCaption}
+                                                         \item[{}]{\+\_\+namespace,  }\item[{}]{\+\_\+type,  }\item[{}]{\+\_\+func }
+\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+    \DoxyCodeLine{  \textcolor{keyword}{namespace }\_namespace \{                                                                                \(\backslash\)}
+    \DoxyCodeLine{  class \_type;                                                                                          \(\backslash\)}
+    \DoxyCodeLine{  inline \_type *\_func(\textcolor{keyword}{const} \textcolor{keywordtype}{string} \&type\_name) \{ \textcolor{keywordflow}{return} Factory<\_type>::Instance().Create(type\_name); \} \(\backslash\)}
+    \DoxyCodeLine{  \}}
+
+\end{DoxyCode}
+
+
+创建函数为命名空间中的基类启用自动注册工厂模式
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+namespace}
+    & 命名空间 \\
+    \hline
+    {\em \+\_\+type} & 基类名称 \\
+    \hline
+    {\em \+\_\+func} & 创建的函数名 \\
+    \hline
+\end{DoxyParams}
+\mbox{\Hypertarget{factory_8hpp_a5e27a3b823bab8e35499be87a3f756aa}\label{factory_8hpp_a5e27a3b823bab8e35499be87a3f756aa}}
+\index{factory.hpp@{factory.hpp}!enable\_single\_template\_factory@{enable\_single\_template\_factory}}
+\index{enable\_single\_template\_factory@{enable\_single\_template\_factory}!factory.hpp@{factory.hpp}}
+\doxysubsubsection{\texorpdfstring{enable\_single\_template\_factory}{enable\_single\_template\_factory}}
+{\footnotesize\ttfamily \#define enable\+\_\+single\+\_\+template\+\_\+factory(\begin{DoxyParamCaption}
+                                                                                   \item[{}]{\+\_\+namespace,  }\item[{}]{\+\_\+ctype,  }\item[{}]{\+\_\+ttype,  }\item[{}]{\+\_\+type,  }\item[{}]{\+\_\+func }
+\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+    \DoxyCodeLine{  \textcolor{keyword}{namespace }\_namespace \{                                                         \(\backslash\)}
+    \DoxyCodeLine{  template <\_ctype \_ttype>                                                       \(\backslash\)}
+    \DoxyCodeLine{  class \_type;                                                                   \(\backslash\)}
+    \DoxyCodeLine{  template <\_ctype \_ttype>                                                       \(\backslash\)}
+    \DoxyCodeLine{  inline \_type<\_ttype> *\_func(\textcolor{keyword}{const} \textcolor{keywordtype}{string} \&type\_name) \{                         \(\backslash\)}
+    \DoxyCodeLine{    return Factory<\_type<\_ttype>>::Instance().Create(type\_name);                 \(\backslash\)}
+    \DoxyCodeLine{  \}                                                                              \(\backslash\)}
+    \DoxyCodeLine{  \}}
+
+\end{DoxyCode}
+
+
+创建函数为命名空间中的基类启用自动注册工厂模式
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+namespace}
+    & 命名空间 \\
+    \hline
+\end{DoxyParams}
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em \+\_\+ttype}
+    & 模板参数 \\
+    \hline
+    {\em \+\_\+ctype} & 对模板参数类型的限制 \\
+    \hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+type}
+    & 基类名称 \\
+    \hline
+    {\em \+\_\+func} & 创建的函数名 \\
+    \hline
+\end{DoxyParams}

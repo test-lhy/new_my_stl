@@ -1,0 +1,137 @@
+\hypertarget{classlhy_1_1Edge}{}\doxysection{lhy\+::Edge Class Reference}
+\label{classlhy_1_1Edge}\index{lhy::Edge@{lhy::Edge}}
+
+
+{\ttfamily \#include $<$edge.\+h$>$}
+
+
+
+Collaboration diagram for lhy\+::Edge\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=184pt]{classlhy_1_1Edge__coll__graph}
+    \end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+    \item
+    \mbox{\hyperlink{classlhy_1_1Edge_acdd92de8705897a64bce88c9155ad93b}{Edge}} ()=default
+    \item
+    \mbox{\hyperlink{classlhy_1_1Edge_a04ebfa0fcef7f4e3c100a06795764da1}{Edge}} (\mbox{\hyperlink{classlhy_1_1Node}{Node}} \&first, \mbox{\hyperlink{classlhy_1_1Node}{Node}} \&second)
+    \item
+    virtual \mbox{\hyperlink{classlhy_1_1Edge_aa7cc784aab1904b77dbc4d0ca3260ea2}{$\sim$\+Edge}} ()=default
+    \item
+    virtual bool \mbox{\hyperlink{classlhy_1_1Edge_a992b3aedd261f7d4014e3fa3d2c6ec31}{operator==}} (const \mbox{\hyperlink{classlhy_1_1Edge}{Edge}} \&other) const
+    \item
+    bool \mbox{\hyperlink{classlhy_1_1Edge_a8a8ae60c72a6dacd285592c6a878f506}{operator!=}} (const \mbox{\hyperlink{classlhy_1_1Edge}{Edge}} \&other) const
+    \item
+    \mbox{\hyperlink{classlhy_1_1Node}{Node}} \& \mbox{\hyperlink{classlhy_1_1Edge_a3e7679ca55ae30c5891d645a6fa425e0}{Get\+Another\+Node}} (const \mbox{\hyperlink{classlhy_1_1Node}{Node}} \&other)
+    \item
+    \mbox{\hyperlink{classlhy_1_1Node}{Node}} \& \mbox{\hyperlink{classlhy_1_1Edge_a31ad8339588c0ec8b9842d61e25bdf26}{Get\+First}} ()
+    \item
+    \mbox{\hyperlink{classlhy_1_1Node}{Node}} \& \mbox{\hyperlink{classlhy_1_1Edge_a1fa529320c753d7f2823443bc7083959}{Get\+Second}} ()
+    \item
+    \mbox{\hyperlink{classlhy_1_1Edge}{Edge}} \mbox{\hyperlink{classlhy_1_1Edge_a4ab0031b7763e7d3d1ce9525d4698c10}{Get\+Reversed}} () const
+    \item
+    \mbox{\hyperlink{classlhy_1_1Node}{Node}} \& \mbox{\hyperlink{classlhy_1_1Edge_a5bc3df9bb5430539a2ae08d4e9607376}{Get\+Another\+Node}} (const \mbox{\hyperlink{classlhy_1_1Node}{Node}} \&other) const
+    \item
+    \mbox{\hyperlink{classlhy_1_1Node}{Node}} \& \mbox{\hyperlink{classlhy_1_1Edge_a5d0713e179d08b65349301fcc686138f}{Get\+First}} () const
+    \item
+    \mbox{\hyperlink{classlhy_1_1Node}{Node}} \& \mbox{\hyperlink{classlhy_1_1Edge_a4922bb7c0314f2a675ead0660772c8e2}{Get\+Second}} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlhy_1_1Edge_acdd92de8705897a64bce88c9155ad93b}\label{classlhy_1_1Edge_acdd92de8705897a64bce88c9155ad93b}}
+\index{lhy::Edge@{lhy::Edge}!Edge@{Edge}}
+\index{Edge@{Edge}!lhy::Edge@{lhy::Edge}}
+\doxysubsubsection{\texorpdfstring{Edge()}{Edge()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily lhy\+::\+Edge\+::\+Edge (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+\mbox{\Hypertarget{classlhy_1_1Edge_a04ebfa0fcef7f4e3c100a06795764da1}\label{classlhy_1_1Edge_a04ebfa0fcef7f4e3c100a06795764da1}}
+\index{lhy::Edge@{lhy::Edge}!Edge@{Edge}}
+\index{Edge@{Edge}!lhy::Edge@{lhy::Edge}}
+\doxysubsubsection{\texorpdfstring{Edge()}{Edge()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily lhy\+::\+Edge\+::\+Edge (\begin{DoxyParamCaption}
+                                                     \item[{\mbox{\hyperlink{classlhy_1_1Node}{Node}} \&}]{first,  }\item[{\mbox{\hyperlink{classlhy_1_1Node}{Node}} \&}]{second }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlhy_1_1Edge_aa7cc784aab1904b77dbc4d0ca3260ea2}\label{classlhy_1_1Edge_aa7cc784aab1904b77dbc4d0ca3260ea2}}
+\index{lhy::Edge@{lhy::Edge}!````~Edge@{$\sim$Edge}}
+\index{````~Edge@{$\sim$Edge}!lhy::Edge@{lhy::Edge}}
+\doxysubsubsection{\texorpdfstring{$\sim$Edge()}{~Edge()}}
+{\footnotesize\ttfamily virtual lhy\+::\+Edge\+::$\sim$\+Edge (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlhy_1_1Edge_a3e7679ca55ae30c5891d645a6fa425e0}\label{classlhy_1_1Edge_a3e7679ca55ae30c5891d645a6fa425e0}}
+\index{lhy::Edge@{lhy::Edge}!GetAnotherNode@{GetAnotherNode}}
+\index{GetAnotherNode@{GetAnotherNode}!lhy::Edge@{lhy::Edge}}
+\doxysubsubsection{\texorpdfstring{GetAnotherNode()}{GetAnotherNode()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlhy_1_1Node}{Node}}\& lhy\+::\+Edge\+::\+Get\+Another\+Node (\begin{DoxyParamCaption}
+                                                                                                               \item[{const \mbox{\hyperlink{classlhy_1_1Node}{Node}} \&}]{other }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlhy_1_1Edge_a5bc3df9bb5430539a2ae08d4e9607376}\label{classlhy_1_1Edge_a5bc3df9bb5430539a2ae08d4e9607376}}
+\index{lhy::Edge@{lhy::Edge}!GetAnotherNode@{GetAnotherNode}}
+\index{GetAnotherNode@{GetAnotherNode}!lhy::Edge@{lhy::Edge}}
+\doxysubsubsection{\texorpdfstring{GetAnotherNode()}{GetAnotherNode()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlhy_1_1Node}{Node}}\& lhy\+::\+Edge\+::\+Get\+Another\+Node (\begin{DoxyParamCaption}
+                                                                                                               \item[{const \mbox{\hyperlink{classlhy_1_1Node}{Node}} \&}]{other }
+\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlhy_1_1Edge_a31ad8339588c0ec8b9842d61e25bdf26}\label{classlhy_1_1Edge_a31ad8339588c0ec8b9842d61e25bdf26}}
+\index{lhy::Edge@{lhy::Edge}!GetFirst@{GetFirst}}
+\index{GetFirst@{GetFirst}!lhy::Edge@{lhy::Edge}}
+\doxysubsubsection{\texorpdfstring{GetFirst()}{GetFirst()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlhy_1_1Node}{Node}}\& lhy\+::\+Edge\+::\+Get\+First (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlhy_1_1Edge_a5d0713e179d08b65349301fcc686138f}\label{classlhy_1_1Edge_a5d0713e179d08b65349301fcc686138f}}
+\index{lhy::Edge@{lhy::Edge}!GetFirst@{GetFirst}}
+\index{GetFirst@{GetFirst}!lhy::Edge@{lhy::Edge}}
+\doxysubsubsection{\texorpdfstring{GetFirst()}{GetFirst()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlhy_1_1Node}{Node}}\& lhy\+::\+Edge\+::\+Get\+First (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlhy_1_1Edge_a4ab0031b7763e7d3d1ce9525d4698c10}\label{classlhy_1_1Edge_a4ab0031b7763e7d3d1ce9525d4698c10}}
+\index{lhy::Edge@{lhy::Edge}!GetReversed@{GetReversed}}
+\index{GetReversed@{GetReversed}!lhy::Edge@{lhy::Edge}}
+\doxysubsubsection{\texorpdfstring{GetReversed()}{GetReversed()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlhy_1_1Edge}{Edge}} lhy\+::\+Edge\+::\+Get\+Reversed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlhy_1_1Edge_a1fa529320c753d7f2823443bc7083959}\label{classlhy_1_1Edge_a1fa529320c753d7f2823443bc7083959}}
+\index{lhy::Edge@{lhy::Edge}!GetSecond@{GetSecond}}
+\index{GetSecond@{GetSecond}!lhy::Edge@{lhy::Edge}}
+\doxysubsubsection{\texorpdfstring{GetSecond()}{GetSecond()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlhy_1_1Node}{Node}}\& lhy\+::\+Edge\+::\+Get\+Second (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlhy_1_1Edge_a4922bb7c0314f2a675ead0660772c8e2}\label{classlhy_1_1Edge_a4922bb7c0314f2a675ead0660772c8e2}}
+\index{lhy::Edge@{lhy::Edge}!GetSecond@{GetSecond}}
+\index{GetSecond@{GetSecond}!lhy::Edge@{lhy::Edge}}
+\doxysubsubsection{\texorpdfstring{GetSecond()}{GetSecond()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlhy_1_1Node}{Node}}\& lhy\+::\+Edge\+::\+Get\+Second (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlhy_1_1Edge_a8a8ae60c72a6dacd285592c6a878f506}\label{classlhy_1_1Edge_a8a8ae60c72a6dacd285592c6a878f506}}
+\index{lhy::Edge@{lhy::Edge}!operator"!=@{operator"!=}}
+\index{operator"!=@{operator"!=}!lhy::Edge@{lhy::Edge}}
+\doxysubsubsection{\texorpdfstring{operator"!=()}{operator!=()}}
+{\footnotesize\ttfamily bool lhy\+::\+Edge\+::operator!= (\begin{DoxyParamCaption}
+                                                              \item[{const \mbox{\hyperlink{classlhy_1_1Edge}{Edge}} \&}]{other }
+\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlhy_1_1Edge_a992b3aedd261f7d4014e3fa3d2c6ec31}\label{classlhy_1_1Edge_a992b3aedd261f7d4014e3fa3d2c6ec31}}
+\index{lhy::Edge@{lhy::Edge}!operator==@{operator==}}
+\index{operator==@{operator==}!lhy::Edge@{lhy::Edge}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily virtual bool lhy\+::\+Edge\+::operator== (\begin{DoxyParamCaption}
+                                                                      \item[{const \mbox{\hyperlink{classlhy_1_1Edge}{Edge}} \&}]{other }
+\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+                                                                             \item
+                                                                             my\+\_\+std/graph/include/\mbox{\hyperlink{edge_8h}{edge.\+h}}
+\end{DoxyCompactItemize}

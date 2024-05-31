@@ -1,0 +1,243 @@
+\hypertarget{classlhy_1_1NodeAllocator}{}\doxysection{lhy\+::Node\+Allocator$<$ Node\+\_\+ $>$ Class Template Reference}
+\label{classlhy_1_1NodeAllocator}\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+
+
+{\ttfamily \#include $<$node\+\_\+allocator.\+h$>$}
+
+
+
+Inheritance diagram for lhy\+::Node\+Allocator$<$ Node\+\_\+ $>$\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=242pt]{classlhy_1_1NodeAllocator__inherit__graph}
+    \end{center}
+\end{figure}
+
+
+Collaboration diagram for lhy\+::Node\+Allocator$<$ Node\+\_\+ $>$\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=242pt]{classlhy_1_1NodeAllocator__coll__graph}
+    \end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+    \item
+    using \mbox{\hyperlink{classlhy_1_1NodeAllocator_ab9928a9c8822a539a33a6c6374ac5a5c}{Real\+Node\+\_\+}} = std\+::pair$<$ \mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}, Node\+\_\+ $>$
+    \item
+    using \mbox{\hyperlink{classlhy_1_1NodeAllocator_aec8f391248451c846467c660a2accbfa}{iterator}} = typename \mbox{\hyperlink{classlhy_1_1IndexContainer}{Index\+Container}}$<$ Node\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1NodeAllocator_aec8f391248451c846467c660a2accbfa}{iterator}}
+    \item
+    using \mbox{\hyperlink{classlhy_1_1NodeAllocator_af88695b8c9a94f99095a8d2fff7994dd}{reversed\+\_\+iterator}} = typename \mbox{\hyperlink{classlhy_1_1IndexContainer}{Index\+Container}}$<$ Node\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1NodeAllocator_af88695b8c9a94f99095a8d2fff7994dd}{reversed\+\_\+iterator}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+    \item
+    \mbox{\hyperlink{classlhy_1_1NodeAllocator_abecf5c5ba90e7d473b0307aedef0829b}{Node\+Allocator}} (\mbox{\hyperlink{classlhy_1_1EdgeReserveSync}{Edge\+Reserve\+Sync}} $\ast$edge\+\_\+allocator\+\_\+sync, const \mbox{\hyperlink{namespacelhy_a8dd45e35cdeb23237d34a598a1f0aa33}{Node\+Allocator\+Mode}} mode)
+    \item
+    \mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} \mbox{\hyperlink{classlhy_1_1NodeAllocator_ae1fe7982560d533eeb0cb4b3adfff52d}{Add\+Node}} (const Node\+\_\+ \&node)
+    \item
+    {\footnotesize template$<$typename... Args$>$ }\\\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} \mbox{\hyperlink{classlhy_1_1NodeAllocator_a06a9a6b29c49f6fd35fd04640ab08347}{Emplace\+Node}} (Args \&\&... args)
+    \item
+    void \mbox{\hyperlink{classlhy_1_1NodeAllocator_a5ab3a1d2b9e8a91978980d4f6e28296b}{Delete\+Node}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} index)
+    \item
+    Node\+\_\+ \& \mbox{\hyperlink{classlhy_1_1NodeAllocator_af3113668791d561118a8edb5005d2f4b}{Get\+Node}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} index)
+    \item
+    bool \mbox{\hyperlink{classlhy_1_1NodeAllocator_a6209cb0428aa498343445b384cecdf45}{Exist}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} index)
+    \item
+    void \mbox{\hyperlink{classlhy_1_1NodeAllocator_a9bde826ccbb290d036eb58eae8407edb}{Sync}} (\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} index)
+    \item
+    \mbox{\hyperlink{index__container__impl_8h_adc072f85e3472fd9742a0a6302fd9daa}{Index\+Container\+Mode}} \mbox{\hyperlink{classlhy_1_1NodeAllocator_a9025fc5953ca47fddab2b3226518c3a4}{Get\+Container\+Mode}} () const
+    \item
+    \mbox{\hyperlink{classlhy_1_1NodeAllocator_aec8f391248451c846467c660a2accbfa}{iterator}} \mbox{\hyperlink{classlhy_1_1NodeAllocator_af6f27bda1914e22694b72d9abca08fe8}{begin}} ()
+    \item
+    \mbox{\hyperlink{classlhy_1_1NodeAllocator_aec8f391248451c846467c660a2accbfa}{iterator}} \mbox{\hyperlink{classlhy_1_1NodeAllocator_accb3a7c57b6435d586ffd3f53f5a429c}{end}} ()
+    \item
+    \mbox{\hyperlink{classlhy_1_1NodeAllocator_af88695b8c9a94f99095a8d2fff7994dd}{reversed\+\_\+iterator}} \mbox{\hyperlink{classlhy_1_1NodeAllocator_a8c5f27aaeba98b3b4217b5b39a5a699c}{rbegin}} ()
+    \item
+    \mbox{\hyperlink{classlhy_1_1NodeAllocator_af88695b8c9a94f99095a8d2fff7994dd}{reversed\+\_\+iterator}} \mbox{\hyperlink{classlhy_1_1NodeAllocator_a55bd8fa764730d8634f808a66c7b20c4}{rend}} ()
+    \item
+    \mbox{\hyperlink{classlhy_1_1NodeAllocator_a7ead33cf4433a9f0c3d3a51d49967327}{$\sim$\+Node\+Allocator}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+    \item
+    static std\+::map$<$ \mbox{\hyperlink{namespacelhy_a8dd45e35cdeb23237d34a598a1f0aa33}{Node\+Allocator\+Mode}}, \mbox{\hyperlink{index__container__impl_8h_adc072f85e3472fd9742a0a6302fd9daa}{Index\+Container\+Mode}} $>$ \mbox{\hyperlink{classlhy_1_1NodeAllocator_ac920af413104b2171b09f38207f62189}{relation\+\_\+between\+\_\+nodeallocator\+\_\+indexcontainer}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+    \item
+    {\footnotesize template$<$node\+\_\+c Nodee, edge\+\_\+c Edge\+\_\+$>$ }\\class \mbox{\hyperlink{classlhy_1_1NodeAllocator_a10d10df4f2aae19f3ddf66bcd876195a}{Base\+Graph}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_aec8f391248451c846467c660a2accbfa}\label{classlhy_1_1NodeAllocator_aec8f391248451c846467c660a2accbfa}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!iterator@{iterator}}
+\index{iterator@{iterator}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{iterator}{iterator}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+using \mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1NodeAllocator_aec8f391248451c846467c660a2accbfa}{iterator}} =  typename \mbox{\hyperlink{classlhy_1_1IndexContainer}{Index\+Container}}$<$Node\+\_\+$>$\+::\mbox{\hyperlink{classlhy_1_1NodeAllocator_aec8f391248451c846467c660a2accbfa}{iterator}}}
+
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_ab9928a9c8822a539a33a6c6374ac5a5c}\label{classlhy_1_1NodeAllocator_ab9928a9c8822a539a33a6c6374ac5a5c}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!RealNode\_@{RealNode\_}}
+\index{RealNode\_@{RealNode\_}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{RealNode\_}{RealNode\_}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+using \mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1NodeAllocator_ab9928a9c8822a539a33a6c6374ac5a5c}{Real\+Node\+\_\+}} =  std\+::pair$<$\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}, Node\+\_\+$>$}
+
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_af88695b8c9a94f99095a8d2fff7994dd}\label{classlhy_1_1NodeAllocator_af88695b8c9a94f99095a8d2fff7994dd}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!reversed\_iterator@{reversed\_iterator}}
+\index{reversed\_iterator@{reversed\_iterator}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{reversed\_iterator}{reversed\_iterator}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+using \mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1NodeAllocator_af88695b8c9a94f99095a8d2fff7994dd}{reversed\+\_\+iterator}} =  typename \mbox{\hyperlink{classlhy_1_1IndexContainer}{Index\+Container}}$<$Node\+\_\+$>$\+::\mbox{\hyperlink{classlhy_1_1NodeAllocator_af88695b8c9a94f99095a8d2fff7994dd}{reversed\+\_\+iterator}}}
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_abecf5c5ba90e7d473b0307aedef0829b}\label{classlhy_1_1NodeAllocator_abecf5c5ba90e7d473b0307aedef0829b}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!NodeAllocator@{NodeAllocator}}
+\index{NodeAllocator@{NodeAllocator}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{NodeAllocator()}{NodeAllocator()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1NodeAllocator}{Node\+Allocator}} (\begin{DoxyParamCaption}
+                                                                                                                                                               \item[{\mbox{\hyperlink{classlhy_1_1EdgeReserveSync}{Edge\+Reserve\+Sync}} $\ast$}]{edge\+\_\+allocator\+\_\+sync,  }\item[{const \mbox{\hyperlink{namespacelhy_a8dd45e35cdeb23237d34a598a1f0aa33}{Node\+Allocator\+Mode}}}]{mode }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_a7ead33cf4433a9f0c3d3a51d49967327}\label{classlhy_1_1NodeAllocator_a7ead33cf4433a9f0c3d3a51d49967327}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!````~NodeAllocator@{$\sim$NodeAllocator}}
+\index{````~NodeAllocator@{$\sim$NodeAllocator}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{$\sim$NodeAllocator()}{~NodeAllocator()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::$\sim$\mbox{\hyperlink{classlhy_1_1NodeAllocator}{Node\+Allocator}}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_ae1fe7982560d533eeb0cb4b3adfff52d}\label{classlhy_1_1NodeAllocator_ae1fe7982560d533eeb0cb4b3adfff52d}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!AddNode@{AddNode}}
+\index{AddNode@{AddNode}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{AddNode()}{AddNode()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} \mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::Add\+Node (\begin{DoxyParamCaption}
+                                                                                                                                                                                    \item[{const Node\+\_\+ \&}]{node }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_af6f27bda1914e22694b72d9abca08fe8}\label{classlhy_1_1NodeAllocator_af6f27bda1914e22694b72d9abca08fe8}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!begin@{begin}}
+\index{begin@{begin}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{begin()}{begin()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1NodeAllocator}{Node\+Allocator}}$<$ Node\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1NodeAllocator_aec8f391248451c846467c660a2accbfa}{iterator}} \mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::begin}
+
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_a5ab3a1d2b9e8a91978980d4f6e28296b}\label{classlhy_1_1NodeAllocator_a5ab3a1d2b9e8a91978980d4f6e28296b}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!DeleteNode@{DeleteNode}}
+\index{DeleteNode@{DeleteNode}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{DeleteNode()}{DeleteNode()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+void \mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::Delete\+Node (\begin{DoxyParamCaption}
+                                                                                                                   \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{index }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_a06a9a6b29c49f6fd35fd04640ab08347}\label{classlhy_1_1NodeAllocator_a06a9a6b29c49f6fd35fd04640ab08347}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!EmplaceNode@{EmplaceNode}}
+\index{EmplaceNode@{EmplaceNode}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{EmplaceNode()}{EmplaceNode()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+template$<$typename... Args$>$ \\
+\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}} \mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::Emplace\+Node (\begin{DoxyParamCaption}
+                                                                                                                                                                                        \item[{Args \&\&...}]{args }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_accb3a7c57b6435d586ffd3f53f5a429c}\label{classlhy_1_1NodeAllocator_accb3a7c57b6435d586ffd3f53f5a429c}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!end@{end}}
+\index{end@{end}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1NodeAllocator}{Node\+Allocator}}$<$ Node\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1NodeAllocator_aec8f391248451c846467c660a2accbfa}{iterator}} \mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::end}
+
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_a6209cb0428aa498343445b384cecdf45}\label{classlhy_1_1NodeAllocator_a6209cb0428aa498343445b384cecdf45}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!Exist@{Exist}}
+\index{Exist@{Exist}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{Exist()}{Exist()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+bool \mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::Exist (\begin{DoxyParamCaption}
+                                                                                                            \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{index }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_a9025fc5953ca47fddab2b3226518c3a4}\label{classlhy_1_1NodeAllocator_a9025fc5953ca47fddab2b3226518c3a4}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!GetContainerMode@{GetContainerMode}}
+\index{GetContainerMode@{GetContainerMode}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{GetContainerMode()}{GetContainerMode()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+\mbox{\hyperlink{index__container__impl_8h_adc072f85e3472fd9742a0a6302fd9daa}{Index\+Container\+Mode}} \mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::Get\+Container\+Mode}
+
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_af3113668791d561118a8edb5005d2f4b}\label{classlhy_1_1NodeAllocator_af3113668791d561118a8edb5005d2f4b}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!GetNode@{GetNode}}
+\index{GetNode@{GetNode}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{GetNode()}{GetNode()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+Node\+\_\+ \& \mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::Get\+Node (\begin{DoxyParamCaption}
+                                                                                                                         \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{index }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_a8c5f27aaeba98b3b4217b5b39a5a699c}\label{classlhy_1_1NodeAllocator_a8c5f27aaeba98b3b4217b5b39a5a699c}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!rbegin@{rbegin}}
+\index{rbegin@{rbegin}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{rbegin()}{rbegin()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1NodeAllocator}{Node\+Allocator}}$<$ Node\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1NodeAllocator_af88695b8c9a94f99095a8d2fff7994dd}{reversed\+\_\+iterator}} \mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::rbegin}
+
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_a55bd8fa764730d8634f808a66c7b20c4}\label{classlhy_1_1NodeAllocator_a55bd8fa764730d8634f808a66c7b20c4}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!rend@{rend}}
+\index{rend@{rend}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{rend()}{rend()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+\mbox{\hyperlink{classlhy_1_1NodeAllocator}{Node\+Allocator}}$<$ Node\+\_\+ $>$\+::\mbox{\hyperlink{classlhy_1_1NodeAllocator_af88695b8c9a94f99095a8d2fff7994dd}{reversed\+\_\+iterator}} \mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::rend}
+
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_a9bde826ccbb290d036eb58eae8407edb}\label{classlhy_1_1NodeAllocator_a9bde826ccbb290d036eb58eae8407edb}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!Sync@{Sync}}
+\index{Sync@{Sync}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{Sync()}{Sync()}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+void \mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::Sync (\begin{DoxyParamCaption}
+                                                                                                           \item[{\mbox{\hyperlink{namespacelhy_a3940ce06975290b4ac0ca8cd2051cb5a}{Index}}}]{index }
+\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_a10d10df4f2aae19f3ddf66bcd876195a}\label{classlhy_1_1NodeAllocator_a10d10df4f2aae19f3ddf66bcd876195a}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!BaseGraph@{BaseGraph}}
+\index{BaseGraph@{BaseGraph}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{BaseGraph}{BaseGraph}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+template$<$node\+\_\+c Nodee, edge\+\_\+c Edge\+\_\+$>$ \\
+friend class \mbox{\hyperlink{classlhy_1_1BaseGraph}{Base\+Graph}}\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classlhy_1_1NodeAllocator_ac920af413104b2171b09f38207f62189}\label{classlhy_1_1NodeAllocator_ac920af413104b2171b09f38207f62189}}
+\index{lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}!relation\_between\_nodeallocator\_indexcontainer@{relation\_between\_nodeallocator\_indexcontainer}}
+\index{relation\_between\_nodeallocator\_indexcontainer@{relation\_between\_nodeallocator\_indexcontainer}!lhy::NodeAllocator$<$ Node\_ $>$@{lhy::NodeAllocator$<$ Node\_ $>$}}
+\doxysubsubsection{\texorpdfstring{relation\_between\_nodeallocator\_indexcontainer}{relation\_between\_nodeallocator\_indexcontainer}}
+{\footnotesize\ttfamily template$<$node\+\_\+c Node\+\_\+$>$ \\
+std\+::map$<$\mbox{\hyperlink{namespacelhy_a8dd45e35cdeb23237d34a598a1f0aa33}{Node\+Allocator\+Mode}}, \mbox{\hyperlink{index__container__impl_8h_adc072f85e3472fd9742a0a6302fd9daa}{Index\+Container\+Mode}}$>$ \mbox{\hyperlink{classlhy_1_1NodeAllocator}{lhy\+::\+Node\+Allocator}}$<$ Node\+\_\+ $>$\+::relation\+\_\+between\+\_\+nodeallocator\+\_\+indexcontainer\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+    \DoxyCodeLine{= \{}
+    \DoxyCodeLine{      \{\mbox{\hyperlink{namespacelhy_a8dd45e35cdeb23237d34a598a1f0aa33a9d0968f0ca1ba2a4ae066ce42f7485ba}{NormalNodeAllocatorMode}}, \mbox{\hyperlink{index__container__impl_8h_adc072f85e3472fd9742a0a6302fd9daaaa89319b1c6726a659f6350db13116a89}{VectorIndexContainerMode}}\}, \{\mbox{\hyperlink{namespacelhy_a8dd45e35cdeb23237d34a598a1f0aa33ac37b889f103a67daa4fff898656b300c}{MapNodeAllocatorMode}}, \mbox{\hyperlink{index__container__impl_8h_adc072f85e3472fd9742a0a6302fd9daaaee199e0fc7b2cd9a03478889346246e5}{MapIndexContainerMode}}\}\}}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+                                                                             \item
+                                                                             my\+\_\+std/graph/include/\mbox{\hyperlink{node__allocator_8h}{node\+\_\+allocator.\+h}}
+\end{DoxyCompactItemize}

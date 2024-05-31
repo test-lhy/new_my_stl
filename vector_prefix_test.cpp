@@ -1,7 +1,7 @@
 //
 // Created by lhy on 23-10-10.
 //
-#include "string.h"
+#include "strings.h"
 using namespace lhy;
 using std::cin;
 using std::cout;

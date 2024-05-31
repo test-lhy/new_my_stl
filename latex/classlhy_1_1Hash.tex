@@ -1,0 +1,128 @@
+\hypertarget{classlhy_1_1Hash}{}\doxysection{lhy\+::Hash$<$ T, U $>$ Class Template Reference}
+\label{classlhy_1_1Hash}\index{lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}}
+
+
+{\ttfamily \#include $<$hash.\+h$>$}
+
+
+
+Collaboration diagram for lhy\+::Hash$<$ T, U $>$\+:
+\nopagebreak
+\begin{figure}[H]
+    \begin{center}
+        \leavevmode
+        \includegraphics[width=178pt]{classlhy_1_1Hash__coll__graph}
+    \end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+    \item
+    \mbox{\hyperlink{classlhy_1_1Hash_a9aabe08a2588e119d292e9b1ab09cd59}{Hash}} (\mbox{\hyperlink{namespacelhy_a282ff3920d98c5ebdf094e7f4ef88b9c}{size\+\_\+t}}, \mbox{\hyperlink{namespacelhy_a282ff3920d98c5ebdf094e7f4ef88b9c}{size\+\_\+t}} mod\+\_\+value=196613, \mbox{\hyperlink{namespacelhy_af8f6ff2a34c4e7d996600a91f7b5dc1d}{Hash\+Func\+Type}}$<$ T $>$ \&hash\+\_\+func=\mbox{\hyperlink{classlhy_1_1TypeTraits}{Type\+Traits}}$<$ T $>$\+::hash\+\_\+func)
+    \item
+    \mbox{\hyperlink{classlhy_1_1Hash_aa7fafe96f1ab01d1fd1ba07f1abb66fb}{Hash}} (\mbox{\hyperlink{namespacelhy_af8f6ff2a34c4e7d996600a91f7b5dc1d}{Hash\+Func\+Type}}$<$ T $>$ \&hash\+\_\+func=\mbox{\hyperlink{classlhy_1_1TypeTraits}{Type\+Traits}}$<$ T $>$\+::hash\+\_\+func)
+    \item
+    \mbox{\hyperlink{classlhy_1_1Hash_a7ed23d0025d3af68990174d642fb8a99}{$\sim$\+Hash}} ()
+    \item
+    U \& \mbox{\hyperlink{classlhy_1_1Hash_ab58759cb5d82a3c37b1ebf029e87a51c}{operator\mbox{[}$\,$\mbox{]}}} (const T \&key)
+    \item
+    bool \mbox{\hyperlink{classlhy_1_1Hash_a867404ec033ba349edbd08f467354827}{equal}} (const T \&, const T \&) const
+    \item
+    bool \mbox{\hyperlink{classlhy_1_1Hash_ae8e9cc3c0937c09f11aabd41a70ac29c}{exist}} (const T \&key) const
+    \item
+    void \mbox{\hyperlink{classlhy_1_1Hash_a666ff11a222ef773a08f0fece2a54261}{insert}} (const T \&key, const U \&value)
+    \item
+    void \mbox{\hyperlink{classlhy_1_1Hash_ace65be1ef3007bf35879dd9545992e63}{hash\+\_\+func\+\_\+set}} (\mbox{\hyperlink{namespacelhy_af8f6ff2a34c4e7d996600a91f7b5dc1d}{Hash\+Func\+Type}}$<$ T $>$ \&hash\+\_\+func)
+    \item
+    void \mbox{\hyperlink{classlhy_1_1Hash_a109ce7d0270020bd2a2aec5e048b3a90}{mod\+\_\+value\+\_\+set}} (\mbox{\hyperlink{namespacelhy_a282ff3920d98c5ebdf094e7f4ef88b9c}{size\+\_\+t}} mod\+\_\+value)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlhy_1_1Hash_a9aabe08a2588e119d292e9b1ab09cd59}\label{classlhy_1_1Hash_a9aabe08a2588e119d292e9b1ab09cd59}}
+\index{lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}!Hash@{Hash}}
+\index{Hash@{Hash}!lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}}
+\doxysubsubsection{\texorpdfstring{Hash()}{Hash()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$hashable T, typename U $>$ \\
+\mbox{\hyperlink{classlhy_1_1Hash}{lhy\+::\+Hash}}$<$ T, U $>$\+::\mbox{\hyperlink{classlhy_1_1Hash}{Hash}} (\begin{DoxyParamCaption}
+                                                                                                                 \item[{\mbox{\hyperlink{namespacelhy_a282ff3920d98c5ebdf094e7f4ef88b9c}{size\+\_\+t}}}]{size,  }\item[{\mbox{\hyperlink{namespacelhy_a282ff3920d98c5ebdf094e7f4ef88b9c}{size\+\_\+t}}}]{mod\+\_\+value = {\ttfamily 196613},  }\item[{\mbox{\hyperlink{namespacelhy_af8f6ff2a34c4e7d996600a91f7b5dc1d}{Hash\+Func\+Type}}$<$ T $>$ \&}]{hash\+\_\+func = {\ttfamily \mbox{\hyperlink{classlhy_1_1TypeTraits}{Type\+Traits}}$<$T$>$\+:\+:hash\+\_\+func} }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{classlhy_1_1Hash_aa7fafe96f1ab01d1fd1ba07f1abb66fb}\label{classlhy_1_1Hash_aa7fafe96f1ab01d1fd1ba07f1abb66fb}}
+\index{lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}!Hash@{Hash}}
+\index{Hash@{Hash}!lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}}
+\doxysubsubsection{\texorpdfstring{Hash()}{Hash()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$hashable T, typename U $>$ \\
+\mbox{\hyperlink{classlhy_1_1Hash}{lhy\+::\+Hash}}$<$ T, U $>$\+::\mbox{\hyperlink{classlhy_1_1Hash}{Hash}} (\begin{DoxyParamCaption}
+                                                                                                                 \item[{\mbox{\hyperlink{namespacelhy_af8f6ff2a34c4e7d996600a91f7b5dc1d}{Hash\+Func\+Type}}$<$ T $>$ \&}]{hash\+\_\+func = {\ttfamily \mbox{\hyperlink{classlhy_1_1TypeTraits}{Type\+Traits}}$<$T$>$\+:\+:hash\+\_\+func} }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\Hypertarget{classlhy_1_1Hash_a7ed23d0025d3af68990174d642fb8a99}\label{classlhy_1_1Hash_a7ed23d0025d3af68990174d642fb8a99}}
+\index{lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}!````~Hash@{$\sim$Hash}}
+\index{````~Hash@{$\sim$Hash}!lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}}
+\doxysubsubsection{\texorpdfstring{$\sim$Hash()}{~Hash()}}
+{\footnotesize\ttfamily template$<$hashable T, typename U $>$ \\
+\mbox{\hyperlink{classlhy_1_1Hash}{lhy\+::\+Hash}}$<$ T, U $>$\+::$\sim$\mbox{\hyperlink{classlhy_1_1Hash}{Hash}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classlhy_1_1Hash_a867404ec033ba349edbd08f467354827}\label{classlhy_1_1Hash_a867404ec033ba349edbd08f467354827}}
+\index{lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}!equal@{equal}}
+\index{equal@{equal}!lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}}
+\doxysubsubsection{\texorpdfstring{equal()}{equal()}}
+{\footnotesize\ttfamily template$<$hashable T, typename U $>$ \\
+bool \mbox{\hyperlink{classlhy_1_1Hash}{lhy\+::\+Hash}}$<$ T, U $>$\+::equal (\begin{DoxyParamCaption}
+                                                                                  \item[{const T \&}]{a,  }\item[{const T \&}]{b }
+\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlhy_1_1Hash_ae8e9cc3c0937c09f11aabd41a70ac29c}\label{classlhy_1_1Hash_ae8e9cc3c0937c09f11aabd41a70ac29c}}
+\index{lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}!exist@{exist}}
+\index{exist@{exist}!lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}}
+\doxysubsubsection{\texorpdfstring{exist()}{exist()}}
+{\footnotesize\ttfamily template$<$hashable T, typename U $>$ \\
+bool \mbox{\hyperlink{classlhy_1_1Hash}{lhy\+::\+Hash}}$<$ T, U $>$\+::exist (\begin{DoxyParamCaption}
+                                                                                  \item[{const T \&}]{key }
+\end{DoxyParamCaption}) const}
+
+\mbox{\Hypertarget{classlhy_1_1Hash_ace65be1ef3007bf35879dd9545992e63}\label{classlhy_1_1Hash_ace65be1ef3007bf35879dd9545992e63}}
+\index{lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}!hash\_func\_set@{hash\_func\_set}}
+\index{hash\_func\_set@{hash\_func\_set}!lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}}
+\doxysubsubsection{\texorpdfstring{hash\_func\_set()}{hash\_func\_set()}}
+{\footnotesize\ttfamily template$<$hashable T, typename U $>$ \\
+void \mbox{\hyperlink{classlhy_1_1Hash}{lhy\+::\+Hash}}$<$ T, U $>$\+::hash\+\_\+func\+\_\+set (\begin{DoxyParamCaption}
+                                                                                                    \item[{\mbox{\hyperlink{namespacelhy_af8f6ff2a34c4e7d996600a91f7b5dc1d}{Hash\+Func\+Type}}$<$ T $>$ \&}]{hash\+\_\+func }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlhy_1_1Hash_a666ff11a222ef773a08f0fece2a54261}\label{classlhy_1_1Hash_a666ff11a222ef773a08f0fece2a54261}}
+\index{lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}!insert@{insert}}
+\index{insert@{insert}!lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}}
+\doxysubsubsection{\texorpdfstring{insert()}{insert()}}
+{\footnotesize\ttfamily template$<$hashable T, typename U $>$ \\
+void \mbox{\hyperlink{classlhy_1_1Hash}{lhy\+::\+Hash}}$<$ T, U $>$\+::insert (\begin{DoxyParamCaption}
+                                                                                   \item[{const T \&}]{key,  }\item[{const U \&}]{value }
+\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classlhy_1_1Hash_a109ce7d0270020bd2a2aec5e048b3a90}\label{classlhy_1_1Hash_a109ce7d0270020bd2a2aec5e048b3a90}}
+\index{lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}!mod\_value\_set@{mod\_value\_set}}
+\index{mod\_value\_set@{mod\_value\_set}!lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}}
+\doxysubsubsection{\texorpdfstring{mod\_value\_set()}{mod\_value\_set()}}
+{\footnotesize\ttfamily template$<$hashable T, typename U $>$ \\
+void \mbox{\hyperlink{classlhy_1_1Hash}{lhy\+::\+Hash}}$<$ T, U $>$\+::mod\+\_\+value\+\_\+set (\begin{DoxyParamCaption}
+                                                                                                    \item[{\mbox{\hyperlink{namespacelhy_a282ff3920d98c5ebdf094e7f4ef88b9c}{size\+\_\+t}}}]{mod\+\_\+value }
+\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\mbox{\Hypertarget{classlhy_1_1Hash_ab58759cb5d82a3c37b1ebf029e87a51c}\label{classlhy_1_1Hash_ab58759cb5d82a3c37b1ebf029e87a51c}}
+\index{lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!lhy::Hash$<$ T, U $>$@{lhy::Hash$<$ T, U $>$}}
+\doxysubsubsection{\texorpdfstring{operator[]()}{operator[]()}}
+{\footnotesize\ttfamily template$<$hashable T, typename U $>$ \\
+U \& \mbox{\hyperlink{classlhy_1_1Hash}{lhy\+::\+Hash}}$<$ T, U $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}
+                                                                                                         \item[{const T \&}]{key }
+\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+                                                                             \item
+                                                                             my\+\_\+std/normal/include/\mbox{\hyperlink{hash_8h}{hash.\+h}}
+\end{DoxyCompactItemize}
