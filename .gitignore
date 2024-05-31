@@ -27,3 +27,5 @@
 .ionide
 /.idea/editor.xml
 cmake-build-debug-
+/html/
+/latex/

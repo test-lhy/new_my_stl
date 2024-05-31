@@ -1,8 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classlhy_1_1EdgeReserveSync.html" title=" " alt="" coords="5,46,161,73"/>
-<area shape="rect" id="node2" href="$classlhy_1_1EdgeAllocator.html" title=" " alt="" coords="209,5,337,47"/>
-<area shape="rect" id="node3" href="$classlhy_1_1EdgeAllocator.html" title=" " alt="" coords="209,71,337,112"/>
-<area shape="rect" id="node4" href="$classlhy_1_1LinkListEdgeAllocator.html" title=" " alt="" coords="385,5,559,47"/>
-<area shape="rect" id="node5" href="$classlhy_1_1MapEdgeAllocator.html" title=" " alt="" coords="395,71,549,112"/>
-<area shape="rect" id="node6" href="$classlhy_1_1MatrixEdgeAllocator.html" title=" " alt="" coords="390,136,554,177"/>
-</map>
