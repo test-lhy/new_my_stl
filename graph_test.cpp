@@ -40,20 +40,20 @@ int main() {
       int n1 = 1;
       int n2 = 2;
       int n3 = 3;
-      for (auto& each : graph) {
-        std::cout << "node" << each.GetId() << std::endl;
-        for (auto& edge : graph[each.GetId()].GetEdges()) {
-          std::cout << edge.GetFirst().GetId() << " -> " << edge.GetSecond().GetId() << std::endl;
+      for (auto& [index, node] : graph) {
+        std::cout << "node" << node.GetId() << std::endl;
+        for (auto& edge : graph[node.GetId()].GetEdges()) {
+          std::cout << edge.GetFirst() << " -> " << edge.GetSecond() << std::endl;
         }
       }
-      graph.DeleteEdge(graph[1].GetNode(), graph[3].GetNode());
+      graph.DeleteEdge(1, 3);
       graph.DeleteNode(n2);
       std::cout << "after detete node 2 and the edge from 1 to 3" << std::endl;
 
-      for (auto& each : graph) {
-        std::cout << "node" << each.GetId() << std::endl;
-        for (auto& edge : graph[each.GetId()].GetEdges()) {
-          std::cout << edge.GetFirst().GetId() << " -> " << edge.GetSecond().GetId() << std::endl;
+      for (auto& [index, node] : graph) {
+        std::cout << "node" << node.GetId() << std::endl;
+        for (auto& edge : graph[node.GetId()].GetEdges()) {
+          std::cout << edge.GetFirst() << " -> " << edge.GetSecond() << std::endl;
         }
       }
       std::cout << "finished one test" << std::endl;

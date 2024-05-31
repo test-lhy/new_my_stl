@@ -9,8 +9,8 @@
 #include "index_container.h"
 #include "priority_queue.h"
 namespace lhy {
-template <typename EdgeWeightType, node_c Node_>
-IndexContainer<double> Dijkstra(DGE<EdgeWeightType, Node_>* graph, Index node) {
+template <typename T, Deprived<Node> Node_, Deprived<Weighted<T, Edge>> Edge_>
+IndexContainer<double> Dijkstra(DirectedGraph<Node_, Edge_>* graph, Index node) {
   IndexContainer<double> distance(graph->GetNodeContainerMode());
   IndexContainer<bool> book(graph->GetNodeContainerMode());
   distance[node] = 0;
@@ -25,7 +25,7 @@ IndexContainer<double> Dijkstra(DGE<EdgeWeightType, Node_>* graph, Index node) {
     }
     book[now] = true;
     for (auto& each : graph->operator[](now).GetEdges()) {
-      Index to_node = each.GetSecond().GetId();
+      Index to_node = each.GetSecond();
       if (!book.Exist(to_node) && (!distance.Exist(to_node) || distance[to_node] > dis + each.GetWeight())) {
         distance[to_node] = dis + each.GetWeight();
         pos_next.push({distance[to_node], to_node});

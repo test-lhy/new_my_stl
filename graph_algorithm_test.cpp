@@ -11,14 +11,14 @@ int main() {
   a.AddNode(3);
   a.AddNode(4);
   a.AddNode(5);
-  a.AddEdge(WeightedEdge<double>{6, a[1].GetNode(), a[2].GetNode()});
-  a.AddEdge(WeightedEdge<double>{5, a[1].GetNode(), a[4].GetNode()});
-  a.AddEdge(WeightedEdge<double>{7, a[2].GetNode(), a[3].GetNode()});
-  a.AddEdge(WeightedEdge<double>{9, a[2].GetNode(), a[4].GetNode()});
-  a.AddEdge(WeightedEdge<double>{4, a[3].GetNode(), a[5].GetNode()});
-  a.AddEdge(WeightedEdge<double>{8, a[4].GetNode(), a[3].GetNode()});
-  a.AddEdge(WeightedEdge<double>{3, a[5].GetNode(), a[3].GetNode()});
-  for (auto [index, dis] : Dijkstra(&a, 1)) {
+  a.AddEdge(6, 1, 2);
+  a.AddEdge(5, 1, 4);
+  a.AddEdge(7, 2, 3);
+  a.AddEdge(9, 2, 4);
+  a.AddEdge(4, 3, 5);
+  a.AddEdge(8, 4, 3);
+  a.AddEdge(3, 5, 3);
+  for (auto [index, dis] : Dijkstra<double>(&a, 1)) {
     cout << index << " " << dis << endl;
   }
   cout << endl;

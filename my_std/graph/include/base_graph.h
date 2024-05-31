@@ -37,7 +37,7 @@ class BaseGraph : public DataStructure<std::pair<Index, Node_>> {
                      EdgeAllocatorMode edge_allocator_mode = EdgeAllocatorMode::LinkListEdgeAllocatorMode);
   virtual ~BaseGraph();
   template <typename... Args>
-  void AddEdge(Index first, Index second, Args&&... args);
+  void AddEdge(Args&&... args);
   virtual void AddEdge(Edge_&& edge);
   template <typename... Args>
   Index AddNode(Args&&... args);
@@ -48,6 +48,7 @@ class BaseGraph : public DataStructure<std::pair<Index, Node_>> {
   return_node operator[](Node_&& node);
   template <typename... Args>
   void DeleteEdge(Args&&... args);
+  void DeleteEdge(const Node_& first, const Node_& second);
   virtual void DeleteEdge(Edge_&& edge);
   virtual void DeleteEdges(Index first, Index second);
   void DeleteEdges(const Node_& first, const Node_& second);
@@ -118,10 +119,15 @@ void BaseGraph<Node_, Edge_>::DeleteNode(Index node) {
   edge_allocator_->DeleteNode(node);
   node_allocator_->DeleteNode(node);
 }
+// note:会将所有的都匹配过来，所以才要专门弄一个函数emplace
 template <node_c Node_, edge_c Edge_>
 template <typename... Args>
 void BaseGraph<Node_, Edge_>::DeleteEdge(Args&&... args) {
-  DeleteEdge(Edge_(std::forward<Args>(args)...));
+  DeleteEdge(std::forward<Edge_>(Edge_(std::forward<Args>(args)...)));
+}
+template <node_c Node_, edge_c Edge_>
+void BaseGraph<Node_, Edge_>::DeleteEdge(const Node_& first, const Node_& second) {
+  DeleteEdge(first.GetId(), second.GetId());
 }
 template <node_c Node_, edge_c Edge_>
 void BaseGraph<Node_, Edge_>::DeleteEdge(Edge_&& edge) {
@@ -179,9 +185,8 @@ void BaseGraph<Node_, Edge_>::AddEdge(Edge_&& edge) {
 }
 template <node_c Node_, edge_c Edge_>
 template <typename... Args>
-void BaseGraph<Node_, Edge_>::AddEdge(Index first, Index second, Args&&... args) {
-  edge_allocator_->AddEdge(
-      Edge_{node_allocator_->GetNode(first), node_allocator_->GetNode(second), std::forward<Args>(args)...});
+void BaseGraph<Node_, Edge_>::AddEdge(Args&&... args) {
+  edge_allocator_->EmplaceEdge(std::forward<Args>(args)...);
 }
 }  // namespace lhy
 #endif  // MY_STL_BASE_GRAPH_H

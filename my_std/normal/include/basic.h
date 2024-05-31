@@ -14,5 +14,7 @@ template <typename T>
 using HashFuncType = std::function<Index(const T&, const size_t&)>;
 template <typename T>
 using CmpType = std::function<bool(const T&, const T&)>;
+template <typename T, typename U>
+concept Deprived = std::is_base_of_v<U, T>;
 }  // namespace lhy
 #endif  // MY_STL_BASIC_H

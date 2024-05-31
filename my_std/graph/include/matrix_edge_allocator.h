@@ -28,17 +28,17 @@ class MatrixEdgeAllocator : public EdgeAllocator<Edge_> {
 };
 template <edge_c Edge_>
 void MatrixEdgeAllocator<Edge_>::AddEdge(const Edge_& edge) {
-  edges_[edge.GetFirst().GetId()][edge.GetSecond().GetId()].push_back(edge);
+  edges_[edge.GetFirst()][edge.GetSecond()].push_back(edge);
   changed_ = true;
 }
 template <edge_c Edge_>
 bool MatrixEdgeAllocator<Edge_>::Exist(const Edge_& edge) {
-  list<Edge_>& all_edges = edges_[edge.GetFirst().GetId()][edge.GetSecond().GetId()];
+  list<Edge_>& all_edges = edges_[edge.GetFirst()][edge.GetSecond()];
   return find(all_edges.begin(), all_edges.end(), edge) == all_edges.end();
 }
 template <edge_c Edge_>
 void MatrixEdgeAllocator<Edge_>::DeleteEdge(const Edge_& edge) {
-  list<Edge_>& all_edges = edges_[edge.GetFirst().GetId()][edge.GetSecond().GetId()];
+  list<Edge_>& all_edges = edges_[edge.GetFirst()][edge.GetSecond()];
   if (!all_edges.empty()) {
     all_edges.erase(edge);
   }

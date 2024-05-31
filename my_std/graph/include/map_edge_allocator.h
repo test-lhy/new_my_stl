@@ -25,13 +25,13 @@ class MapEdgeAllocator : public EdgeAllocator<Edge_> {
 };
 template <edge_c Edge_>
 void MapEdgeAllocator<Edge_>::AddEdge(const Edge_& edge) {
-  edges_[{edge.GetFirst().GetId(), edge.GetSecond().GetId()}].push_back(edge);
-  vec_edges_[edge.GetFirst().GetId()].push_back(edge);
+  edges_[{edge.GetFirst(), edge.GetSecond()}].push_back(edge);
+  vec_edges_[edge.GetFirst()].push_back(edge);
 }
 
 template <edge_c Edge_>
 bool MapEdgeAllocator<Edge_>::Exist(const Edge_& edge) {
-  std::pair<Index, Index> place = {edge.GetFirst().GetId(), edge.GetSecond().GetId()};
+  std::pair<Index, Index> place = {edge.GetFirst(), edge.GetSecond()};
   if (edges_.find(place) == edges_.end()) {
     return false;
   }
@@ -40,9 +40,9 @@ bool MapEdgeAllocator<Edge_>::Exist(const Edge_& edge) {
 template <edge_c Edge_>
 void MapEdgeAllocator<Edge_>::DeleteEdge(const Edge_& edge) {
   if (Exist(edge)) {
-    std::pair<Index, Index> place = {edge.GetFirst().GetId(), edge.GetSecond().GetId()};
+    std::pair<Index, Index> place = {edge.GetFirst(), edge.GetSecond()};
     edges_[place].erase(edge);
-    vec_edges_[edge.GetFirst().GetId()].erase(edge);
+    vec_edges_[edge.GetFirst()].erase(edge);
   }
 }
 template <edge_c Edge_>
@@ -50,9 +50,9 @@ void MapEdgeAllocator<Edge_>::DeleteEdges(Index first, Index second) {
   auto& each_list = vec_edges_[first];
   auto each_iter = each_list.begin();
   while (each_iter != each_list.end()) {
-    if (each_iter->GetSecond().GetId() == second) {
+    if (each_iter->GetSecond() == second) {
       if (Exist(*each_iter)) {
-        edges_.erase({each_iter->GetFirst().GetId(), each_iter->GetSecond().GetId()});
+        edges_.erase({each_iter->GetFirst(), each_iter->GetSecond()});
       }
       each_iter = each_list.erase(each_iter);
     } else {
@@ -74,9 +74,9 @@ void MapEdgeAllocator<Edge_>::DeleteNode(Index node) {
     auto& each_list = each.second;
     auto each_iter = each_list.begin();
     while (each_iter != each_list.end()) {
-      if (each_iter->GetFirst().GetId() == node || each_iter->GetSecond().GetId() == node) {
+      if (each_iter->GetFirst() == node || each_iter->GetSecond() == node) {
         if (Exist(*each_iter)) {
-          edges_.erase({each_iter->GetFirst().GetId(), each_iter->GetSecond().GetId()});
+          edges_.erase({each_iter->GetFirst(), each_iter->GetSecond()});
         }
         each_iter = each_list.erase(each_iter);
       } else {
