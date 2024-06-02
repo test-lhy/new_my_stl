@@ -43,14 +43,19 @@ class shared_ptr {
   void reset(RealT ptr, Deleter<RealT> deleter = ptrType<T>::default_deleter_);
   shared_ptr(const shared_ptr& other);
   shared_ptr(shared_ptr&& other);
+  bool InitCopySwap(RealT other);
   shared_ptr& operator=(const shared_ptr& other);
   shared_ptr& operator=(shared_ptr&& other);
+  template <convertiable_pointer_c<RealT> U>
+  void Copy(const shared_ptr<U>& other);
   template <convertiable_pointer_c<RealT> U>
   explicit shared_ptr(const shared_ptr<U>& other);
   template <convertiable_pointer_c<RealT> U>
   explicit shared_ptr(shared_ptr<U>&& other);
   template <convertiable_pointer_c<RealT> U>
   shared_ptr& operator=(const shared_ptr<U>& other);
+  template <convertiable_pointer_c<RealT> U>
+  void swap(shared_ptr<U>&& other);
   template <convertiable_pointer_c<RealT> U>
   shared_ptr& operator=(shared_ptr<U>&& other);
   template <convertiable_c<RealT> U>
@@ -81,16 +86,11 @@ shared_ptr<T, ControlledT>::shared_ptr() : get_value_(nullptr), controller_(null
 // 这大概只是为了避免如我下面的对nullptr进行if判断，而通过编译器判断来提高效率
 template <typename T, typename ControlledT>
 shared_ptr<T, ControlledT>::shared_ptr(RealT ptr, Deleter<RealT> deleter) : shared_ptr() {
-  if (ptr == nullptr) {
-    return;
-  }
-  get_value_ = ptr;
-  controller_ = new ptrController<RealT>(ptr, deleter);
+  reset(ptr, deleter);
 }
 template <typename T, typename ControlledT>
 void shared_ptr<T, ControlledT>::reset(RealT ptr, Deleter<RealT> deleter) {
-  reset();
-  if (ptr == nullptr) {
+  if (InitCopySwap(ptr)) {
     return;
   }
   get_value_ = ptr;
@@ -98,104 +98,113 @@ void shared_ptr<T, ControlledT>::reset(RealT ptr, Deleter<RealT> deleter) {
 }
 template <typename T, typename ControlledT>
 shared_ptr<T, ControlledT>::shared_ptr(const shared_ptr& other) {
-  reset();
-  if (other.get() == nullptr) {
+  if (InitCopySwap(other.get())) {
     return;
   }
-  get_value_ = other.get_value_;
-  controller_ = other.controller_;
-  controller_->IncreaseShared();
+  Copy(std::forward<const shared_ptr>(other));
 }
 template <typename T, typename ControlledT>
 shared_ptr<T, ControlledT>::shared_ptr(shared_ptr&& other) {
+  if (InitCopySwap(other.get())) {
+    return;
+  }
+  swap(std::forward<shared_ptr>(other));
+}
+template <typename T, typename ControlledT>
+bool shared_ptr<T, ControlledT>::InitCopySwap(RealT other) {
   reset();
-  std::swap(other.controller_, controller_);
-  std::swap(other.get_value_, get_value_);
+  if (other == nullptr) {
+    return true;
+  }
+  return false;
 }
 template <typename T, typename ControlledT>
 shared_ptr<T, ControlledT>& shared_ptr<T, ControlledT>::operator=(const shared_ptr& other) {
   if (&other != this) {
-    reset();
-    if (other.get() == nullptr) {
+    if (InitCopySwap(other.get())) {
       return *this;
     }
-    get_value_ = other.get_value_;
-    controller_ = other.controller_;
-    controller_->IncreaseShared();
+    Copy(std::forward<const shared_ptr>(other));
   }
   return *this;
 }
 template <typename T, typename ControlledT>
 shared_ptr<T, ControlledT>& shared_ptr<T, ControlledT>::operator=(shared_ptr&& other) {
   if (&other != this) {
-    reset();
-    std::swap(other.controller_, controller_);
-    std::swap(other.get_value_, get_value_);
+    if (InitCopySwap(other.get())) {
+      return *this;
+    }
+    swap(std::forward<shared_ptr>(other));
   }
   return *this;
 }
 template <typename T, typename ControlledT>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>
-shared_ptr<T, ControlledT>::shared_ptr(const shared_ptr<U>& other) {
-  reset();
-  if (other.get() == nullptr) {
-    return;
-  }
+void shared_ptr<T, ControlledT>::Copy(const shared_ptr<U>& other) {
   get_value_ = other.get_value_;
   controller_ = other.controller_;
   controller_->IncreaseShared();
 }
 template <typename T, typename ControlledT>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>
+shared_ptr<T, ControlledT>::shared_ptr(const shared_ptr<U>& other) {
+  if (InitCopySwap(other.get())) {
+    return;
+  }
+  Copy(std::forward<const shared_ptr<U>>(other));
+}
+template <typename T, typename ControlledT>
+template <convertiable_pointer_c<typename ptrType<T>::Type> U>
 shared_ptr<T, ControlledT>::shared_ptr(shared_ptr<U>&& other) {
-  reset();
-  std::swap(other.controller_, controller_);
-  std::swap(other.get_value_, get_value_);
+  if (InitCopySwap(other.get())) {
+    return;
+  }
+  swap(std::forward<shared_ptr<U>>(other));
 }
 template <typename T, typename ControlledT>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>
 shared_ptr<T, ControlledT>& shared_ptr<T, ControlledT>::operator=(const shared_ptr<U>& other) {
   if (&other != this) {
-    reset();
-    if (other == nullptr) {
+    if (InitCopySwap(other.get())) {
       return *this;
     }
-    get_value_ = other.get_value_;
-    controller_ = other.controller_;
-    controller_->IncreaseShared();
+    Copy(std::forward<const shared_ptr<U>>(other));
   }
   return *this;
 }
 template <typename T, typename ControlledT>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>
+void shared_ptr<T, ControlledT>::swap(shared_ptr<U>&& other) {
+  std::swap(other.controller_, controller_);
+  std::swap(other.get_value_, get_value_);
+}
+template <typename T, typename ControlledT>
+template <convertiable_pointer_c<typename ptrType<T>::Type> U>
 shared_ptr<T, ControlledT>& shared_ptr<T, ControlledT>::operator=(shared_ptr<U>&& other) {
   if (&other != this) {
-    reset();
-    std::swap(other.controller_, controller_);
-    std::swap(other.get_value_, get_value_);
+    if (InitCopySwap(other.get())) {
+      return *this;
+    }
+    swap(std::forward<shared_ptr<U>>(other));
   }
   return *this;
 }
 template <typename T, typename ControlledT>
 template <convertiable_c<typename ptrType<T>::Type> U>
 shared_ptr<T, ControlledT>::shared_ptr(const shared_ptr<ControlledT>& other, U other_get_value) {
-  reset();
-  if (other.get() == nullptr) {
+  if (InitCopySwap(other.get())) {
     return;
   }
+  Copy(std::forward<const shared_ptr<ControlledT>>(other));
   get_value_ = other_get_value;
-  controller_ = other.controller_;
-  controller_->IncreaseShared();
 }
 template <typename T, typename ControlledT>
 template <convertiable_c<typename ptrType<T>::Type> U>
 shared_ptr<T, ControlledT>::shared_ptr(shared_ptr<ControlledT>&& other, U other_get_value) {
-  reset();
-  if (other.get() == nullptr) {
+  if (InitCopySwap(other.get())) {
     return;
   }
-  std::swap(other.controller_, controller_);
-  std::swap(other.get_value_, get_value_);
+  swap(std::forward<shared_ptr<ControlledT>>(other));
   get_value_ = other_get_value;
 }
 template <typename T, typename ControlledT>
