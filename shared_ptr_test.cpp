@@ -89,12 +89,47 @@ void testCustomGetValue() {
   delete newPtr;
 }
 
+void testMakeShared() {
+  // Test make_shared for non-array type
+  auto sp1 = lhy::make_shared<TestClass[]>(10);
+  assert(sp1);
+  assert(sp1.use_count() == 1);
+
+  // Test make_shared for array type
+  auto sp2 = lhy::make_shared<int[]>(10);
+  assert(sp2);
+  assert(sp2.use_count() == 1);
+  for (int i = 0; i < 10; ++i) {
+    sp2[i] = i;
+  }
+  for (int i = 0; i < 10; ++i) {
+    assert(sp2[i] == i);
+  }
+
+  // Test make_shared_for_overwrite for non-array type
+  auto sp3 = lhy::make_shared_for_overwrite<TestClass[]>(100);
+  assert(sp3);
+  assert(sp3.use_count() == 1);
+
+  // Test make_shared_for_overwrite for array type
+  auto sp4 = lhy::make_shared_for_overwrite<int[]>(10);
+  assert(sp4);
+  assert(sp4.use_count() == 1);
+  for (int i = 0; i < 10; ++i) {
+    sp4[i] = i + 10;
+  }
+  for (int i = 0; i < 10; ++i) {
+    assert(sp4[i] == i + 10);
+  }
+}
+
 int main() {
   testConstructorsAndAssignment();
   testResetAndGet();
   testArrayHandling();
   testCustomDeleter();
   testCustomGetValue();
+  testMakeShared();
   std::cout << "All tests passed!\n";
   return 0;
 }

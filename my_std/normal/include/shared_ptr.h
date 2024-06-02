@@ -22,6 +22,10 @@ class ptrType {
 };
 template <typename T>
 concept array_c = std::is_array_v<T>;
+template <typename T>
+concept not_array_c = !array_c<T>;
+template <typename T>
+concept bounded_array_c = std::is_bounded_array_v<T>;
 template <array_c T>
 class ptrType<T> {
  public:
@@ -63,7 +67,7 @@ class shared_ptr {
   template <convertiable_c<RealT> U>
   shared_ptr(shared_ptr<ControlledT>&& other, U other_get_value);
   explicit operator bool() const { return get() != nullptr; }
-  std::remove_extent_t<T> operator[](Index index) { return *(get() + index); }
+  std::remove_extent_t<T>& operator[](Index index) { return *(get() + index); }
   [[nodiscard]] int use_count() const { return controller_->shared_count(); }
   ~shared_ptr();
   RealT get() const;
@@ -222,6 +226,28 @@ void shared_ptr<T, ControlledT>::reset() {
     get_value_ = nullptr;
     controller_ = nullptr;
   }
+}
+// note:make_shared在一般的实现中是只进行一次内存分配，因此被管理的对象的new并没有进行分配内存，因此也不能使用delete来进行销毁，而要通过析构函数进行销毁
+// 当控制块要被销毁的时候，整个内存才会被整体释放
+template <not_array_c T, class... Args>
+shared_ptr<T> make_shared(Args&&... args) {
+  return shared_ptr<T>(new typename shared_ptr<T>::RealT(std::forward<Args>(args)...));
+}
+template <array_c T>
+shared_ptr<T> make_shared(size_t N) {
+  return shared_ptr<T>(new std::remove_extent_t<T>[N]);
+}
+template <bounded_array_c T>
+shared_ptr<T> make_shared() {
+  return shared_ptr<T>(new std::remove_extent_t<T>[std::extent_v<T>]);
+}
+template <array_c T>
+shared_ptr<T> make_shared_for_overwrite(size_t N) {
+  return shared_ptr<T>(new std::remove_extent_t<T>[N]());
+}
+template <bounded_array_c T>
+shared_ptr<T> make_shared_for_overwrite() {
+  return shared_ptr<T>(new std::remove_extent_t<T>[std::extent_v<T>]());
 }
 }  // namespace lhy
 
