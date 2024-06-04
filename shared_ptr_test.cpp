@@ -5,11 +5,60 @@
 
 class TestClass {
  public:
-  TestClass() { std::cout << "TestClass constructed\n"; }
-  ~TestClass() { std::cout << "TestClass destructed\n"; }
+  TestClass() {
+    a = new int();
+    std::cout << "TestClass constructed\n";
+  }
+  ~TestClass() {
+    delete a;
+    std::cout << "TestClass destructed\n";
+  }
   void sayHello() { std::cout << "Hello from TestClass\n"; }
+  int *a;
+};
+class BaseClass {
+ public:
+  BaseClass() {
+    a = new int();
+    std::cout << "BaseClass constructed\n";
+  }
+  virtual ~BaseClass() {
+    delete a;
+    std::cout << "BaseClass destructed\n";
+  }
+  virtual void sayHello() { std::cout << "Hello from BaseClass\n"; }
+  int *a;
 };
 
+class DerivedClass : public BaseClass {
+ public:
+  DerivedClass() {
+    b = new int();
+    std::cout << "DerivedClass constructed\n";
+  }
+  ~DerivedClass() override {
+    delete b;
+    std::cout << "DerivedClass destructed\n";
+  }
+  void sayHello() override { std::cout << "Hello from DerivedClass\n"; }
+  int *b;
+};
+
+void testDerivedToBaseConversion() {
+  // Test creating shared_ptr from derived class pointer
+  lhy::shared_ptr<DerivedClass> derivedPtr = lhy::make_shared<DerivedClass>();
+  derivedPtr->sayHello();
+
+  // Convert derived shared_ptr to base shared_ptr
+  lhy::shared_ptr<BaseClass> basePtr = derivedPtr;
+  basePtr->sayHello();
+  assert(basePtr.use_count() == 2);  // Both shared_ptr should point to the same object
+
+  // Test reset with derived class pointer
+  lhy::shared_ptr<BaseClass> anotherBasePtr;
+  anotherBasePtr.reset(new DerivedClass());
+  assert(anotherBasePtr.use_count() == 1);
+}
 void testConstructorsAndAssignment() {
   // Test default constructor
   lhy::shared_ptr<TestClass> sp1;
@@ -62,7 +111,7 @@ void testArrayHandling() {
 void testCustomDeleter() {
   auto rawPtr = new TestClass();
   bool customDeleterCalled = false;
-  auto customDeleter = [&customDeleterCalled](TestClass* ptr) {
+  auto customDeleter = [&customDeleterCalled](TestClass *ptr) {
     delete ptr;
     customDeleterCalled = true;
   };
@@ -122,7 +171,112 @@ void testMakeShared() {
     assert(sp4[i] == i + 10);
   }
 }
+void testComplexScenario() {
+  // Mixed scenario with multiple shared_ptr and different types
+  auto basePtr1 = lhy::make_shared<BaseClass>();
+  auto derivedPtr1 = lhy::make_shared<DerivedClass>();
 
+  std::cout << "Initial counts: " << basePtr1.use_count() << " " << derivedPtr1.use_count() << "\n";
+
+  lhy::shared_ptr<BaseClass> basePtr2 = derivedPtr1;
+  assert(basePtr2.use_count() == 2);
+  assert(derivedPtr1.use_count() == 2);
+
+  basePtr1 = basePtr2;
+  assert(basePtr1.use_count() == 3);
+  assert(basePtr2.use_count() == 3);
+  assert(derivedPtr1.use_count() == 3);
+
+  basePtr1.reset();
+  assert(basePtr2.use_count() == 2);
+  assert(derivedPtr1.use_count() == 2);
+
+  basePtr2.reset();
+  assert(derivedPtr1.use_count() == 1);
+}
+
+void testMixedScenarios() {
+  // Scenario with custom deleter and conversion
+  auto rawPtr = new DerivedClass();
+  bool customDeleterCalled = false;
+  auto customDeleter = [&customDeleterCalled](BaseClass *ptr) {
+    delete ptr;
+    customDeleterCalled = true;
+  };
+  { lhy::shared_ptr<BaseClass> basePtr(rawPtr, customDeleter); }
+  assert(customDeleterCalled);
+}
+class ComplexClass {
+ public:
+  ComplexClass(int a, double b) : a_(a), b_(b) { std::cout << "ComplexClass constructed\n"; }
+  ~ComplexClass() { std::cout << "ComplexClass destructed\n"; }
+  void display() { std::cout << "ComplexClass values: " << a_ << ", " << b_ << "\n"; }
+
+ private:
+  int a_;
+  double b_;
+};
+
+void testMakeSharedWithArgs() {
+  // Test make_shared with arguments
+  auto sp1 = lhy::make_shared<ComplexClass>(42, 3.14);
+  sp1->display();
+  assert(sp1.use_count() == 1);
+}
+
+void testSharedPtrAlias() {
+  // Test aliasing
+  auto basePtr = lhy::make_shared<BaseClass>();
+  auto derivedPtr = lhy::make_shared<DerivedClass>();
+  basePtr = derivedPtr;  // Aliasing basePtr to derivedPtr
+  basePtr->sayHello();
+  assert(basePtr.use_count() == 2);
+  assert(derivedPtr.use_count() == 2);
+}
+
+void testSharedPtrReset() {
+  // Test reset with nullptr
+  auto sp1 = lhy::make_shared<TestClass>();
+  assert(sp1.use_count() == 1);
+  sp1.reset();
+  assert(!sp1);  // Should be null
+}
+
+void testSharedPtrSwap() {
+  // Test swap
+  auto sp1 = lhy::make_shared<TestClass>();
+  auto sp2 = lhy::make_shared<TestClass>();
+  sp1.swap(sp2);
+  assert(sp1.use_count() == 1);
+  assert(sp2.use_count() == 1);
+}
+
+void testArrayDeleter() {
+  // Test custom deleter with array
+  bool customDeleterCalled = false;
+  auto customDeleter = [&customDeleterCalled](int *ptr) {
+    delete[] ptr;
+    customDeleterCalled = true;
+  };
+  { lhy::shared_ptr<int[]> sp(new int[10], customDeleter); }
+  assert(customDeleterCalled);  // Custom deleter should be called
+}
+
+void testSharedPtrCircularReference() {
+  // // Test circular reference handling
+  // struct Node {
+  //   lhy::shared_ptr<Node> next;
+  //   ~Node() { std::cout << "Node destructed\n"; }
+  // };
+  //
+  // auto node1 = lhy::make_shared<Node>();
+  // auto node2 = lhy::make_shared<Node>();
+  // node1->next = node2;
+  // node2->next = node1;  // Circular reference
+  //
+  // node1.reset();
+  // node2.reset();  // Nodes should be destructed without memory leak
+}
 int main() {
   testConstructorsAndAssignment();
   testResetAndGet();
@@ -130,6 +284,15 @@ int main() {
   testCustomDeleter();
   testCustomGetValue();
   testMakeShared();
+  testDerivedToBaseConversion();
+  testComplexScenario();
+  testMixedScenarios();
+  testMakeSharedWithArgs();
+  testSharedPtrAlias();
+  testSharedPtrReset();
+  testSharedPtrSwap();
+  testArrayDeleter();
+  testSharedPtrCircularReference();
   std::cout << "All tests passed!\n";
   return 0;
 }

@@ -10,40 +10,19 @@
 
 #include "basic.h"
 #include "ptrController.h"
+#include "ptr_base.h"
 
 namespace lhy {
-template <typename T>
-using Deleter = std::function<void(T)>;
-template <typename T>
-class ptrType {
- public:
-  using Type = std::add_pointer_t<T>;
-  inline static Deleter<Type> default_deleter_ = [](Type ptr) -> void { delete ptr; };
-};
-template <typename T>
-concept array_c = std::is_array_v<T>;
-template <typename T>
-concept not_array_c = !array_c<T>;
-template <typename T>
-concept bounded_array_c = std::is_bounded_array_v<T>;
-template <array_c T>
-class ptrType<T> {
- public:
-  using Type = std::add_pointer_t<std::remove_extent_t<T>>;
-  inline static Deleter<Type> default_deleter_ = [](Type ptr) -> void { delete[] ptr; };
-};
-template <typename T, typename U>
-concept convertiable_c = std::is_convertible_v<T, U>;
-template <typename T, typename U>
-concept convertiable_pointer_c = std::is_convertible_v<typename ptrType<T>::Type, U>;
 // note:T和ControlledT都是非指针的
 template <typename T, typename ControlledT = T>
 class shared_ptr {
  public:
+  template <typename T_, typename ControlledT_>
+  friend class shared_ptr;
   using RealT = typename ptrType<T>::Type;
   using RealControlledT = typename ptrType<ControlledT>::Type;
   shared_ptr();
-  explicit shared_ptr(RealT ptr, Deleter<RealT> deleter = ptrType<T>::default_deleter_);
+  shared_ptr(RealT ptr, Deleter<RealT> deleter = ptrType<T>::default_deleter_);
   void reset(RealT ptr, Deleter<RealT> deleter = ptrType<T>::default_deleter_);
   shared_ptr(const shared_ptr& other);
   shared_ptr(shared_ptr&& other);
@@ -51,13 +30,13 @@ class shared_ptr {
   shared_ptr& operator=(const shared_ptr& other);
   shared_ptr& operator=(shared_ptr&& other);
   template <convertiable_pointer_c<RealT> U>
-  void Copy(const shared_ptr<U>& other);
+  shared_ptr(const shared_ptr<U>& other);
   template <convertiable_pointer_c<RealT> U>
-  explicit shared_ptr(const shared_ptr<U>& other);
-  template <convertiable_pointer_c<RealT> U>
-  explicit shared_ptr(shared_ptr<U>&& other);
+  shared_ptr(shared_ptr<U>&& other);
   template <convertiable_pointer_c<RealT> U>
   shared_ptr& operator=(const shared_ptr<U>& other);
+  template <convertiable_pointer_c<RealT> U>
+  void swap(shared_ptr<U>& other);
   template <convertiable_pointer_c<RealT> U>
   void swap(shared_ptr<U>&& other);
   template <convertiable_pointer_c<RealT> U>
@@ -66,7 +45,7 @@ class shared_ptr {
   shared_ptr(const shared_ptr<ControlledT>& other, U other_get_value);
   template <convertiable_c<RealT> U>
   shared_ptr(shared_ptr<ControlledT>&& other, U other_get_value);
-  explicit operator bool() const { return get() != nullptr; }
+  operator bool() const { return get() != nullptr; }
   std::remove_extent_t<T>& operator[](Index index) { return *(get() + index); }
   [[nodiscard]] int use_count() const { return controller_->shared_count(); }
   ~shared_ptr();
@@ -75,12 +54,13 @@ class shared_ptr {
   const T& operator*() const { return *get(); }
   RealT operator->() { return get(); }
   RealT operator->() const { return get(); }
-
- private:
   void reset();
 
-  RealT get_value_;
-  ptrController<RealControlledT>* controller_;
+ private:
+  template <convertiable_pointer_c<RealT> U>
+  void Copy(const shared_ptr<U>& other);
+  RealT get_value_{};
+  ptrController* controller_{};
 };
 
 template <typename T, typename ControlledT>
@@ -98,7 +78,7 @@ void shared_ptr<T, ControlledT>::reset(RealT ptr, Deleter<RealT> deleter) {
     return;
   }
   get_value_ = ptr;
-  controller_ = new ptrController<RealT>(ptr, deleter);
+  controller_ = new ptrControllerImpl<RealT>(ptr, deleter);
 }
 template <typename T, typename ControlledT>
 shared_ptr<T, ControlledT>::shared_ptr(const shared_ptr& other) {
@@ -168,7 +148,7 @@ shared_ptr<T, ControlledT>::shared_ptr(shared_ptr<U>&& other) {
 template <typename T, typename ControlledT>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>
 shared_ptr<T, ControlledT>& shared_ptr<T, ControlledT>::operator=(const shared_ptr<U>& other) {
-  if (&other != this) {
+  if ((!std::is_same_v<U, T>) || (reinterpret_cast<shared_ptr<T>*>(const_cast<shared_ptr<U>*>(&other)) != this)) {
     if (InitCopySwap(other.get())) {
       return *this;
     }
@@ -184,8 +164,14 @@ void shared_ptr<T, ControlledT>::swap(shared_ptr<U>&& other) {
 }
 template <typename T, typename ControlledT>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>
+void shared_ptr<T, ControlledT>::swap(shared_ptr<U>& other) {
+  std::swap(other.controller_, controller_);
+  std::swap(other.get_value_, get_value_);
+}
+template <typename T, typename ControlledT>
+template <convertiable_pointer_c<typename ptrType<T>::Type> U>
 shared_ptr<T, ControlledT>& shared_ptr<T, ControlledT>::operator=(shared_ptr<U>&& other) {
-  if (&other != this) {
+  if ((!std::is_same_v<U, T>) || (reinterpret_cast<shared_ptr<T>*>(const_cast<shared_ptr<U>*>(&other)) != this)) {
     if (InitCopySwap(other.get())) {
       return *this;
     }
@@ -231,7 +217,7 @@ void shared_ptr<T, ControlledT>::reset() {
 // 当控制块要被销毁的时候，整个内存才会被整体释放
 template <not_array_c T, class... Args>
 shared_ptr<T> make_shared(Args&&... args) {
-  return shared_ptr<T>(new typename shared_ptr<T>::RealT(std::forward<Args>(args)...));
+  return shared_ptr<T>(new T(std::forward<Args>(args)...));
 }
 template <array_c T>
 shared_ptr<T> make_shared(size_t N) {
