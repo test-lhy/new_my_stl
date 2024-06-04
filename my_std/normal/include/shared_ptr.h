@@ -13,12 +13,16 @@
 #include "ptr_base.h"
 
 namespace lhy {
+template <typename T>
+class weak_ptr;
 // note:T和ControlledT都是非指针的
 template <typename T, typename ControlledT = T>
 class shared_ptr {
  public:
   template <typename T_, typename ControlledT_>
   friend class shared_ptr;
+  template <typename T_>
+  friend class weak_ptr;
   using RealT = typename ptrType<T>::Type;
   using RealControlledT = typename ptrType<ControlledT>::Type;
   shared_ptr();
@@ -31,6 +35,8 @@ class shared_ptr {
   shared_ptr& operator=(shared_ptr&& other);
   template <convertiable_pointer_c<RealT> U>
   shared_ptr(const shared_ptr<U>& other);
+  template <convertiable_pointer_c<RealT> U>
+  shared_ptr(const weak_ptr<U>& other);
   template <convertiable_pointer_c<RealT> U>
   shared_ptr(shared_ptr<U>&& other);
   template <convertiable_pointer_c<RealT> U>
@@ -136,6 +142,16 @@ shared_ptr<T, ControlledT>::shared_ptr(const shared_ptr<U>& other) {
     return;
   }
   Copy(std::forward<const shared_ptr<U>>(other));
+}
+template <typename T, typename ControlledT>
+template <convertiable_pointer_c<typename ptrType<T>::Type> U>
+shared_ptr<T, ControlledT>::shared_ptr(const weak_ptr<U>& other) {
+  if (other.expired()) {
+    throw std::logic_error("weak_ptr has been expired");
+  }
+  controller_ = other.controller_;
+  get_value_ = other.get_value_;
+  controller_->IncreaseShared();
 }
 template <typename T, typename ControlledT>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>
