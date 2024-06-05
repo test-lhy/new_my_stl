@@ -20,6 +20,8 @@ template <typename T>
 concept not_array_c = !array_c<T>;
 template <typename T>
 concept bounded_array_c = std::is_bounded_array_v<T>;
+template <typename T>
+concept unbounded_array_c = std::is_unbounded_array_v<T>;
 template <array_c T>
 class ptrType<T> {
  public:

@@ -5,12 +5,12 @@
 #ifndef SHARED_PTR_H
 #define SHARED_PTR_H
 #include <format>
-#include <memory>
 #include <type_traits>
 
 #include "basic.h"
 #include "ptrController.h"
 #include "ptr_base.h"
+#include "unique_ptr.h"
 
 namespace lhy {
 template <typename T>
@@ -37,6 +37,8 @@ class shared_ptr {
   shared_ptr(const shared_ptr<U>& other);
   template <convertiable_pointer_c<RealT> U>
   shared_ptr(const weak_ptr<U>& other);
+  template <convertiable_pointer_c<RealT> U>
+  shared_ptr(unique_ptr<U>&& other);
   template <convertiable_pointer_c<RealT> U>
   shared_ptr(shared_ptr<U>&& other);
   template <convertiable_pointer_c<RealT> U>
@@ -152,6 +154,14 @@ shared_ptr<T, ControlledT>::shared_ptr(const weak_ptr<U>& other) {
   controller_ = other.controller_;
   get_value_ = other.get_value_;
   controller_->IncreaseShared();
+}
+template <typename T, typename ControlledT>
+template <convertiable_pointer_c<typename ptrType<T>::Type> U>
+shared_ptr<T, ControlledT>::shared_ptr(unique_ptr<U>&& other) {
+  if (other) {
+    controller_ = new ptrControllerImpl<typename unique_ptr<U>::RealT>(other.get(), other.get_deleter());
+    get_value_ = other.release();
+  }
 }
 template <typename T, typename ControlledT>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>
