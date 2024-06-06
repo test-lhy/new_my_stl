@@ -19,14 +19,14 @@ IndexContainer<double> Dijkstra(DirectedGraph<Node_, Edge_>* graph, Index node) 
   while (!pos_next.empty()) {
     auto [dis, now] = pos_next.TopAndPop();
     while (book.Exist(now)) {
-      auto nowpair = pos_next.TopAndPop();
-      dis = nowpair.first;
-      now = nowpair.second;
+      const auto [fst, snd] = pos_next.TopAndPop();
+      dis = fst;
+      now = snd;
     }
     book[now] = true;
     for (auto& each : graph->operator[](now).GetEdges()) {
-      Index to_node = each.GetSecond();
-      if (!book.Exist(to_node) && (!distance.Exist(to_node) || distance[to_node] > dis + each.GetWeight())) {
+      if (Index to_node = each.GetSecond();
+          !book.Exist(to_node) && (!distance.Exist(to_node) || distance[to_node] > dis + each.GetWeight())) {
         distance[to_node] = dis + each.GetWeight();
         pos_next.push({distance[to_node], to_node});
       }
