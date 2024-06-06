@@ -310,7 +310,7 @@ void MergeSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& com
 template <typename T>
 void CountSort(NormIterator<T> start, NormIterator<T> end) {
   T maxT = *start, minT = *start;
-  NormIterator<T> temp_array = new T[end - start];
+  vector<T> temp_array(end - start);
   for (auto element = start; element != end; ++element) {
     maxT = std::max(*element, maxT);
     minT = std::min(*element, minT);
@@ -332,7 +332,6 @@ void CountSort(NormIterator<T> start, NormIterator<T> end) {
   for (Index i = 0; i < end - start; ++i) {
     start[i] = temp_array[i];
   }
-  delete[] temp_array;
 }
 template <typename T>
 void BucketSort(NormIterator<T> start, NormIterator<T> end) {
