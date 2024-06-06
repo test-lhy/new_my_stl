@@ -120,7 +120,7 @@ template <typename T>
 vector<T>::vector() : vector(0l) {}
 template <typename T>
 vector<T>::vector(iterator start, iterator end) : vector() {
-  for (auto* element = start; element != end; ++element) {
+  for (auto element = start; element != end; ++element) {
     push_back(*element);
   }
 }

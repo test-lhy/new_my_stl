@@ -277,15 +277,13 @@ void Merge(NormIterator<T> start, NormIterator<T> other_start, NormIterator<T> e
 }
 template <typename T>
 void MergeSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function) {
-  NormIterator<T> temp_array = new T[end - start];
+  vector<T> temp_array(end - start);
   for (Index i = 1; i < end - start; i <<= 1) {
-    for (Index j = 0; j < end - start; ++j) {
-      temp_array[j] = start[j];
-    }
+    temp_array = std::move(vector<T>(start, end));
     for (Index j = 0; j < end - start; j += i * 2) {
       Index i1 = j, i2 = j + i;
       Index i3 = j;
-      while (i1 < j + i && i2 < std::min(j + 2 * i, end - start)) {
+      while (i1 < std::min(j + i, end - start) && i2 < std::min(j + 2 * i, end - start)) {
         if (compare_function(temp_array[i1], temp_array[i2])) {
           start[i3] = temp_array[i1];
           i3++;
@@ -296,7 +294,7 @@ void MergeSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& com
           i2++;
         }
       }
-      while (i1 < j + i) {
+      while (i1 < std::min(j + i, end - start)) {
         start[i3] = temp_array[i1];
         i3++;
         i1++;
@@ -308,7 +306,6 @@ void MergeSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& com
       }
     }
   }
-  delete[] temp_array;
 }
 template <typename T>
 void CountSort(NormIterator<T> start, NormIterator<T> end) {
