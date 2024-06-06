@@ -186,13 +186,17 @@ template <typename T, typename ControlledT>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>
 void shared_ptr<T, ControlledT>::swap(shared_ptr<U>&& other) {
   std::swap(other.controller_, controller_);
-  std::swap(other.get_value_, get_value_);
+  auto temp = dynamic_cast<RealT>(other.get_value_);
+  other.get_value_ = dynamic_cast<typename shared_ptr<U>::RealT>(get_value_);
+  get_value_ = temp;
 }
 template <typename T, typename ControlledT>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>
 void shared_ptr<T, ControlledT>::swap(shared_ptr<U>& other) {
   std::swap(other.controller_, controller_);
-  std::swap(other.get_value_, get_value_);
+  auto temp = dynamic_cast<RealT>(other.get_value_);
+  other.get_value_ = dynamic_cast<typename shared_ptr<U>::RealT>(get_value_);
+  get_value_ = temp;
 }
 template <typename T, typename ControlledT>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>

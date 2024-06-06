@@ -10,8 +10,10 @@ namespace lhy {
 template <typename T>
 class unique_ptr {
  public:
+  template <typename T_>
+  friend class unique_ptr;
   using RealT = typename ptrType<T>::Type;
-  unique_ptr() = default;
+  unique_ptr(Deleter<RealT> deleter = ptrType<T>::default_deleter_) : deleter_(deleter) {}
   unique_ptr(RealT ptr, Deleter<RealT> deleter = ptrType<T>::default_deleter_);
   unique_ptr(const unique_ptr& other) = delete;
   unique_ptr(unique_ptr&& other);
@@ -55,12 +57,12 @@ unique_ptr<T>& unique_ptr<T>::operator=(unique_ptr&& other) {
 template <typename T>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>
 unique_ptr<T>& unique_ptr<T>::operator=(unique_ptr<U>&& other) {
-  if (&other != this) {
+  if (reinterpret_cast<unique_ptr*>(&other) != this) {
     if (*this) {
       reset();
     }
-    value_ = other.value_;
-    deleter_ = other.deleter_;
+    value_ = dynamic_cast<RealT>(other.value_);
+    // 复制不了一点deleter
     other.value_ = nullptr;
   }
   return *this;

@@ -17,6 +17,7 @@
 #include "mmath.h"
 #include "priority_queue.h"
 #include "random.h"
+#include "shared_ptr.h"
 #include "type_traits.h"
 #include "vector.h"
 
@@ -128,7 +129,7 @@ void TimSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compa
   }
 }
 template <typename T>
-void GetWinner(std::pair<T, int>* temp_array, Index index, size_t size, const CmpType<T>& compare_function,
+void GetWinner(shared_ptr<std::pair<T, int>[]> temp_array, Index index, size_t size, const CmpType<T>& compare_function,
                const T& INF) {
   temp_array[index].first = INF;
   temp_array[index].second = -1;
@@ -146,7 +147,7 @@ void GetWinner(std::pair<T, int>* temp_array, Index index, size_t size, const Cm
 template <typename T>
 void TournamentSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function, const T& INF) {
   size_t front_size = pow(2, ceil(log2(end - start))) - 1;
-  auto* temp_array = new std::pair<T, int>[front_size + end - start];
+  auto temp_array = make_shared<std::pair<T, int>[]>(front_size + end - start);
   for (Index i = 0; i < end - start; ++i) {
     temp_array[front_size + i] = {start[i], i};
   }
@@ -246,7 +247,7 @@ void QuickSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& com
 template <typename T>
 void Merge(NormIterator<T> start, NormIterator<T> other_start, NormIterator<T> end,
            const CmpType<T>& compare_function) {
-  auto* temp_array = new T[end - start];
+  auto temp_array = make_shared<T[]>(end - start);
   for (Index i = 0; i < end - start; ++i) {
     temp_array[i] = start[i];
   }
@@ -273,7 +274,6 @@ void Merge(NormIterator<T> start, NormIterator<T> other_start, NormIterator<T> e
     i3++;
     i2++;
   }
-  delete[] temp_array;
 }
 template <typename T>
 void MergeSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function) {
@@ -318,7 +318,7 @@ void CountSort(NormIterator<T> start, NormIterator<T> end) {
     maxT = std::max(*element, maxT);
     minT = std::min(*element, minT);
   }
-  int* cnt = new int[maxT - minT + 1];
+  auto cnt = make_shared<int[]>(maxT - minT + 1);
   for (Index i = minT; i <= maxT; ++i) {
     cnt[i - minT] = 0;
   }
@@ -344,7 +344,7 @@ void BucketSort(NormIterator<T> start, NormIterator<T> end) {
     maxT = std::max(*element, maxT);
     minT = std::min(*element, minT);
   }
-  int* cnt = new int[maxT - minT + 1];
+  auto cnt = make_shared<int[]>(maxT - minT + 1);
   for (Index i = minT; i <= maxT; ++i) {
     cnt[i - minT] = 0;
   }
