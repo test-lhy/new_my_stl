@@ -8,6 +8,7 @@
 #include "map_index_container.h"
 #include "node.h"
 #include "vector_index_container.h"
+// note:拷贝有些问题，到底该如何拷贝内容
 namespace lhy {
 template <typename T>
 class IndexContainer : public IndexContainerImpl<T> {
@@ -16,6 +17,8 @@ class IndexContainer : public IndexContainerImpl<T> {
   template <node_c Node_>
   friend class NodeAllocator;
   explicit IndexContainer(IndexContainerMode mode = VectorIndexContainerMode);
+  IndexContainer(IndexContainer&& other) = default;
+  IndexContainer& operator=(IndexContainer&& other) = default;
   T& operator[](Index index) override;
   const T& operator[](Index index) const override;
   void erase(Index index) override;

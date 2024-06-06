@@ -112,13 +112,13 @@ typename IndexContainerImpl<T>::reversed_iterator MapIndexContainer<T>::rend() {
 }
 template <typename T>
 typename DataStructure<typename MapIndexContainer<T>::RealT>::Pointer MapIndexContainer<T>::getBegin() {
-  return std::dynamic_pointer_cast<TForwardIterator<RealT>>(
-      std::make_shared<typename IndexContainerImpl<T>::iterator>(new iterator(container_.begin())));
+  return make_shared<iterator>(container_.begin());
 }
 template <typename T>
 typename DataStructure<typename MapIndexContainer<T>::RealT>::Pointer MapIndexContainer<T>::getEnd() {
-  return std::dynamic_pointer_cast<TForwardIterator<RealT>>(
-      std::make_shared<typename IndexContainerImpl<T>::iterator>(new iterator(container_.end())));
+  return make_shared<iterator>(container_.end());
+  // return std::dynamic_pointer_cast<TForwardIterator<RealT>>(
+  // std::make_shared<typename IndexContainerImpl<T>::iterator>(new iterator(container_.end())));
 }
 }  // namespace lhy
 

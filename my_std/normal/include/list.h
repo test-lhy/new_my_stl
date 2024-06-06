@@ -62,8 +62,8 @@ class list : public DataStructure<T> {
   iterator end_;
   reversed_iterator rend_;
   size_t size_{};
-  Pointer getBegin() override { return &rend_.getNext(); }
-  Pointer getEnd() override { return &end_; }
+  Pointer getBegin() override { return make_shared<iterator>(rend_.getNext()); }
+  Pointer getEnd() override { return make_shared<iterator>(end_); }
 };
 
 template <typename T>

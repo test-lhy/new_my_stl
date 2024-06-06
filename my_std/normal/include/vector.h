@@ -80,8 +80,8 @@ class vector : public DataStructure<T> {
   [[nodiscard]] bool check_volume() const;
   void check_index(const Index&) const;
   void extend_volume();
-  Pointer getBegin() override { return &start_; }
-  Pointer getEnd() override { return &end_; }
+  Pointer getBegin() override { return make_shared<iterator>(start_); }
+  Pointer getEnd() override { return make_shared<iterator>(end_); }
 };
 std::string str(const vector<char>& obj);
 // todo:研究这里到底应该右值引用还是直接值返回，编译器是否有优化

@@ -5,6 +5,7 @@
 #ifndef UNDIRECTED_GRAPH_H
 #define UNDIRECTED_GRAPH_H
 #include "base_graph.h"
+#include "basic.h"
 #include "directed_graph.h"
 namespace lhy {
 template <node_c Node_ = Node, edge_c Edge_ = Edge>

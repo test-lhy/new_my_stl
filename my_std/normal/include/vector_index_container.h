@@ -188,13 +188,13 @@ T& VectorIndexContainer<T>::operator[](Index index) {
 }
 template <typename T>
 typename DataStructure<typename VectorIndexContainer<T>::RealT>::Pointer VectorIndexContainer<T>::getBegin() {
-  return std::dynamic_pointer_cast<TForwardIterator<RealT>>(
-      std::make_shared<typename IndexContainerImpl<T>::iterator>(new iterator(this, used_index.begin())));
+  return make_shared<iterator>(this, used_index.begin());
 }
 template <typename T>
 typename DataStructure<typename VectorIndexContainer<T>::RealT>::Pointer VectorIndexContainer<T>::getEnd() {
-  return std::dynamic_pointer_cast<TForwardIterator<RealT>>(
-      std::make_shared<typename IndexContainerImpl<T>::iterator>(new iterator(this, used_index.end())));
+  return make_shared<iterator>(this, used_index.end());
+  // return std::dynamic_pointer_cast<TForwardIterator<RealT>>(
+  // std::make_shared<typename IndexContainerImpl<T>::iterator>(new iterator(this, used_index.end())));
 }
 template <typename T>
 const T& VectorIndexContainer<T>::operator[](Index index) const {

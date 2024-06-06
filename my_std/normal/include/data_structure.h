@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 #include "basic.h"
+#include "shared_ptr.h"
 #include "type_traits.h"
 #ifndef MY_STL_DATA_STRUCTURE_H
 #define MY_STL_DATA_STRUCTURE_H
@@ -62,15 +63,17 @@ template <typename T, typename U = T>
 class Iterator : public TIterator<T> {
  public:
   using Pointer = U*;
+  using SharedPointer = shared_ptr<U>;
   using OutPointer = typename TIterator<T>::OutPointer;
   Iterator() : data_(nullptr){};
   Iterator(Pointer data) : data_(data) {}
-  Iterator(const Iterator& other) : data_(other.data_){};
+  Iterator(const SharedPointer& data) : data_(data.get()) {}
+  Iterator(const Iterator& other) : data_(other.data_) {}
   Iterator& operator=(const Iterator& other) {
     this->data_ = other.data_;
     return *this;
   }
-  bool operator==(const Iterator& other) const { return other.data_ == data_; }//要不要改成extract?
+  bool operator==(const Iterator& other) const { return other.data_ == data_; }  // 要不要改成extract?
   bool operator!=(const Iterator& other) const { return other.data_ != data_; }
   virtual operator Pointer() { return data_; }
   virtual operator Pointer() const { return data_; }
@@ -232,29 +235,11 @@ class ReversedNormIterator : public NormIterator<T, U> {
   ReversedNormIterator operator+(Index index) { return this->getPointer() - index; }
   ReversedNormIterator operator-(Index index) { return this->getPointer() + index; }
 };
-template <typename T>
-class DataStructureIterator : public TForwardIterator<T> {
- public:
-  DataStructureIterator(TForwardIterator<T>* not_shared)
-      : shared_cond_(false), not_shared_(not_shared), shared_(nullptr) {}
-  DataStructureIterator(std::shared_ptr<TForwardIterator<T>> shared)
-      : shared_cond_(true), not_shared_(nullptr), shared_(shared) {}
-  T& operator*() override { return get()->operator*(); }
-  const T& operator*() const override { return get()->operator*(); }
-  typename TIterator<T>::OutPointer operator->() override { return get()->operator->(); }
-  TForwardIterator<T>& operator++() override { return get()->operator++(); }
-  TForwardIterator<T>* get() { return shared_cond_ ? shared_.get() : not_shared_; }
-  TForwardIterator<T>* get() const { return shared_cond_ ? shared_.get() : not_shared_; }
-
- private:
-  bool shared_cond_{};
-  TForwardIterator<T>* not_shared_{nullptr};
-  std::shared_ptr<TForwardIterator<T>> shared_;
-};
+// note:shared_ptr持有一个Iterator，但Iterator并不持有shared_ptr
 template <typename T>
 class DataStructure {
  public:
-  using Pointer = DataStructureIterator<T>;
+  using Pointer = shared_ptr<TForwardIterator<T>>;
   virtual ~DataStructure() = default;
 
  private:
