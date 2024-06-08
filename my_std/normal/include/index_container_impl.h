@@ -68,7 +68,6 @@ class IndexContainerImpl<T>::iterator : public TwoDirectionIterator<RealT, itera
     return *this;
   }
   iterator& operator--(int) override { return operator--(); }
-  ~iterator() override { delete this->getPointer(); }
 };
 template <typename T>
 class IndexContainerImpl<T>::reversed_iteratorImpl : public ReversedTwoDirectionIterator<RealT>,
@@ -103,7 +102,6 @@ class IndexContainerImpl<T>::reversed_iterator : public ReversedTwoDirectionIter
     return *this;
   }
   reversed_iterator& operator--(int) override { return operator--(); }
-  ~reversed_iterator() override { delete this->getPointer(); }
 };
 }  // namespace lhy
 

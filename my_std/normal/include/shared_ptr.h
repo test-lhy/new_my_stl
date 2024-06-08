@@ -55,9 +55,11 @@ class shared_ptr {
   shared_ptr(shared_ptr<ControlledT>&& other, U other_get_value);
   operator bool() const { return get() != nullptr; }
   std::remove_extent_t<T>& operator[](Index index) { return *(get() + index); }
+  std::remove_extent_t<T>& operator[](Index index) const { return *(get() + index); }
   [[nodiscard]] int use_count() const { return controller_->shared_count(); }
   ~shared_ptr();
   RealT get() const;
+  RealT& getRef();
   T& operator*() { return *get(); }
   const T& operator*() const { return *get(); }
   RealT operator->() { return get(); }
@@ -233,6 +235,10 @@ shared_ptr<T, ControlledT>::~shared_ptr() {
 }
 template <typename T, typename ControlledT>
 typename shared_ptr<T, ControlledT>::RealT shared_ptr<T, ControlledT>::get() const {
+  return get_value_;
+}
+template <typename T, typename ControlledT>
+typename shared_ptr<T, ControlledT>::RealT& shared_ptr<T, ControlledT>::getRef() {
   return get_value_;
 }
 template <typename T, typename ControlledT>

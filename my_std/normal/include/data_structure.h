@@ -4,6 +4,7 @@
 #include <iostream>
 #include <memory>
 #include <stdexcept>
+#include <variant>
 
 #include "basic.h"
 #include "shared_ptr.h"
@@ -65,9 +66,10 @@ class Iterator : public TIterator<T> {
   using Pointer = U*;
   using SharedPointer = shared_ptr<U>;
   using OutPointer = typename TIterator<T>::OutPointer;
+  using RealPointer = std::variant<Pointer, SharedPointer>;
   Iterator() : data_(nullptr){};
   Iterator(Pointer data) : data_(data) {}
-  Iterator(const SharedPointer& data) : data_(data.get()) {}
+  Iterator(SharedPointer data) : data_(data) {}
   Iterator(const Iterator& other) : data_(other.data_) {}
   Iterator& operator=(const Iterator& other) {
     this->data_ = other.data_;
@@ -75,37 +77,60 @@ class Iterator : public TIterator<T> {
   }
   bool operator==(const Iterator& other) const { return other.data_ == data_; }  // 要不要改成extract?
   bool operator!=(const Iterator& other) const { return other.data_ != data_; }
-  virtual operator Pointer() { return data_; }
-  virtual operator Pointer() const { return data_; }
+  virtual operator Pointer() { return getPointer(); }
+  virtual operator Pointer() const { return getPointer(); }
   T& operator*() override { return *Extract(); }
   const T& operator*() const override { return *Extract(); }
   OutPointer operator->() override { return Extract(); }
   template <typename T1 = T, typename U1 = U>
   OutPointer Extract() {
-    return data_;
+    return getPointer();
   }
   template <typename T1 = T, notsame<T> U1 = U>
   OutPointer Extract() {
-    return data_->extract();
+    return getPointer()->extract();
   }
   template <typename T1 = T, typename U1 = U>
   OutPointer Extract() const {
-    return data_;
+    return getPointer();
   }
   template <typename T1 = T, notsame<T> U1 = U>
   OutPointer Extract() const {
-    return data_->extract();
+    return getPointer()->extract();
   }
-  [[nodiscard]] Pointer& getPointer() { return data_; }
-  [[nodiscard]] const Pointer& getPointer() const { return data_; }
+  [[nodiscard]] Pointer& getPointer() {
+    return std::visit(
+        []<typename T0>(T0& arg) -> Pointer& {
+          using ArgType = std::decay_t<T0>;
+          if constexpr (std::is_same_v<ArgType, Pointer>) {
+            return arg;
+          } else {
+            return arg.getRef();
+          }
+        },
+        data_);
+  }
+
+  [[nodiscard]] Pointer getPointer() const {
+    return std::visit(
+        []<typename T0>(const T0& arg) -> Pointer {
+          using ArgType = std::decay_t<T0>;
+          if constexpr (std::is_same_v<ArgType, Pointer>) {
+            return arg;
+          } else {
+            return arg.get();
+          }
+        },
+        data_);
+  }
 
  private:
-  Pointer data_;
+  RealPointer data_;
 };
 template <typename T, typename U = T>
 class ForwardIterator : virtual public Iterator<T, U>, virtual public TForwardIterator<T> {
  public:
-  using lhy::Iterator<T, U>::Iterator;
+  using Iterator<T, U>::Iterator;
   using typename Iterator<T, U>::Pointer;
   using typename Iterator<T, U>::OutPointer;
   ForwardIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};

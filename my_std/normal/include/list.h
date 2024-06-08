@@ -41,7 +41,7 @@ class list : public DataStructure<T> {
   [[nodiscard]] reversed_iterator rend() const;
   [[nodiscard]] iterator cbegin() const;
   [[nodiscard]] iterator cend() const;
-  [[noreturn]] void clear();
+  void clear();
   list& operator=(const list&);
   list& operator=(list&&) noexcept;
   list& operator=(const std::initializer_list<T>&);

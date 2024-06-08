@@ -31,6 +31,7 @@ class unique_ptr {
   Deleter<RealT>& get_deleter() const;
   operator bool() const;
   std::remove_extent_t<T>& operator[](Index index);
+  std::remove_extent_t<T>& operator[](Index index) const;
   T& operator*() { return *get(); }
   const T& operator*() const { return *get(); }
   RealT operator->() { return get(); }
@@ -112,6 +113,10 @@ unique_ptr<T>::operator bool() const {
 }
 template <typename T>
 std::remove_extent_t<T>& unique_ptr<T>::operator[](Index index) {
+  return *(get() + index);
+}
+template <typename T>
+std::remove_extent_t<T>& unique_ptr<T>::operator[](Index index) const {
   return *(get() + index);
 }
 template <typename T>

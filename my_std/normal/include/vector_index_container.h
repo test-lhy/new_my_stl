@@ -158,19 +158,20 @@ IndexContainerMode VectorIndexContainer<T>::GetMode() const {
 }
 template <typename T>
 typename IndexContainerImpl<T>::iterator VectorIndexContainer<T>::begin() {
-  return new iterator(this, used_index.begin());
+  // 这里会复制消除吧?
+  return typename IndexContainerImpl<T>::iterator(make_shared<iterator>(this, used_index.begin()));
 }
 template <typename T>
 typename IndexContainerImpl<T>::iterator VectorIndexContainer<T>::end() {
-  return new iterator(this, used_index.end());
+  return typename IndexContainerImpl<T>::iterator(make_shared<iterator>(this, used_index.end()));
 }
 template <typename T>
 typename IndexContainerImpl<T>::reversed_iterator VectorIndexContainer<T>::rbegin() {
-  return new reversed_iterator(this, used_index.rbegin());
+  return typename IndexContainerImpl<T>::reversed_iterator(make_shared<reversed_iterator>(this, used_index.rbegin()));
 }
 template <typename T>
 typename IndexContainerImpl<T>::reversed_iterator VectorIndexContainer<T>::rend() {
-  return new reversed_iterator(this, used_index.rend());
+  return typename IndexContainerImpl<T>::reversed_iterator(make_shared<reversed_iterator>(this, used_index.rend()));
 }
 template <typename T>
 T& VectorIndexContainer<T>::operator[](Index index) {
@@ -193,8 +194,6 @@ typename DataStructure<typename VectorIndexContainer<T>::RealT>::Pointer VectorI
 template <typename T>
 typename DataStructure<typename VectorIndexContainer<T>::RealT>::Pointer VectorIndexContainer<T>::getEnd() {
   return make_shared<iterator>(this, used_index.end());
-  // return std::dynamic_pointer_cast<TForwardIterator<RealT>>(
-  // std::make_shared<typename IndexContainerImpl<T>::iterator>(new iterator(this, used_index.end())));
 }
 template <typename T>
 const T& VectorIndexContainer<T>::operator[](Index index) const {
