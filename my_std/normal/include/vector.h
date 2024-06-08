@@ -26,25 +26,25 @@ class vector : public DataStructure<T> {
   friend class priority_queue<T>;
   friend class stack<T>;
   using typename DataStructure<T>::Pointer;
-  using iterator = lhy::NormIterator<T>;
-  using reversed_iterator = lhy::ReversedNormIterator<T>;
+  using iterator = NormIterator<T>;
+  using reversed_iterator = ReversedNormIterator<T>;
   vector();
   explicit vector(iterator, iterator);
   explicit vector(size_t);
   vector(T* other);
   vector(const T* other);
-  vector(const vector<T>&);
-  vector(vector<T>&&);
+  vector(const vector&);
+  vector(vector&&);
   vector(const std::initializer_list<T>&);
-  ~vector() override;
-  vector<T>& operator=(const vector<T>&);
-  vector<T>& operator=(vector<T>&&) noexcept;
-  vector<T>& operator=(const std::initializer_list<T>&);
-  bool operator==(const vector<T>& other) const;
-  vector<T>& operator+=(const T&);
-  vector<T>& operator+=(const vector<T>&);
-  vector<T>& operator&=(const vector<T>&);
-  vector<T>& operator|=(const vector<T>&);
+  ~vector() override = default;
+  vector& operator=(const vector&);
+  vector& operator=(vector&&) noexcept;
+  vector& operator=(const std::initializer_list<T>&);
+  bool operator==(const vector& other) const;
+  vector& operator+=(const T&);
+  vector& operator+=(const vector&);
+  vector& operator&=(const vector&);
+  vector& operator|=(const vector&);
   T& operator[](const Index&);
   const T& operator[](const Index&) const;
   [[nodiscard]] T& At(const Index&);
@@ -74,14 +74,14 @@ class vector : public DataStructure<T> {
   [[nodiscard]] size_t size() const;
 
  private:
-  iterator start_;
+  unique_ptr<T[]> start_;
   iterator end_;
   Index volume_;
   [[nodiscard]] bool check_volume() const;
   void check_index(const Index&) const;
   void extend_volume();
-  Pointer getBegin() override { return &start_; }
-  Pointer getEnd() override { return &end_; }
+  Pointer getBegin() override { return make_shared<iterator>(begin()); }
+  Pointer getEnd() override { return make_shared<iterator>(end()); }
 };
 std::string str(const vector<char>& obj);
 // todo:研究这里到底应该右值引用还是直接值返回，编译器是否有优化
@@ -104,7 +104,7 @@ std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj);
 template <not_char_type T>
 std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj);
 template <typename T>
-vector<T>::vector(vector<T>&& other) {
+vector<T>::vector(vector&& other) {
   std::swap(start_, other.start_);
   std::swap(end_, other.end_);
   volume_ = other.volume_;
@@ -120,18 +120,18 @@ template <typename T>
 vector<T>::vector() : vector(0l) {}
 template <typename T>
 vector<T>::vector(iterator start, iterator end) : vector() {
-  for (auto* element = start; element != end; ++element) {
+  for (auto element = start; element != end; ++element) {
     push_back(*element);
   }
 }
 template <typename T>
 vector<T>::vector(const size_t size) {
-  start_ = new T[size + 2];
-  end_ = start_ + size;
+  start_ = make_unique<T[]>(size + 2);
+  end_ = begin() + size;
   volume_ = size + 1;
 }
 template <typename T>
-vector<T>::vector(const vector<T>& other) : vector() {
+vector<T>::vector(const vector& other) : vector() {
   for (auto& each : other) {
     this->push_back(each);
   }
@@ -143,11 +143,7 @@ vector<T>::vector(const std::initializer_list<T>& element_list) : vector() {
   }
 }
 template <typename T>
-vector<T>::~vector() {
-  delete[] start_;
-}
-template <typename T>
-vector<T>& vector<T>::operator=(const vector<T>& other) {
+vector<T>& vector<T>::operator=(const vector& other) {
   if (this == &other) {
     return *this;
   }
@@ -158,7 +154,7 @@ vector<T>& vector<T>::operator=(const vector<T>& other) {
   return *this;
 }
 template <typename T>
-vector<T>& vector<T>::operator=(vector<T>&& other) noexcept {
+vector<T>& vector<T>::operator=(vector&& other) noexcept {
   std::swap(this->start_, other.start_);
   std::swap(this->end_, other.end_);
   std::swap(this->volume_, other.volume_);
@@ -173,7 +169,7 @@ vector<T>& vector<T>::operator=(const std::initializer_list<T>& element_list) {
   return *this;
 }
 template <typename T>
-bool vector<T>::operator==(const vector<T>& other) const {
+bool vector<T>::operator==(const vector& other) const {
   if (size() != other.size()) {
     return false;
   }
@@ -185,7 +181,7 @@ bool vector<T>::operator==(const vector<T>& other) const {
   return true;
 }
 template <typename T>
-vector<T>& vector<T>::operator+=(const vector<T>& other) {
+vector<T>& vector<T>::operator+=(const vector& other) {
   for (auto& each : other) {
     this->push_back(each);
   }
@@ -197,22 +193,22 @@ vector<T>& vector<T>::operator+=(const T& other) {
   return *this;
 }
 template <typename T>
-vector<T>& vector<T>::operator&=(const vector<T>& other) {
+vector<T>& vector<T>::operator&=(const vector& other) {
   std::set<T> set_temp;
   for (auto& each : other) {
     set_temp.insert(each);
   }
-  vector<T> temp(*this);
-  this->clear();
-  for (auto& each : temp) {
+  vector temp;
+  for (auto& each : *this) {
     if (set_temp.count(each)) {
-      this->push_back(each);
+      temp.push_back(each);
     }
   }
+  *this = std::move(temp);
   return *this;
 }
 template <typename T>
-vector<T>& vector<T>::operator|=(const vector<T>& other) {
+vector<T>& vector<T>::operator|=(const vector& other) {
   std::set<T> set_temp;
   for (auto& each : *this) {
     set_temp.insert(each);
@@ -247,75 +243,74 @@ T& vector<T>::front() {
   if (empty()) {
     throw std::range_error("no element in vector");
   }
-  return *start_;
+  return *begin();
 }
 template <typename T>
 T& vector<T>::back() {
   if (empty()) {
     throw std::range_error("no element in vector");
   }
-  return *(end_ - 1);
+  return *rbegin();
 }
 template <typename T>
-vector<T>::iterator vector<T>::begin() {
-  return start_;
+typename vector<T>::iterator vector<T>::begin() {
+  return start_.get();
 }
 template <typename T>
-vector<T>::iterator vector<T>::end() {
+typename vector<T>::iterator vector<T>::end() {
   return end_;
 }
 template <typename T>
-vector<T>::reversed_iterator vector<T>::rbegin() {
+typename vector<T>::reversed_iterator vector<T>::rbegin() {
   return end_ - 1;
 }
 template <typename T>
-vector<T>::reversed_iterator vector<T>::rend() {
-  return start_ - 1;
+typename vector<T>::reversed_iterator vector<T>::rend() {
+  return begin() - 1;
 }
 template <typename T>
 T& vector<T>::front() const {
   if (empty()) {
     throw std::range_error("no element in vector");
   }
-  return *start_;
+  return *begin();
 }
 template <typename T>
 T& vector<T>::back() const {
   if (empty()) {
     throw std::range_error("no element in vector");
   }
-  return *(end_ - 1);
+  return *rbegin();
 }
 template <typename T>
-vector<T>::iterator vector<T>::begin() const {
-  return start_;
+typename vector<T>::iterator vector<T>::begin() const {
+  return start_.get();
 }
 template <typename T>
-vector<T>::iterator vector<T>::end() const {
+typename vector<T>::iterator vector<T>::end() const {
   return end_;
 }
 template <typename T>
-vector<T>::reversed_iterator vector<T>::rbegin() const {
+typename vector<T>::reversed_iterator vector<T>::rbegin() const {
   return end_ - 1;
 }
 template <typename T>
-vector<T>::reversed_iterator vector<T>::rend() const {
-  return start_ - 1;
+typename vector<T>::reversed_iterator vector<T>::rend() const {
+  return begin() - 1;
 }
 template <typename T>
-vector<T>::iterator vector<T>::cbegin() const {
-  return start_;
+typename vector<T>::iterator vector<T>::cbegin() const {
+  return start_.get();
 }
 template <typename T>
-vector<T>::iterator vector<T>::cend() const {
+typename vector<T>::iterator vector<T>::cend() const {
   return end_;
 }
 // todo:这里的clear感觉有问题
 template <typename T>
 void vector<T>::clear() {
-  delete[] start_;
-  start_ = new T[1];
-  end_ = start_;
+  start_ = make_unique<T[]>(1);
+  end_ = begin();
   volume_ = 1;
 }
 template <typename T>
@@ -326,9 +321,9 @@ template <typename T>
 void vector<T>::erase(iterator target) {
   while (target != end_ - 1) {
     target[0] = target[1];
-    target++;
+    ++target;
   }
-  end_--;
+  --end_;
 }
 template <typename T>
 void vector<T>::erase(const T& target) {
@@ -348,7 +343,7 @@ void vector<T>::push_back(const T& element) {
   } else {
     *end_ = element;
   }
-  end_++;
+  ++end_;
 }
 template <typename T>
 void vector<T>::push_back(T&& element) {
@@ -356,12 +351,12 @@ void vector<T>::push_back(T&& element) {
     extend_volume();
   }
   *end_ = element;
-  end_++;
+  ++end_;
 }
 // todo:只针对char
 template <typename T>
 vector<T>::vector(T* other) : vector() {
-  size_t N = sizeof(other) / sizeof(T);
+  const size_t N = sizeof(other) / sizeof(T);
   for (int i = 0; i < N; ++i) {
     push_back(other[i]);
   }
@@ -371,28 +366,27 @@ void vector<T>::pop() {
   if (size() == 0) {
     throw std::range_error("nothing left to pop");
   }
-  end_--;
+  --end_;
 }
 template <typename T>
 void vector<T>::reserve(size_t size) {
   if (size < this->size()) {
     throw std::logic_error("the size of the vector cannot be bigger than the reserve size");
   }
-  iterator start_substitute = new T[size];
-  size_t ex_size = this->size();
-  end_ = start_substitute + size;
+  unique_ptr<T[]> start_substitute = make_unique<T[]>(size);
+  const size_t ex_size = this->size();
+  end_ = start_substitute.get() + size;
   volume_ = size;
-  // todo:std::move
+  // note:用不了std::move，因为是不同大小
   for (int i = 0; i < ex_size; ++i) {
     start_substitute[i] = start_[i];
   }
-  delete[] start_;
-  start_ = start_substitute;
+  start_.swap(start_substitute);
 }
 
 template <typename T>
 size_t vector<T>::size() const {
-  return distance(start_, end_);
+  return distance(begin(), end());
 }
 template <typename T>
 bool vector<T>::check_volume() const {
@@ -406,14 +400,13 @@ void vector<T>::check_index(const Index& index) const {
 }
 template <typename T>
 void vector<T>::extend_volume() {
-  iterator start_substitute = new T[volume_ * 2];
-  end_ = start_substitute + volume_;
+  unique_ptr<T[]> start_substitute = make_unique<T[]>(volume_ * 2);
+  end_ = start_substitute.get() + volume_;
   for (int i = 0; i < volume_; ++i) {
     start_substitute[i] = start_[i];
   }
   volume_ *= 2;
-  delete[] start_;
-  start_ = start_substitute;
+  start_.swap(start_substitute);
 }
 template <typename T>
 vector<T> operator+(vector<T> a, const vector<T>& b) {

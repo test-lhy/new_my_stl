@@ -10,6 +10,8 @@
 #include "basic.h"
 #include "index_container.h"
 #include "node.h"
+#include "shared_ptr.h"
+#include "unique_ptr.h"
 #include "vector.h"
 namespace lhy {
 enum NodeAllocatorMode { NormalNodeAllocatorMode, MapNodeAllocatorMode };
@@ -21,9 +23,9 @@ class NodeAllocator : public DataStructure<std::pair<Index, Node_>> {
   friend class BaseGraph;
   using iterator = typename IndexContainer<Node_>::iterator;
   using reversed_iterator = typename IndexContainer<Node_>::reversed_iterator;
-  NodeAllocator(EdgeReserveSync* edge_allocator_sync, const NodeAllocatorMode mode)
+  NodeAllocator(const shared_ptr<EdgeReserveSync>& edge_allocator_sync, const NodeAllocatorMode mode)
       : edge_allocator_sync_(edge_allocator_sync) {
-    container_ = new IndexContainer<Node_>(relation_between_nodeallocator_indexcontainer.at(mode));
+    container_ = make_unique<IndexContainer<Node_>>(relation_between_nodeallocator_indexcontainer.at(mode));
     Sync(100);
   }
   Index AddNode(const Node_& node);
@@ -44,14 +46,14 @@ class NodeAllocator : public DataStructure<std::pair<Index, Node_>> {
   [[nodiscard]] typename DataStructure<RealNode_>::Pointer getEnd() override;
 
  public:
-  ~NodeAllocator();
+  ~NodeAllocator() = default;
 
   inline static std::map<NodeAllocatorMode, IndexContainerMode> relation_between_nodeallocator_indexcontainer = {
       {NormalNodeAllocatorMode, VectorIndexContainerMode}, {MapNodeAllocatorMode, MapIndexContainerMode}};
 
  private:
-  EdgeReserveSync* edge_allocator_sync_;
-  IndexContainer<Node_>* container_;
+  shared_ptr<EdgeReserveSync> edge_allocator_sync_;
+  unique_ptr<IndexContainer<Node_>> container_;
   Index max_index_{};
 };
 template <node_c Node_>
@@ -112,10 +114,6 @@ typename DataStructure<typename NodeAllocator<Node_>::RealNode_>::Pointer NodeAl
 template <node_c Node_>
 typename DataStructure<typename NodeAllocator<Node_>::RealNode_>::Pointer NodeAllocator<Node_>::getEnd() {
   return container_->getEnd();
-}
-template <node_c Node_>
-NodeAllocator<Node_>::~NodeAllocator() {
-  delete container_;
 }
 template <node_c Node_>
 template <typename... Args>

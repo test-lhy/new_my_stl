@@ -8,6 +8,7 @@
 #include "edge_allocator_factory.h"
 #include "node.h"
 #include "node_allocator.h"
+#include "unique_ptr.h"
 namespace lhy {
 template <node_c Node_ = Node, edge_c Edge_ = Edge>
 class BaseGraph : public DataStructure<std::pair<Index, Node_>> {
@@ -35,7 +36,7 @@ class BaseGraph : public DataStructure<std::pair<Index, Node_>> {
   friend return_node;
   explicit BaseGraph(NodeAllocatorMode node_allocator_mode = NodeAllocatorMode::NormalNodeAllocatorMode,
                      EdgeAllocatorMode edge_allocator_mode = EdgeAllocatorMode::LinkListEdgeAllocatorMode);
-  virtual ~BaseGraph();
+  virtual ~BaseGraph() = default;
   template <typename... Args>
   void AddEdge(Args&&... args);
   virtual void AddEdge(Edge_&& edge);
@@ -66,17 +67,16 @@ class BaseGraph : public DataStructure<std::pair<Index, Node_>> {
   [[nodiscard]] typename DataStructure<RealNode_>::Pointer getEnd() override;
   Node_& GetNodeImpl(Index node);
   const list<Edge_>& GetEdgesImpl(Index node);
-  NodeAllocator<Node_>* node_allocator_;
-  EdgeAllocator<Edge_>* edge_allocator_;
+  unique_ptr<NodeAllocator<Node_>> node_allocator_;
+  shared_ptr<EdgeAllocator<Edge_>> edge_allocator_;
 };
 template <node_c Node_, edge_c Edge_>
 BaseGraph<Node_, Edge_>::return_node::~return_node() {}
 template <node_c Node_, edge_c Edge_>
 BaseGraph<Node_, Edge_>::BaseGraph(NodeAllocatorMode node_allocator_mode, EdgeAllocatorMode edge_allocator_mode) {
-  auto edge_allocator_factory = new EdgeAllocatorFactory<Edge_>();
+  auto edge_allocator_factory = make_unique<EdgeAllocatorFactory<Edge_>>();
   edge_allocator_ = edge_allocator_factory->Create(edge_allocator_mode);
-  node_allocator_ = new NodeAllocator<Node_>(edge_allocator_, node_allocator_mode);
-  delete edge_allocator_factory;
+  node_allocator_ = make_unique<NodeAllocator<Node_>>(edge_allocator_, node_allocator_mode);
 }
 template <node_c Node_, edge_c Edge_>
 void BaseGraph<Node_, Edge_>::DeleteNode(Node_&& node) {
@@ -164,11 +164,6 @@ typename BaseGraph<Node_, Edge_>::return_node BaseGraph<Node_, Edge_>::operator[
 template <node_c Node_, edge_c Edge_>
 typename BaseGraph<Node_, Edge_>::return_node BaseGraph<Node_, Edge_>::GetNode(Index node) {
   return {node, this};
-}
-template <node_c Node_, edge_c Edge_>
-BaseGraph<Node_, Edge_>::~BaseGraph() {
-  delete node_allocator_;
-  delete edge_allocator_;
 }
 template <node_c Node_, edge_c Edge_>
 Index BaseGraph<Node_, Edge_>::AddNode(Node_&& node) {

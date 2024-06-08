@@ -27,8 +27,8 @@ class list : public DataStructure<T> {
 
   list();
   list(iterator, iterator);
-  list(const list<T>&);
-  list(list<T>&&);
+  list(const list&);
+  list(list&&);
   list(const std::initializer_list<T>&);
   ~list() override;
   [[nodiscard]] iterator begin();
@@ -42,9 +42,9 @@ class list : public DataStructure<T> {
   [[nodiscard]] iterator cbegin() const;
   [[nodiscard]] iterator cend() const;
   void clear();
-  list<T>& operator=(const list<T>&);
-  list<T>& operator=(list<T>&&) noexcept;
-  list<T>& operator=(const std::initializer_list<T>&);
+  list& operator=(const list&);
+  list& operator=(list&&) noexcept;
+  list& operator=(const std::initializer_list<T>&);
   [[nodiscard]] bool empty() const;
   iterator erase(const T&);
   iterator erase(iterator);
@@ -59,15 +59,16 @@ class list : public DataStructure<T> {
 
  private:
   std::pair<iterator, reversed_iterator> eraseImpl(iterator);
+  // note:实际上这些节点的释放是有顺序的，但是shared_ptr的自动释放可能会不遵从这个顺序，导致出现性能上的一些问题，大概
   iterator end_;
   reversed_iterator rend_;
   size_t size_{};
-  Pointer getBegin() override { return &rend_.getNext(); }
-  Pointer getEnd() override { return &end_; }
+  Pointer getBegin() override { return make_shared<iterator>(rend_.getNext()); }
+  Pointer getEnd() override { return make_shared<iterator>(end_); }
 };
 
 template <typename T>
-list<T>& list<T>::operator=(const list<T>& other) {
+list<T>& list<T>::operator=(const list& other) {
   if (this == &other) {
     return *this;
   }
@@ -80,7 +81,7 @@ list<T>& list<T>::operator=(const list<T>& other) {
 }
 
 template <typename T>
-list<T>& list<T>::operator=(list<T>&& other) noexcept {
+list<T>& list<T>::operator=(list&& other) noexcept {
   if (this == &other) {
     return *this;
   }
@@ -148,8 +149,8 @@ class list<T>::iterator : public TwoDirectionIterator<T, ListNode> {
 };
 
 template <typename T>
-class list<T>::reversed_iterator : public list<T>::iterator {
-  friend class list<T>;
+class list<T>::reversed_iterator : public iterator {
+  friend class list;
   using typename Iterator<T, ListNode>::Pointer;
   using typename Iterator<T, ListNode>::OutPointer;
 
@@ -175,7 +176,7 @@ class list<T>::reversed_iterator : public list<T>::iterator {
 };
 
 template <typename T>
-list<T>::list(const list<T>& other) {
+list<T>::list(const list& other) {
   rend_ = new ListNode();
   end_ = new ListNode();
   rend_.getNext() = end_;
@@ -187,7 +188,7 @@ list<T>::list(const list<T>& other) {
 }
 
 template <typename T>
-list<T>::list(list<T>&& other) {
+list<T>::list(list&& other) {
   std::swap(rend_, other.rend_);
   std::swap(end_, other.end_);
   size_ = other.size();
@@ -223,52 +224,52 @@ list<T>::~list() {
 }
 
 template <typename T>
-list<T>::iterator list<T>::begin() {
+typename list<T>::iterator list<T>::begin() {
   return rend_.getNext();
 }
 
 template <typename T>
-list<T>::iterator list<T>::end() {
+typename list<T>::iterator list<T>::end() {
   return end_;
 }
 
 template <typename T>
-list<T>::reversed_iterator list<T>::rbegin() {
+typename list<T>::reversed_iterator list<T>::rbegin() {
   return end_.getLast();
 }
 
 template <typename T>
-list<T>::reversed_iterator list<T>::rend() {
+typename list<T>::reversed_iterator list<T>::rend() {
   return rend_;
 }
 
 template <typename T>
-list<T>::iterator list<T>::begin() const {
+typename list<T>::iterator list<T>::begin() const {
   return rend_.getNext();
 }
 
 template <typename T>
-list<T>::iterator list<T>::end() const {
+typename list<T>::iterator list<T>::end() const {
   return end_;
 }
 
 template <typename T>
-list<T>::reversed_iterator list<T>::rbegin() const {
+typename list<T>::reversed_iterator list<T>::rbegin() const {
   return end_.getLast();
 }
 
 template <typename T>
-list<T>::reversed_iterator list<T>::rend() const {
+typename list<T>::reversed_iterator list<T>::rend() const {
   return rend_;
 }
 
 template <typename T>
-list<T>::iterator list<T>::cbegin() const {
+typename list<T>::iterator list<T>::cbegin() const {
   return rend_.getNext();
 }
 
 template <typename T>
-list<T>::iterator list<T>::cend() const {
+typename list<T>::iterator list<T>::cend() const {
   return end_;
 }
 
@@ -285,13 +286,12 @@ bool list<T>::empty() const {
 }
 
 template <typename T>
-list<T>::iterator list<T>::erase(const T& content) {
+typename list<T>::iterator list<T>::erase(const T& content) {
   iterator answer = find(content);
   if (answer != end_) {
     return erase(answer);
-  } else {
-    throw std::logic_error("the element is not in the list");
   }
+  throw std::logic_error("the element is not in the list");
 }
 
 template <typename T>
@@ -312,34 +312,34 @@ std::pair<typename list<T>::iterator, typename list<T>::reversed_iterator> list<
   return {node_behind, node_before};
 }
 template <typename T>
-list<T>::iterator list<T>::erase(list::iterator node) {
+typename list<T>::iterator list<T>::erase(iterator node) {
   return eraseImpl(node).first;
 }
 
 template <typename T>
-list<T>::reversed_iterator list<T>::erase(list::reversed_iterator node) {
+typename list<T>::reversed_iterator list<T>::erase(reversed_iterator node) {
   return eraseImpl(node).second;
 }
 template <typename T>
-list<T>::iterator list<T>::find(const T& content) const {
+typename list<T>::iterator list<T>::find(const T& content) const {
   iterator answer = begin();
   while (answer != end_ && *answer != content) {
-    answer++;
+    ++answer;
   }
   return answer;
 }
 
 template <typename T>
-list<T>::iterator list<T>::find(const T& content) {
+typename list<T>::iterator list<T>::find(const T& content) {
   iterator answer = begin();
   while (answer != end_ && *answer != content) {
-    answer++;
+    ++answer;
   }
   return answer;
 }
 
 template <typename T>
-void list<T>::insert(list::iterator node_behind, const T& content) {
+void list<T>::insert(iterator node_behind, const T& content) {
   auto node_before = node_behind.getLast();
   // todo:多个一个的new需要通过allocator之类的方法来优化掉
   iterator node_temp = new ListNode(content);

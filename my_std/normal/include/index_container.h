@@ -8,6 +8,7 @@
 #include "map_index_container.h"
 #include "node.h"
 #include "vector_index_container.h"
+// note:拷贝有些问题，到底该如何拷贝内容
 namespace lhy {
 template <typename T>
 class IndexContainer : public IndexContainerImpl<T> {
@@ -16,6 +17,8 @@ class IndexContainer : public IndexContainerImpl<T> {
   template <node_c Node_>
   friend class NodeAllocator;
   explicit IndexContainer(IndexContainerMode mode = VectorIndexContainerMode);
+  IndexContainer(IndexContainer&& other) = default;
+  IndexContainer& operator=(IndexContainer&& other) = default;
   T& operator[](Index index) override;
   const T& operator[](Index index) const override;
   void erase(Index index) override;
@@ -25,21 +28,21 @@ class IndexContainer : public IndexContainerImpl<T> {
   [[nodiscard]] typename IndexContainerImpl<T>::reversed_iterator rbegin() override;
   [[nodiscard]] typename IndexContainerImpl<T>::reversed_iterator rend() override;
   [[nodiscard]] IndexContainerMode GetMode() const override;
-  ~IndexContainer() override;
+  ~IndexContainer() override = default;
 
  private:
   [[nodiscard]] typename DataStructure<RealT>::Pointer getBegin() override;
   [[nodiscard]] typename DataStructure<RealT>::Pointer getEnd() override;
 
-  IndexContainerImpl<T>* container_;
+  unique_ptr<IndexContainerImpl<T>> container_;
 };
 
 template <typename T>
 IndexContainer<T>::IndexContainer(const IndexContainerMode mode) {
   if (mode == VectorIndexContainerMode) {
-    container_ = new VectorIndexContainer<T>();
+    container_ = make_unique<VectorIndexContainer<T>>();
   } else if (mode == MapIndexContainerMode) {
-    container_ = new MapIndexContainer<T>();
+    container_ = make_unique<MapIndexContainer<T>>();
   } else {
     throw std::logic_error("Unsupported mode");
   }
@@ -87,10 +90,6 @@ typename DataStructure<typename IndexContainer<T>::RealT>::Pointer IndexContaine
 template <typename T>
 typename DataStructure<typename IndexContainer<T>::RealT>::Pointer IndexContainer<T>::getEnd() {
   return container_->getEnd();
-}
-template <typename T>
-IndexContainer<T>::~IndexContainer() {
-  delete container_;
 }
 }  // namespace lhy
 

@@ -96,29 +96,27 @@ IndexContainerMode MapIndexContainer<T>::GetMode() const {
 }
 template <typename T>
 typename IndexContainerImpl<T>::iterator MapIndexContainer<T>::begin() {
-  return new iterator(container_.begin());
+  return typename IndexContainerImpl<T>::iterator(make_shared<iterator>(container_.begin()));
 }
 template <typename T>
 typename IndexContainerImpl<T>::iterator MapIndexContainer<T>::end() {
-  return new iterator(container_.end());
+  return typename IndexContainerImpl<T>::iterator(make_shared<iterator>(container_.end()));
 }
 template <typename T>
 typename IndexContainerImpl<T>::reversed_iterator MapIndexContainer<T>::rbegin() {
-  return new reversed_iterator(container_.rbegin());
+  return typename IndexContainerImpl<T>::reversed_iterator(make_shared<reversed_iterator>(container_.rbegin()));
 }
 template <typename T>
 typename IndexContainerImpl<T>::reversed_iterator MapIndexContainer<T>::rend() {
-  return new reversed_iterator(container_.rend());
+  return typename IndexContainerImpl<T>::reversed_iterator(make_shared<reversed_iterator>(container_.rend()));
 }
 template <typename T>
 typename DataStructure<typename MapIndexContainer<T>::RealT>::Pointer MapIndexContainer<T>::getBegin() {
-  return std::dynamic_pointer_cast<TForwardIterator<RealT>>(
-      std::make_shared<typename IndexContainerImpl<T>::iterator>(new iterator(container_.begin())));
+  return make_shared<iterator>(container_.begin());
 }
 template <typename T>
 typename DataStructure<typename MapIndexContainer<T>::RealT>::Pointer MapIndexContainer<T>::getEnd() {
-  return std::dynamic_pointer_cast<TForwardIterator<RealT>>(
-      std::make_shared<typename IndexContainerImpl<T>::iterator>(new iterator(container_.end())));
+  return make_shared<iterator>(container_.end());
 }
 }  // namespace lhy
 
