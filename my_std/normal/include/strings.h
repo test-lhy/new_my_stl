@@ -138,13 +138,10 @@ template <typename T>
  */
 template <typename T>
 [[nodiscard]] vector<std::unordered_map<T, int>> GetKmpDFA(vector<T> vec, T split = '|') {
-  vec += split;  ///< 为了让他必须在结尾不等,来使得在匹配成功后也能继续跳回匹配下一个可能匹配的
   vector<int> prefix(GetPrefix(vec));
-  std::unordered_set<T> all_element;
+  std::unordered_set<T> all_element(vec.begin(), vec.end());
+  vec += split;  ///< 为了让他必须在结尾不等,来使得在匹配成功后也能继续跳回匹配下一个可能匹配的
   vector<std::unordered_map<T, int>> ans(vec.size());
-  for (auto& each : vec) {
-    all_element.insert(each);
-  }
   for (int i = 0; i < vec.size(); ++i) {
     for (auto& each : all_element) {
       if (i > 0 && each != vec[i]) {
@@ -177,11 +174,15 @@ template <typename T>
  * @paragraph 实际上就是以目标串为输入序列在自动机上移动
  */
 template <typename T>
-[[nodiscard]] vector<int> GetKMP(vector<std::unordered_map<T, int>>& DFA, size_t source_size, const vector<T>& target) {
+[[nodiscard]] vector<int> GetKMP(const vector<std::unordered_map<T, int>>& DFA, const size_t source_size, const vector<T>& target) {
   int status = 0;
   vector<int> ans;
   for (size_t i = 0; i < target.size(); ++i) {
-    status = DFA[status][target[i]];
+    if(auto now_map=DFA.At(status);now_map.contains(target[i])) {
+      status =now_map.at(target[i]);
+    } else {
+      status =0;
+    }
     if (status == source_size) {
       ans.push_back(i - source_size + 1l);
     }

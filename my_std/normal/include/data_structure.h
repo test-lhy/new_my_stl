@@ -114,8 +114,7 @@ class Iterator : public TIterator<T> {
   [[nodiscard]] Pointer getPointer() const {
     return std::visit(
         []<typename T0>(const T0& arg) -> Pointer {
-          using ArgType = std::decay_t<T0>;
-          if constexpr (std::is_same_v<ArgType, Pointer>) {
+          if constexpr (std::is_same_v<T0, Pointer>) {
             return arg;
           } else {
             return arg.get();
