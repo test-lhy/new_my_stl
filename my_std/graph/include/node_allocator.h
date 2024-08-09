@@ -26,7 +26,7 @@ class NodeAllocator : public DataStructure<std::pair<Index, Node_>> {
   NodeAllocator(const shared_ptr<EdgeReserveSync>& edge_allocator_sync, const NodeAllocatorMode mode)
       : edge_allocator_sync_(edge_allocator_sync) {
     container_ = make_unique<IndexContainer<Node_>>(relation_between_nodeallocator_indexcontainer.at(mode));
-    Sync(100);
+    Sync(1);
   }
   Index AddNode(const Node_& node);
   template <typename... Args>
@@ -83,7 +83,7 @@ bool NodeAllocator<Node_>::Exist(Index index) {
 template <node_c Node_>
 void NodeAllocator<Node_>::Sync(Index index) {
   if (index > max_index_) {
-    max_index_ = index * 2 + 100;
+    max_index_ = index * 2;
     edge_allocator_sync_->Reserve(max_index_);
   }
 }

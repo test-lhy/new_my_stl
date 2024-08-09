@@ -99,10 +99,6 @@ template <char_type T>
 std::istream& operator>>(std::istream& istream_, vector<T>& obj);
 template <not_char_type T>
 std::istream& operator>>(std::istream& istream_, vector<T>& obj);
-template <char_type T>
-std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj);
-template <not_char_type T>
-std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj);
 template <typename T>
 vector<T>::vector(vector&& other) {
   std::swap(start_, other.start_);
@@ -460,34 +456,6 @@ std::istream& operator>>(std::istream& istream_, vector<T>& obj) {
     obj.push_back(std::move(temp_each));
   }
   return istream_;
-}
-template <char_type T>
-std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj) {
-  for (auto& each : obj) {
-    ostream_ << each;
-  }
-  return ostream_;
-}
-template <not_char_type T>
-std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj) {
-  for (auto& each : obj) {
-    ostream_ << each << '\n';
-  }
-  return ostream_;
-}
-template <char_type T>
-std::ostream& operator<<(std::ostream& ostream_, const vector<T>& obj) {
-  for (auto& each : obj) {
-    ostream_ << each;
-  }
-  return ostream_;
-}
-template <not_char_type T>
-std::ostream& operator<<(std::ostream& ostream_, const vector<T>& obj) {
-  for (auto& each : obj) {
-    ostream_ << each << '\n';
-  }
-  return ostream_;
 }
 }  // namespace lhy
 #endif

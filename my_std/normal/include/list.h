@@ -124,12 +124,12 @@ class list<T>::iterator : public TwoDirectionIterator<T, ListNode> {
   iterator(const Iterator<T, ListNode>& other) : Iterator<T, ListNode>(other) {}
 
   iterator& operator++() override {
-    this->getPointer() = this->getNext();
+    this->getPointer() = ToTPointer<T, ListNode>(this->getNext());
     return *this;
   }
 
   iterator& operator--() override {
-    this->getPointer() = this->getLast();
+    this->getPointer() = ToTPointer<T, ListNode>(this->getLast());
     return *this;
   }
 
@@ -160,12 +160,12 @@ class list<T>::reversed_iterator : public iterator {
   reversed_iterator(const Iterator<T, ListNode>& other) : Iterator<T, ListNode>(other) {}
 
   reversed_iterator& operator++() override {
-    this->getPointer() = this->getLast();
+    this->getPointer() = ToTPointer<T, ListNode>(this->getLast());
     return *this;
   }
 
   reversed_iterator& operator--() override {
-    this->getPointer() = this->getNext();
+    this->getPointer() = ToTPointer<T, ListNode>(this->getNext());
     return *this;
   }
   ~reversed_iterator() override = default;
@@ -219,8 +219,8 @@ list<T>::list(iterator start, iterator end) : list() {
 template <typename T>
 list<T>::~list() {
   clear();
-  delete end_;
-  delete rend_;
+  delete static_cast<ListNode*>(end_);
+  delete static_cast<ListNode*>(rend_);
 }
 
 template <typename T>
@@ -305,7 +305,7 @@ std::pair<typename list<T>::iterator, typename list<T>::reversed_iterator> list<
   // 当这边是auto&的时候，由于node被删掉会出问题，但是，在Iterator基类没有写析构函数的时候没有出问题，但是在其写了析构函数之后即便是default也会出现虚表找不到的问题
   auto node_behind = node.Next();
   auto node_before = node.Last();
-  delete node;
+  delete static_cast<ListNode*>(node);
   node_behind.Last() = node_before;
   node_before.Next() = node_behind;
   size_--;

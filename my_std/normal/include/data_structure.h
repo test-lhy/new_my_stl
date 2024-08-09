@@ -75,14 +75,14 @@ class Iterator : public TIterator<T> {
   Iterator(Pointer data) : data_(data) {}
   Iterator(SharedPointer data) : data_(data) {}
   Iterator(const Iterator& other) : data_(other.data_) {}
+  explicit virtual operator Pointer() { return this->getPointer(); }
+  explicit virtual operator Pointer() const { return this->getPointer(); }
   Iterator& operator=(const Iterator& other) {
     this->data_ = other.data_;
     return *this;
   }
   bool operator==(const Iterator& other) const { return other.data_ == data_; }  // 要不要改成extract?
   bool operator!=(const Iterator& other) const { return other.data_ != data_; }
-  virtual operator Pointer() { return getPointer(); }
-  virtual operator Pointer() const { return getPointer(); }
   T& operator*() override { return *Extract(); }
   const T& operator*() const override { return *Extract(); }
   OutPointer operator->() override { return Extract(); }
@@ -130,6 +130,14 @@ class Iterator : public TIterator<T> {
  private:
   RealPointer data_;
 };
+template <typename T, typename U = T, typename S>
+U* ToTPointer(const S& other) {
+  return &*other;
+}
+template <typename T, typename U = T, Deprived<Iterator<T, U>> S>
+U* ToTPointer(const S& other) {
+  return other.getPointer();
+}
 template <typename T, typename U = T>
 class ForwardIterator : virtual public Iterator<T, U>, virtual public TForwardIterator<T> {
   // virtual public EnableTforwardIteratorPlus<T, ForwardIterator<T>> {
@@ -218,6 +226,9 @@ class NormIterator : public TwoDirectionIterator<T, U> {
   // public EnableTforwardIteratorPlus<T, NormIterator<T, U>, TwoDirectionIterator<T, U>> {
  public:
   using lhy::TwoDirectionIterator<T, U>::TwoDirectionIterator;
+  using typename Iterator<T, U>::Pointer;
+  operator Pointer() { return this->getPointer(); }
+  operator Pointer() const { return this->getPointer(); }
   NormIterator& operator++() override {
     this->getPointer()++;
     return *this;

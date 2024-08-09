@@ -4,6 +4,7 @@
 
 #ifndef UTIL_H
 #define UTIL_H
+#include "string_view.h"
 #include "strings.h"
 
 namespace lhy {
@@ -29,16 +30,14 @@ void static_for(Func fun) {
 template <typename T>
 string get_type() {
   string type_name = __PRETTY_FUNCTION__;
-  const auto pos1 = GetKMP({"T ="}, type_name)[0];
-  const auto pos2 = GetKMP({"]"}, type_name)[0];
-  return string{type_name.begin() + pos1 + 4, type_name.begin() + pos2};
+  const string_view type_name_view(type_name);
+  return string{type_name.begin() + *type_name_view.find("T =") + 4, type_name.begin() + *type_name_view.find("]")};
 }
 template <typename T, T N>
 string get_type() {
   string type_name = __PRETTY_FUNCTION__;
-  const auto pos1 = GetKMP({"N ="}, type_name)[0];
-  const auto pos2 = GetKMP({"]"}, type_name)[0];
-  return string{type_name.begin() + pos1 + 4, type_name.begin() + pos2};
+  const string_view type_name_view(type_name);
+  return string{type_name.begin() + *type_name_view.find("N =") + 4, type_name.begin() + *type_name_view.find("]")};
 }
 template <typename T>
 string get_type(T enum_type)
