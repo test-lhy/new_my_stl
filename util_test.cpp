@@ -2,5 +2,15 @@
 // Created by lhy on 24-8-8.
 //
 #include <util.h>
+enum color { a1213123, b, c };
 using namespace lhy;
-int main() { std::cout << get_type<int16_t>(); }
+int main() {
+  int b = 1;
+  const int* c = &b;
+  int& a = b;
+  std::cout << get_type<decltype(a)>() << '\n';
+  std::cout << get_type<int, 1>() << '\n';
+  std::cout << get_type(a1213123);
+  std::cout << get_type(color::b);
+  std::cout << get_type(color::c);
+}

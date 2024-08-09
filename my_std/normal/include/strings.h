@@ -6,10 +6,11 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "type_traits.h"
 #include "vector.h"
 namespace lhy {
-using string = vector<char>;
+class string : public vector<char> {
+  using vector::vector;
+};
 /**
  * @brief n时间复杂度的前缀函数
  * @tparam T vector元素的类型

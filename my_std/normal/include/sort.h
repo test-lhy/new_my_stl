@@ -14,11 +14,11 @@
 #include "basic.h"
 #include "data_structure.h"
 #include "list.h"
-#include "mmath.h"
 #include "priority_queue.h"
 #include "random.h"
 #include "shared_ptr.h"
 #include "type_traits.h"
+#include "util.h"
 #include "vector.h"
 
 namespace lhy {
@@ -355,29 +355,46 @@ void BucketSort(NormIterator<T> start, NormIterator<T> end) {
     }
   }
 }
-// template <typename... T>
-// void RadixSort(std::tuple<T...>* start, std::tuple<T...>* end, SortType sort_type) {
-//   using TupleWithIndex = std::pair<std::tuple<T...>, Index>;
-//   auto* temp_array = new TupleWithIndex[end - start];
-//   for (Index i = 0; i < end - start; ++i) {
-//     temp_array[i] = {start[i], i};
-//   }
-//   for (Index i = 0; i < start->size(); ++i) {
-//     for (Index j = 0; j < end - start; ++j) {
-//       temp_array[j].second = j;
-//     }
-//     Sort(start, end, sort_type, [i](const TupleWithIndex& a, const TupleWithIndex& b) -> bool {
-//       if (std::get<i>(a.first) == std::get<i>(b.first)) {
-//         return a.second < b.second;
-//       } else {
-//         return std::get<i>(a.first) < std::get<i>(b.first);
-//       }
-//     });
-//   }
-//   for (Index i = 0; i < end - start; ++i) {
-//     start[i] = temp_array[i].first;
-//   }
-// }
+template <typename... T>
+void RadixSort(std::tuple<T...>* start, std::tuple<T...>* end, SortType sort_type) {
+  using TupleWithIndex = std::pair<std::tuple<T...>, Index>;
+  auto* temp_array = new TupleWithIndex[end - start];
+  const auto tuple_size = std::tuple_size_v<std::tuple<T...>>;
+  for (Index i = 0; i < end - start; ++i) {
+    temp_array[i] = {start[i], i};
+  }
+  static_for<tuple_size - 1, -1, IndexMinusOne>([&]<int i_>() {
+    for (Index j = 0; j < end - start; ++j) {
+      temp_array[j].second = j;
+    }
+    Sort<TupleWithIndex>(temp_array, temp_array + (end - start), sort_type,
+                         [&](const TupleWithIndex& a, const TupleWithIndex& b) -> bool {
+                           if (std::get<i_>(a.first) == std::get<i_>(b.first)) {
+                             return a.second < b.second;
+                           }
+                           return std::get<i_>(a.first) < std::get<i_>(b.first);
+                         });
+    // Sort<TupleWithIndex>(temp_array, temp_array + (end - start), sort_type,
+    //                      [&](const TupleWithIndex& a, const TupleWithIndex& b) -> bool {
+    // 纯烂，因为这里直接就相当于暴力存换枚举i了
+    //                        bool ret{};
+    //                        static_for<tuple_size - 1, -1, IndexMinusOne>([&]<int i_>() {  // constexpr
+    //                          count++;
+    //                          if (i == i_) {
+    //                            if (std::get<i_>(a.first) == std::get<i_>(b.first)) {
+    //                              ret = a.second < b.second;
+    //                              return;
+    //                            }
+    //                            ret = std::get<i_>(a.first) < std::get<i_>(b.first);
+    //                          }
+    //                        });
+    //                        return ret;
+    //                      });
+  });
+  for (Index i = 0; i < end - start; ++i) {
+    start[i] = temp_array[i].first;
+  }
+}
 template <typename T>
 T GetApproximateMedian(
     NormIterator<T> start, NormIterator<T> end,

@@ -6,7 +6,7 @@
 #define DIRECTED_GRAPH_H
 #include "base_graph.h"
 namespace lhy {
-///感觉这里可以进行修改
+/// 感觉这里可以进行修改
 template <node_c Node_ = Node, edge_c Edge_ = Edge>
 using DirectedGraph = BaseGraph<Node_, Edge_>;
 template <node_c Node_ = Node, edge_c Edge_ = Edge>

@@ -4,5 +4,4 @@
 
 #include "../include/util.h"
 
-namespace lhy {
-} // lhy
+namespace lhy {}  // namespace lhy
