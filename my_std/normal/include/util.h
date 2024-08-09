@@ -20,16 +20,12 @@ class IndexMinusOne {
 template <typename T>
 concept ConstexprNumericFunc = requires() { T::template value<0>; };
 template <int Beg, int End, ConstexprNumericFunc IndexChangeFunc = IndexAddOne, typename Func = void>
-void static_for(Func fun)
-  requires(Beg != End)
-{
+void static_for(Func fun) {
   fun.template operator()<Beg>();
-  static_for<IndexChangeFunc::template value<Beg>, End, IndexChangeFunc>(fun);
+  if constexpr (Beg != End) {
+    static_for<IndexChangeFunc::template value<Beg>, End, IndexChangeFunc>(fun);
+  }
 }
-template <int Beg, int End, ConstexprNumericFunc IndexChangeFunc = IndexAddOne, typename Func = void>
-void static_for(Func fun)
-  requires(Beg == End)
-{}
 template <typename T>
 string get_type() {
   string type_name = __PRETTY_FUNCTION__;
