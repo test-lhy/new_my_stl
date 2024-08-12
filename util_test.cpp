@@ -2,6 +2,8 @@
 // Created by lhy on 24-8-8.
 //
 #include <util.h>
+
+#include <source_location>
 enum color { a1213123, b, c };
 using namespace lhy;
 int main() {
@@ -13,4 +15,5 @@ int main() {
   std::cout << get_type(a1213123);
   std::cout << get_type(color::b);
   std::cout << get_type(color::c);
+  std::source_location loc = std::source_location::current();
 }

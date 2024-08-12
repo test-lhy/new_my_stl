@@ -5,6 +5,7 @@
 #ifndef SHARED_PTR_H
 #define SHARED_PTR_H
 #include <format>
+#include <ranges>
 #include <type_traits>
 
 #include "basic.h"
@@ -18,6 +19,9 @@ class weak_ptr;
 // note:T和ControlledT都是非指针的
 template <typename T, typename ControlledT = T>
 class shared_ptr {
+  template <not_array_c T_, class... Args, typename Alloc>
+  friend shared_ptr<T_> make_shared(Args&&... args);
+
  public:
   template <typename T_, typename ControlledT_>
   friend class shared_ptr;
@@ -249,7 +253,7 @@ void shared_ptr<T, ControlledT>::reset() {
     controller_ = nullptr;
   }
 }
-// note:make_shared在一般的实现中是只进行一次内存分配，因此被管理的对象的new并没有进行分配内存，因此也不能使用delete来进行销毁，而要通过析构函数进行销毁
+// note:make_shared在一般的实现中是只进行一次内存分配，因此被管理的对象的new并没有进行分配内存，因此也不能使用delete来进行销毁，而要通过析构函数进行销毁，似乎有点难以实现，暂时先不实现
 // 当控制块要被销毁的时候，整个内存才会被整体释放
 template <not_array_c T, class... Args>
 shared_ptr<T> make_shared(Args&&... args) {

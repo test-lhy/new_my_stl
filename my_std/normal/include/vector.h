@@ -80,8 +80,8 @@ class vector : public DataStructure<T> {
   [[nodiscard]] bool check_volume() const;
   void check_index(const Index&) const;
   void extend_volume();
-  Pointer getBegin() override { return make_shared<iterator>(begin()); }
-  Pointer getEnd() override { return make_shared<iterator>(end()); }
+  Pointer getBegin() override { return lhy::make_shared<iterator>(begin()); }
+  Pointer getEnd() override { return lhy::make_shared<iterator>(end()); }
 };
 std::string str(const vector<char>& obj);
 // todo:研究这里到底应该右值引用还是直接值返回，编译器是否有优化
@@ -371,7 +371,7 @@ void vector<T>::reserve(size_t size) {
   volume_ = size;
   // note:用不了std::move，因为是不同大小
   for (int i = 0; i < ex_size; ++i) {
-    start_substitute[i] = start_[i];
+    start_substitute[i] = std::move(start_[i]);
   }
   start_.swap(start_substitute);
 }
@@ -395,7 +395,7 @@ void vector<T>::extend_volume() {
   unique_ptr<T[]> start_substitute = make_unique<T[]>(volume_ * 2);
   end_ = start_substitute.get() + volume_;
   for (int i = 0; i < volume_; ++i) {
-    start_substitute[i] = start_[i];
+    start_substitute[i] = std::move(start_[i]);
   }
   volume_ *= 2;
   start_.swap(start_substitute);

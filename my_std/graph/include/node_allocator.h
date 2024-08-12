@@ -26,7 +26,7 @@ class NodeAllocator : public DataStructure<std::pair<Index, Node_>> {
   NodeAllocator(const shared_ptr<EdgeReserveSync>& edge_allocator_sync, const NodeAllocatorMode mode)
       : edge_allocator_sync_(edge_allocator_sync) {
     container_ = make_unique<IndexContainer<Node_>>(relation_between_nodeallocator_indexcontainer.at(mode));
-    Sync(1);
+    Sync(100);
   }
   Index AddNode(const Node_& node);
   template <typename... Args>
