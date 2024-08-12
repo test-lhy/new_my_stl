@@ -8,7 +8,7 @@ int main() {
   int b = 1;
   const int* c = &b;
   int& a = b;
-  std::cout << get_type<decltype(a)>() << '\n';
+  std::cout << get_type<std::decay_t<std::reference_wrapper<int>>>() << '\n';
   std::cout << get_type<int, 1>() << '\n';
   std::cout << get_type(a1213123);
   std::cout << get_type(color::b);

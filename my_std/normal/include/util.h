@@ -4,29 +4,10 @@
 
 #ifndef UTIL_H
 #define UTIL_H
+#include "meta.h"
 #include "string_view.h"
 #include "strings.h"
-
 namespace lhy {
-class IndexAddOne {
- public:
-  template <int i>
-  static constexpr int value = std::integral_constant<int, i + 1>::value;
-};
-class IndexMinusOne {
- public:
-  template <int i>
-  static constexpr int value = std::integral_constant<int, i - 1>::value;
-};
-template <typename T>
-concept ConstexprNumericFunc = requires() { T::template value<0>; };
-template <int Beg, int End, ConstexprNumericFunc IndexChangeFunc = IndexAddOne, typename Func = void>
-void static_for(Func fun) {
-  fun.template operator()<Beg>();
-  if constexpr (Beg != End) {
-    static_for<IndexChangeFunc::template value<Beg>, End, IndexChangeFunc>(fun);
-  }
-}
 template <typename T>
 string get_type() {
   string type_name = __PRETTY_FUNCTION__;

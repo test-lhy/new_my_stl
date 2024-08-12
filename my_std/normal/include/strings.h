@@ -9,8 +9,23 @@
 #include "vector.h"
 namespace lhy {
 class string : public vector<char> {
+ public:
   using vector::vector;
+  string(const string&) = default;
+  string(string&&) noexcept = default;
+  string& operator=(const string&);
+  string& operator=(string&&) noexcept;
+  string& operator=(const std::initializer_list<char>&);
+  string& operator+=(const char&);
+  string& operator+=(const string&);
+  string& operator&=(const string&);
+  string& operator|=(const string&);
 };
+void getline(std::istream& istream_, string& obj);
+std::istream& operator>>(std::istream& istream_, string& obj);
+string operator+(string a, const string& b);
+string operator&(string a, const string& b);
+string operator|(string a, const string& b);
 /**
  * @brief n^2时间复杂度的前缀函数
  * @tparam T vector元素的类型

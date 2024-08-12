@@ -14,6 +14,7 @@
 #include "basic.h"
 #include "data_structure.h"
 #include "list.h"
+#include "meta.h"
 #include "priority_queue.h"
 #include "random.h"
 #include "shared_ptr.h"

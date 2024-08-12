@@ -91,13 +91,9 @@ template <typename T>
 vector<T> operator&(vector<T> a, const vector<T>& b);
 template <typename T>
 vector<T> operator|(vector<T> a, const vector<T>& b);
-template <char_type T>
+template <typename T>
 void getline(std::istream& istream_, vector<T>& obj);
-template <not_char_type T>
-void getline(std::istream& istream_, vector<T>& obj);
-template <char_type T>
-std::istream& operator>>(std::istream& istream_, vector<T>& obj);
-template <not_char_type T>
+template <typename T>
 std::istream& operator>>(std::istream& istream_, vector<T>& obj);
 template <typename T>
 vector<T>::vector(vector&& other) {
@@ -416,37 +412,11 @@ template <typename T>
 vector<T> operator|(vector<T> a, const vector<T>& b) {
   return a |= b;
 }
-template <char_type T>
-void getline(std::istream& istream_, vector<T>& obj) {
-  obj.clear();
-  char temp_char;
-  while ((temp_char = static_cast<char>(istream_.get())) == '\n')
-    ;
-  istream_.unget();
-  while ((temp_char = static_cast<char>(istream_.get())) != EOF && temp_char != '\n') {
-    obj.push_back(temp_char);
-  }
-}
-template <not_char_type T>
+template <typename T>
 void getline(std::istream& istream_, vector<T>& obj) {
   throw std::logic_error("non-char-vector is not allowed to read through getline");
 }
-template <char_type T>
-std::istream& operator>>(std::istream& istream_, vector<T>& obj) {
-  obj.clear();
-  char temp_char;
-  while ((temp_char = static_cast<char>(istream_.get())) == ' ' || temp_char == '\n')
-    ;
-  istream_.unget();
-  while ((temp_char = static_cast<char>(istream_.get())) != EOF && temp_char != ' ' && temp_char != '\n') {
-    obj.push_back(temp_char);
-  };
-  if (temp_char == ' ') {
-    istream_.unget();
-  }
-  return istream_;
-}
-template <not_char_type T>
+template <typename T>
 std::istream& operator>>(std::istream& istream_, vector<T>& obj) {
   vector<char> temp;
   getline(istream_, temp);
