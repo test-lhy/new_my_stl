@@ -47,7 +47,7 @@ template <typename T>
 unique_ptr<T>::unique_ptr(RealT ptr, Deleter<RealT> deleter) : value_(ptr), deleter_(deleter) {}
 template <typename T>
 unique_ptr<T>& unique_ptr<T>::operator=(unique_ptr&& other) {
-  if (&other != this) {
+  if (&other != this) [[likely]] {
     if (*this) {
       reset();
     }
@@ -58,7 +58,7 @@ unique_ptr<T>& unique_ptr<T>::operator=(unique_ptr&& other) {
 template <typename T>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>
 unique_ptr<T>& unique_ptr<T>::operator=(unique_ptr<U>&& other) {
-  if (reinterpret_cast<unique_ptr*>(&other) != this) {
+  if (reinterpret_cast<unique_ptr*>(&other) != this) [[likely]] {
     if (*this) {
       reset();
     }
@@ -131,15 +131,15 @@ unique_ptr<T> make_unique(Args&&... args) {
 }
 template <unbounded_array_c T>
 unique_ptr<T> make_unique(size_t N) {
-  return unique_ptr<T>(new std::remove_extent_t<T>[N]);
+  return unique_ptr<T>(new std::remove_extent_t<T>[N]());
 }
 template <not_array_c T>
 unique_ptr<T> make_unique_for_overwrite() {
-  return unique_ptr<T>(new T());
+  return unique_ptr<T>(new T);
 }
 template <unbounded_array_c T>
 unique_ptr<T> make_unique_for_overwrite(size_t N) {
-  return unique_ptr<T>(new std::remove_extent_t<T>[N]());
+  return unique_ptr<T>(new std::remove_extent_t<T>[N]);
 }
 }  // namespace lhy
 

@@ -118,7 +118,7 @@ vector<T>::vector(iterator start, iterator end) : vector() {
 }
 template <typename T>
 vector<T>::vector(const size_t size) {
-  start_ = make_unique<T[]>(size + 2);
+  start_ = make_unique_for_overwrite<T[]>(size + 2);
   end_ = begin() + size;
   volume_ = size + 1;
 }
@@ -147,6 +147,7 @@ vector<T>& vector<T>::operator=(const vector& other) {
 }
 template <typename T>
 vector<T>& vector<T>::operator=(vector&& other) noexcept {
+  /// 好像这么写确实有点问题，好像移动要保证出来是nullptr？
   std::swap(this->start_, other.start_);
   std::swap(this->end_, other.end_);
   std::swap(this->volume_, other.volume_);
@@ -301,7 +302,7 @@ typename vector<T>::iterator vector<T>::cend() const {
 // todo:这里的clear感觉有问题
 template <typename T>
 void vector<T>::clear() {
-  start_ = make_unique<T[]>(1);
+  start_ = make_unique_for_overwrite<T[]>(1);
   end_ = begin();
   volume_ = 1;
 }
@@ -365,7 +366,7 @@ void vector<T>::reserve(size_t size) {
   if (size < this->size()) {
     throw std::logic_error("the size of the vector cannot be bigger than the reserve size");
   }
-  unique_ptr<T[]> start_substitute = make_unique<T[]>(size);
+  unique_ptr<T[]> start_substitute = make_unique_for_overwrite<T[]>(size);
   const size_t ex_size = this->size();
   end_ = start_substitute.get() + size;
   volume_ = size;
@@ -392,7 +393,7 @@ void vector<T>::check_index(const Index& index) const {
 }
 template <typename T>
 void vector<T>::extend_volume() {
-  unique_ptr<T[]> start_substitute = make_unique<T[]>(volume_ * 2);
+  unique_ptr<T[]> start_substitute = make_unique_for_overwrite<T[]>(volume_ * 2);
   end_ = start_substitute.get() + volume_;
   for (int i = 0; i < volume_; ++i) {
     start_substitute[i] = std::move(start_[i]);

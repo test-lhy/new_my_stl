@@ -147,7 +147,7 @@ void GetWinner(shared_ptr<std::pair<T, int>[]> temp_array, Index index, size_t s
 template <typename T>
 void TournamentSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function, const T& INF) {
   size_t front_size = pow(2, ceil(log2(end - start))) - 1;
-  auto temp_array = make_shared<std::pair<T, int>[]>(front_size + end - start);
+  auto temp_array = make_shared_for_overwrite<std::pair<T, int>[]>(front_size + end - start);
   for (Index i = 0; i < end - start; ++i) {
     temp_array[front_size + i] = {start[i], i};
   }
@@ -247,7 +247,7 @@ void QuickSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& com
 template <typename T>
 void Merge(NormIterator<T> start, NormIterator<T> other_start, NormIterator<T> end,
            const CmpType<T>& compare_function) {
-  auto temp_array = make_shared<T[]>(end - start);
+  auto temp_array = make_shared_for_overwrite<T[]>(end - start);
   for (Index i = 0; i < end - start; ++i) {
     temp_array[i] = start[i];
   }
@@ -315,7 +315,7 @@ void CountSort(NormIterator<T> start, NormIterator<T> end) {
     maxT = std::max(*element, maxT);
     minT = std::min(*element, minT);
   }
-  auto cnt = make_shared<int[]>(maxT - minT + 1);
+  auto cnt = make_shared_for_overwrite<int[]>(maxT - minT + 1);
   for (Index i = minT; i <= maxT; ++i) {
     cnt[i - minT] = 0;
   }
@@ -340,7 +340,7 @@ void BucketSort(NormIterator<T> start, NormIterator<T> end) {
     maxT = std::max(*element, maxT);
     minT = std::min(*element, minT);
   }
-  auto cnt = make_shared<int[]>(maxT - minT + 1);
+  auto cnt = make_shared_for_overwrite<int[]>(maxT - minT + 1);
   for (Index i = minT; i <= maxT; ++i) {
     cnt[i - minT] = 0;
   }

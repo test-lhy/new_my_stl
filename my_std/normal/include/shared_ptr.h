@@ -261,19 +261,19 @@ shared_ptr<T> make_shared(Args&&... args) {
 }
 template <array_c T>
 shared_ptr<T> make_shared(size_t N) {
-  return shared_ptr<T>(new std::remove_extent_t<T>[N]);
-}
-template <bounded_array_c T>
-shared_ptr<T> make_shared() {
-  return shared_ptr<T>(new std::remove_extent_t<T>[std::extent_v<T>]);
-}
-template <array_c T>
-shared_ptr<T> make_shared_for_overwrite(size_t N) {
   return shared_ptr<T>(new std::remove_extent_t<T>[N]());
 }
 template <bounded_array_c T>
-shared_ptr<T> make_shared_for_overwrite() {
+shared_ptr<T> make_shared() {
   return shared_ptr<T>(new std::remove_extent_t<T>[std::extent_v<T>]());
+}
+template <array_c T>
+shared_ptr<T> make_shared_for_overwrite(size_t N) {
+  return shared_ptr<T>(new std::remove_extent_t<T>[N]);
+}
+template <bounded_array_c T>
+shared_ptr<T> make_shared_for_overwrite() {
+  return shared_ptr<T>(new std::remove_extent_t<T>[std::extent_v<T>]);
 }
 }  // namespace lhy
 
