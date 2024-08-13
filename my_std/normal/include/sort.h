@@ -6,7 +6,6 @@
 #define MY_STL_SORT_H
 #include <algorithm>
 #include <cmath>
-#include <functional>
 #include <list>
 #include <stdexcept>
 

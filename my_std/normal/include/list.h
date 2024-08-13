@@ -20,6 +20,7 @@ template <typename T>
 class listiterator;
 template <typename T>
 class listreversed_iterator;
+/// 速度提升了四倍
 template <typename T, typename Alloc = std::pmr::polymorphic_allocator<listNode<T>>>
 class list : public DataStructure<T> {
  public:
