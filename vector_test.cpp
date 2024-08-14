@@ -2,6 +2,7 @@
 // Created by lhy31 on 2023/8/21.
 //
 #include "vector.h"
+
 #include <cassert>
 #include <iostream>
 #include <stdexcept>
@@ -11,7 +12,6 @@ int main() {
   printf("!");
   // 测试默认构造
   assert(vec.empty());
-
   // 测试插入
   vec.push_back(1);
   vec.push_back(2);
@@ -19,8 +19,6 @@ int main() {
   assert(vec.size() == 2);
   assert(vec[0] == 1);
   assert(vec[1] == 2);
-
-
 
   // 测试清空
   vec.clear();

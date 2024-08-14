@@ -192,8 +192,6 @@ template <typename... Types>
 class tuple_size<tuple<Types...>> {
  public:
   constexpr operator size_t() const { return value; }
-
- private:
   static constexpr size_t value = sizeof...(Types);
 };
 template <size_t I, class T>
