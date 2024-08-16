@@ -224,12 +224,12 @@ constexpr const tuple_element_t<I, tuple<Types...>>&& get(const tuple<Types...>&
   return std::move(t).template get<I>();
 }
 /// 这样就实现了非Tuple的泛化
-template <template <typename... Types> class Tuple, typename... Types, typename Func>
-constexpr void apply(Tuple<Types...>& t, Func&& func) {
-  apply(t, IndexSequenceFor<Types...>(), std::forward<Func>(func));
+template <template <typename... Types> class Tuple, typename... Types>
+constexpr void apply(Tuple<Types...>& t, auto&& func) {
+  apply(t, IndexSequenceFor<Types...>(), std::forward<decltype(func)>(func));
 }
-template <class Tuple, typename Func, size_t... Indexes>
-constexpr void apply(Tuple& t, IndexSequence<Indexes...>, Func&& func) {
+template <class Tuple, size_t... Indexes>
+constexpr void apply(Tuple& t, IndexSequence<Indexes...>, auto&& func) {
   (func(get<Indexes>(t)),...);
 }
 }  // namespace lhy

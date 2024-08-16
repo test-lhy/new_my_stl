@@ -45,19 +45,17 @@ class IndexMinusOne {
 };
 template <typename T>
 concept ConstexprNumericFunc = requires() { T::template value<0>; };
-template <size_t... Index, typename Func = void>
-constexpr void static_for(Func fun, IndexSequence<Index...>) {
+template <size_t... Index>
+constexpr void static_for(auto fun, IndexSequence<Index...>) {
   (fun.template operator()<Index>(), ...);
 }
-template <int Beg, int End, ConstexprNumericFunc IndexChangeFunc = IndexAddOne, typename Func = void>
-constexpr void static_for(Func fun) {
+template <int Beg, int End, ConstexprNumericFunc IndexChangeFunc = IndexAddOne>
+constexpr void static_for(auto fun) {
   fun.template operator()<Beg>();
   if constexpr (Beg != End) {
     static_for<IndexChangeFunc::template value<Beg>, End, IndexChangeFunc>(fun);
   }
 }
-template <typename T>
-T forward(T&& t) {}
 }  // namespace lhy
 
 #endif  // META_H
