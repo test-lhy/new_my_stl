@@ -21,16 +21,6 @@ class array : public DataStructure<T> {
   array& operator=(const array& other) = default;
   array& operator=(array&& other) = default;
   array(std::initializer_list<T>);
-  array(T (&&arr)[N]) {
-    for (Index i = 0; i < N; ++i) {
-      elems[i] = std::move(arr[N]);
-    }
-  }
-  array(T (&arr)[N]) {
-    for (Index i = 0; i < N; ++i) {
-      elems[i] = arr[N];
-    }
-  }
   // 元素访问
   [[nodiscard]] T& at(Index pos);
   [[nodiscard]] const T& at(Index pos) const;
@@ -295,11 +285,6 @@ class array<T, 0> {
  public:
   using iterator = Iterator<T>;
   using reversed_iterator = Iterator<T>;
-  array() = default;
-  array(const array& other) = default;
-  array(array&& other) = default;
-  array& operator=(const array& other) = default;
-  array& operator=(array&& other) = default;
   [[nodiscard]] T* data();
   [[nodiscard]] const T* data() const;
 
@@ -401,6 +386,8 @@ template <typename T>
 void array<T, 0>::fill(const T& value) {}
 template <typename T>
 void array<T, 0>::swap(array& other) {}
+template <typename Arg0, typename... Args>
+array(Arg0,Args...)->array<std::common_type_t<Arg0,Args...>,sizeof...(Args)+1>;
 }
 
 #endif  // ARRAY_H

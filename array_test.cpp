@@ -9,7 +9,7 @@
 using namespace lhy;
 
 void testElementAccess() {
-  array<int, 5> arr = {1, 2, 3, 4, 5};
+  array arr = {1.0, 2.2, 3, 4, 5};
   // 测试 at() 方法
   assert(arr.at(0) == 1);
   assert(arr.at(4) == 5);
