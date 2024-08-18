@@ -382,7 +382,7 @@ constexpr optional<std::decay_t<T>> make_optional(T&& value) {
 }
 template <class T, class... Args>
 constexpr optional<T> make_optional(Args&&... args) {
-  return optional<T>(std::in_place, std::forward<Args>(args)...);
+  return optional<T>(in_place, std::forward<Args>(args)...);
 }
 
 }  // namespace lhy
