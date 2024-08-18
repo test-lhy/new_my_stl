@@ -90,7 +90,7 @@ class Iterator : public TIterator<T> {
   OutPointer Extract() {
     return getPointer();
   }
-  template <typename T1 = T, notsame<T> U1 = U>
+  template <typename T1 = T, Deprived<StoredIteratorType<T>> U1 = U>
   OutPointer Extract() {
     return getPointer()->extract();
   }
@@ -98,7 +98,7 @@ class Iterator : public TIterator<T> {
   OutPointer Extract() const {
     return getPointer();
   }
-  template <typename T1 = T, notsame<T> U1 = U>
+  template <typename T1 = T, Deprived<StoredIteratorType<T>> U1 = U>
   OutPointer Extract() const {
     return getPointer()->extract();
   }

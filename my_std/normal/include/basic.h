@@ -16,5 +16,7 @@ template <typename T>
 using CmpType = std::function<bool(const T&, const T&)>;
 template <typename T, typename U>
 concept Deprived = std::is_base_of_v<U, T>;
+template <typename T, typename U>
+concept NotDeprived = not Deprived<T, U>;
 }  // namespace lhy
 #endif  // MY_STL_BASIC_H

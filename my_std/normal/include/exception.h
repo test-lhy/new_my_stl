@@ -52,6 +52,7 @@ CREATE_EXCEPTION_CLASS(logic_error);
 CREATE_EXCEPTION_CLASS(out_of_range);
 CREATE_EXCEPTION_CLASS(invalid_argument);
 CREATE_EXCEPTION_CLASS(range_error);
+CREATE_EXCEPTION_CLASS(bad_optional_access);
 #undef CREATE_EXCEPTION_CLASS
 }  // namespace lhy
 

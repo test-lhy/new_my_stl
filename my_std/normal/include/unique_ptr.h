@@ -37,6 +37,7 @@ class unique_ptr {
   RealT operator->() { return get(); }
   RealT operator->() const { return get(); }
   ~unique_ptr();
+  friend bool operator==(const unique_ptr& lhs, const unique_ptr& rhs) { return lhs.value_ == rhs.value_; }
 
  private:
   RealT value_{};
