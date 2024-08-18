@@ -44,7 +44,7 @@ IndexContainer<T>::IndexContainer(const IndexContainerMode mode) {
   } else if (mode == MapIndexContainerMode) {
     container_ = make_unique<MapIndexContainer<T>>();
   } else {
-    throw std::logic_error("Unsupported mode");
+    throw logic_error("Unsupported mode");
   }
 }
 template <typename T>

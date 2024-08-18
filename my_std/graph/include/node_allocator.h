@@ -59,7 +59,7 @@ class NodeAllocator : public DataStructure<std::pair<Index, Node_>> {
 template <node_c Node_>
 Index NodeAllocator<Node_>::AddNode(const Node_& node) {
   if (Exist(node.GetId()) && node != GetNode(node.GetId())) {
-    throw std::logic_error("can not add a node with the same id and different content");
+    throw logic_error("can not add a node with the same id and different content");
   }
   Sync(node.GetId());
   container_->operator[](node.GetId()) = node;
@@ -74,7 +74,7 @@ Node_& NodeAllocator<Node_>::GetNode(Index index) {
   if (Exist(index)) {
     return container_->operator[](index);
   }
-  throw std::logic_error("the node does not exist");
+  throw logic_error("the node does not exist");
 }
 template <node_c Node_>
 bool NodeAllocator<Node_>::Exist(Index index) {

@@ -53,7 +53,7 @@ template <node_c Origin_Node_, edge_c Edge_>
 template <typename... Args>
 void Trees<Origin_Node_, Edge_>::AddNode(Origin_Node_&& node, Index father, Args&&... args) {
   if (!Base::NodeExist(father)) {
-    throw std::logic_error("node's father should have been created.");
+    throw logic_error("node's father should have been created.");
   }
   auto node_now =
       Base::AddNode(std::forward<Node_>(Node_{std::forward<Origin_Node_>(node), std::forward<Index>(father)}));
@@ -75,7 +75,7 @@ template <node_c Origin_Node_, edge_c Edge_>
 template <typename... Args>
 void Trees<Origin_Node_, Edge_>::ChangeFatherWithCheck(Index node, Index father, Args&&... args) {
   if (IsFather(node, father)) {
-    throw std::logic_error("node's kid can't be node's father");
+    throw logic_error("node's kid can't be node's father");
   }
   ChangeFather(node, father, std::forward<Args>(args)...);
 }
@@ -97,7 +97,7 @@ void Trees<Origin_Node_, Edge_>::CheckNodeExist(Index node) const {
   if (!Base::NodeExist(node)) {
     const string error_string = static_cast<string>("node") + ToString(node) +
                                 static_cast<string>(" being used, so it should have been created");
-    throw std::logic_error(str(error_string));
+    throw logic_error(str(error_string));
   }
 }
 template <node_c Origin_Node_, edge_c Edge_>

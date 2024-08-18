@@ -3,6 +3,7 @@
 //
 #ifndef MY_STL_EDGE_ALLOCATOR_FACTORY_H
 #define MY_STL_EDGE_ALLOCATOR_FACTORY_H
+#include "exception.h"
 #include "linklist_edge_allocator.h"
 #include "map_edge_allocator.h"
 #include "matrix_edge_allocator.h"
@@ -27,7 +28,7 @@ shared_ptr<EdgeAllocator<Edge_>> EdgeAllocatorFactory<Edge_>::Create(EdgeAllocat
     case EdgeAllocatorMode::MatrixEdgeAllocatorMode:
       return make_shared<MatrixEdgeAllocator<Edge_>>();
   }
-  throw std::logic_error("unsupported mode");
+  throw logic_error("unsupported mode");
 }
 }  // namespace lhy
 #endif  // MY_STL_EDGE_ALLOCATOR_FACTORY_H

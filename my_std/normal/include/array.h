@@ -4,6 +4,8 @@
 
 #ifndef ARRAY_H
 #define ARRAY_H
+#include <exception.h>
+
 #include <cassert>
 
 #include "data_structure.h"
@@ -157,14 +159,14 @@ array<T, N>::array(std::initializer_list<T> other) {
 template <typename T, size_t N>
 T& array<T, N>::at(Index pos) {
   if (pos >= N) {
-    throw std::range_error("out of range");
+    throw range_error("out of range");
   }
   return elems[pos];
 }
 template <typename T, size_t N>
 const T& array<T, N>::at(Index pos) const {
   if (pos >= N) {
-    throw std::range_error("out of range");
+    throw range_error("out of range");
   }
   return elems[pos];
 }

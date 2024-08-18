@@ -9,12 +9,12 @@
 using namespace lhy;
 int main() {
   vector<int> vec;
-  printf("!");
   // 测试默认构造
   assert(vec.empty());
   // 测试插入
   vec.push_back(1);
   vec.push_back(2);
+  vec[100];
 
   assert(vec.size() == 2);
   assert(vec[0] == 1);

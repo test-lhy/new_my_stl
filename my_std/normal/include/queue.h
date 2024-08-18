@@ -97,7 +97,7 @@ void queue<T>::push(const T& data) {
 template <typename T>
 void queue<T>::pop() {
   if (empty()) {
-    throw std::logic_error("queue is empty");
+    throw logic_error("queue is empty");
   }
   queue_.erase(queue_.begin());
 }

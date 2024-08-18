@@ -97,7 +97,7 @@ const T& span<T, U>::operator[](const Index& index) const {
 template <typename T, typename U>
 const T& span<T, U>::At(const Index& index) const {
   if (index >= size()) {
-    throw std::out_of_range("Index out of range");
+    throw out_of_range("Index out of range");
   }
   return begin_[index];
 }

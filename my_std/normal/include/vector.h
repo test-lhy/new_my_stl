@@ -234,14 +234,14 @@ const T& vector<T>::At(const Index& index) const {
 template <typename T>
 T& vector<T>::front() {
   if (empty()) {
-    throw std::range_error("no element in vector");
+    throw range_error("no element in vector");
   }
   return *begin();
 }
 template <typename T>
 T& vector<T>::back() {
   if (empty()) {
-    throw std::range_error("no element in vector");
+    throw range_error("no element in vector");
   }
   return *rbegin();
 }
@@ -264,14 +264,14 @@ typename vector<T>::reversed_iterator vector<T>::rend() {
 template <typename T>
 T& vector<T>::front() const {
   if (empty()) {
-    throw std::range_error("no element in vector");
+    throw range_error("no element in vector");
   }
   return *begin();
 }
 template <typename T>
 T& vector<T>::back() const {
   if (empty()) {
-    throw std::range_error("no element in vector");
+    throw range_error("no element in vector");
   }
   return *rbegin();
 }
@@ -357,14 +357,14 @@ vector<T>::vector(T* other) : vector() {
 template <typename T>
 void vector<T>::pop() {
   if (size() == 0) {
-    throw std::range_error("nothing left to pop");
+    throw range_error("nothing left to pop");
   }
   --end_;
 }
 template <typename T>
 void vector<T>::reserve(size_t size) {
   if (size < this->size()) {
-    throw std::logic_error("the size of the vector cannot be bigger than the reserve size");
+    throw logic_error("the size of the vector cannot be bigger than the reserve size");
   }
   unique_ptr<T[]> start_substitute = make_unique_for_overwrite<T[]>(size);
   const size_t ex_size = this->size();
@@ -388,7 +388,7 @@ bool vector<T>::check_volume() const {
 template <typename T>
 void vector<T>::check_index(const Index& index) const {
   if (index < 0 || index >= size()) {
-    throw std::logic_error("out of range");
+    throw logic_error("out of range");
   }
 }
 template <typename T>
@@ -415,7 +415,7 @@ vector<T> operator|(vector<T> a, const vector<T>& b) {
 }
 template <typename T>
 void getline(std::istream& istream_, vector<T>& obj) {
-  throw std::logic_error("non-char-vector is not allowed to read through getline");
+  throw logic_error("non-char-vector is not allowed to read through getline");
 }
 template <typename T>
 std::istream& operator>>(std::istream& istream_, vector<T>& obj) {

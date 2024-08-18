@@ -5,6 +5,7 @@
 #ifndef MY_STL_HASH_H
 #define MY_STL_HASH_H
 #include "basic.h"
+#include "exception.h"
 #include "list.h"
 #include "type_traits.h"
 #include "vector.h"
@@ -102,7 +103,7 @@ size_t GetModValue(const size_t& size) {
     ++iter;
   }
   if (iter == kmod_values.end()) {
-    throw std::invalid_argument("size too large");
+    throw invalid_argument("size too large");
   }
   return *iter;
 }

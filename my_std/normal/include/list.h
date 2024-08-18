@@ -10,6 +10,7 @@
 #include <stdexcept>
 
 #include "data_structure.h"
+#include "exception.h"
 
 namespace lhy {
 template <typename T>
@@ -231,17 +232,17 @@ typename list<T, Alloc>::iterator list<T, Alloc>::erase(const T& content) {
   if (answer != end_) {
     return erase(answer);
   }
-  throw std::logic_error("the element is not in the list");
+  throw logic_error("the element is not in the list");
 }
 
 template <typename T, typename Alloc>
 std::pair<typename list<T, Alloc>::iterator, typename list<T, Alloc>::reversed_iterator> list<T, Alloc>::eraseImpl(
     iterator node) {
   if (node == rend_ || node == end_) {
-    throw std::logic_error("end iterator can not be erased");
+    throw logic_error("end iterator can not be erased");
   }
   if (empty()) {
-    throw std::logic_error("nothing left to_ erase");
+    throw logic_error("nothing left to_ erase");
   }
   // 当这边是auto&的时候，由于node被删掉会出问题，但是，在Iterator基类没有写析构函数的时候没有出问题，但是在其写了析构函数之后即便是default也会出现虚表找不到的问题
   auto node_behind = node.Next();
@@ -295,7 +296,7 @@ void list<T, Alloc>::insert(iterator node_behind, const T& content) {
 template <typename T, typename Alloc>
 void list<T, Alloc>::pop() {
   if (empty()) {
-    throw std::logic_error("the list is empty");
+    throw logic_error("the list is empty");
   }
   erase(end_.getLast());
 }

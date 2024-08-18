@@ -9,6 +9,7 @@
 #include <type_traits>
 
 #include "basic.h"
+#include "exception.h"
 #include "ptrController.h"
 #include "ptr_base.h"
 #include "unique_ptr.h"
@@ -155,7 +156,7 @@ template <typename T, typename ControlledT>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>
 shared_ptr<T, ControlledT>::shared_ptr(const weak_ptr<U>& other) {
   if (other.expired()) {
-    throw std::logic_error("weak_ptr has been expired");
+    throw logic_error("weak_ptr has been expired");
   }
   controller_ = other.controller_;
   get_value_ = other.get_value_;

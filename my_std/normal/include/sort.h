@@ -479,7 +479,7 @@ void Sort(NormIterator<T> start, NormIterator<T> end, SortType sort_type, const 
   } else if (sort_type == SortType::TIM_SORT) {
     TimSort(start, end, compare_function);
   } else {
-    throw std::logic_error("no such sort algorithm");
+    throw logic_error("no such sort algorithm");
   }
 }
 template <not_int_type T, typename GapGeneration = ShellNormalGapGeneration>
@@ -491,13 +491,13 @@ void Sort(NormIterator<T> start, NormIterator<T> end, SortType sort_type, const 
   } else if (sort_type == SortType::MERGE_SORT) {
     MergeSort(start, end, compare_function);
   } else if (sort_type == SortType::COUNT_SORT) {
-    throw std::logic_error("this type can't use Count_Sort");
+    throw logic_error("this type can't use Count_Sort");
   } else if (sort_type == SortType::HEAP_SORT) {
     HeapSort(start, end, compare_function);
   } else if (sort_type == SortType::INTRO_SORT) {
     QuickSort(start, end, compare_function, 0, std::log2(end - start));
   } else if (sort_type == SortType::BUCKET_SORT) {
-    throw std::logic_error("this type can't use Bucket_Sort");
+    throw logic_error("this type can't use Bucket_Sort");
   } else if (sort_type == SortType::SHELL_SORT) {
     GapGeneration gap_generation;
     ShellSort(start, end, compare_function, &gap_generation);
@@ -507,7 +507,7 @@ void Sort(NormIterator<T> start, NormIterator<T> end, SortType sort_type, const 
   } else if (sort_type == SortType::TIM_SORT) {
     TimSort(start, end, compare_function);
   } else {
-    throw std::logic_error("no such sort algorithm");
+    throw logic_error("no such sort algorithm");
   }
 }
 }  // namespace lhy
