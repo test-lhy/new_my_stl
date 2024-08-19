@@ -95,6 +95,8 @@ list<T, Alloc>& list<T, Alloc>::operator=(list&& other) noexcept {
   }
   std::swap(rend_, other.rend_);
   std::swap(end_, other.end_);
+  std::swap(memory_resource_, other.memory_resource_);
+  std::swap(allocator_, other.allocator_);
   size_ = other.size_;
   return *this;
 }
@@ -117,7 +119,7 @@ list<T, Alloc>::list(const list& other) : list() {
 }
 
 template <typename T, typename Alloc>
-list<T, Alloc>::list(list&& other) {
+list<T, Alloc>::list(list&& other) : list() {
   std::swap(rend_, other.rend_);
   std::swap(end_, other.end_);
   std::swap(memory_resource_, other.memory_resource_);
@@ -162,6 +164,8 @@ list<T, Alloc>::~list() {
   std::allocator_traits<Alloc>::deallocate(*allocator_, static_cast<ListNode*>(rend_), 1);
   std::allocator_traits<Alloc>::destroy(*allocator_, static_cast<ListNode*>(end_));
   std::allocator_traits<Alloc>::deallocate(*allocator_, static_cast<ListNode*>(end_), 1);
+  delete allocator_;
+  delete memory_resource_;
 }
 
 template <typename T, typename Alloc>
@@ -285,7 +289,8 @@ template <typename T, typename Alloc>
 void list<T, Alloc>::insert(iterator node_behind, const T& content) {
   auto node_before = node_behind.getLast();
   // todo:多个一个的new需要通过allocator之类的方法来优化掉
-  iterator node_temp = new ListNode(content);
+  iterator node_temp = std::allocator_traits<Alloc>::allocate(*allocator_, 1);
+  std::allocator_traits<Alloc>::construct(*allocator_, static_cast<ListNode*>(node_temp), content);
   node_before.getNext() = node_temp;
   node_behind.getLast() = node_temp;
   node_temp.getNext() = node_behind;
