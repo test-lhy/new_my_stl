@@ -197,7 +197,7 @@ optional<T>& optional<T>::operator=(optional<U>&& other) {
 }
 template <typename T>
 auto optional<T>::begin() {
-  if constexpr (autoable<T>) {
+  if constexpr (requires { value_->begin(); }) {
     return value_->begin();
   } else {
     return ForwardIterator<T>(value_.get());
@@ -205,7 +205,7 @@ auto optional<T>::begin() {
 }
 template <typename T>
 auto optional<T>::begin() const {
-  if constexpr (autoable<T>) {
+  if constexpr (requires { value_->begin(); }) {
     return value_->begin();
   } else {
     return ForwardIterator<T>(value_.get());
@@ -213,7 +213,7 @@ auto optional<T>::begin() const {
 }
 template <typename T>
 auto optional<T>::end() {
-  if constexpr (autoable<T>) {
+  if constexpr (requires { value_->end(); }) {
     return value_->end();
   } else {
     return ForwardIterator<T>(nullptr);
@@ -221,7 +221,7 @@ auto optional<T>::end() {
 }
 template <typename T>
 auto optional<T>::end() const {
-  if constexpr (autoable<T>) {
+  if constexpr (requires { value_->end(); }) {
     return value_->end();
   } else {
     return ForwardIterator<T>(nullptr);
