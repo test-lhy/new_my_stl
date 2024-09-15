@@ -79,7 +79,9 @@ class Factory final {
    * @param type_name 实际子类所属标识符
    * @return 指向实际子类对象的基类指针
    */
-  B *Create(const string &type_name) { return registry_.exist(type_name) ? registry_[type_name]->Create() : nullptr; }
+  B *Create(const string &type_name) {
+    return registry_.contains(type_name) ? registry_[type_name]->Create() : nullptr;
+  }
 
  private:
   /// @note 该类用于识别类继承关系，故采用单例模式

@@ -61,6 +61,7 @@ class BaseGraph : public DataStructure<std::pair<Index, Node_>> {
   [[nodiscard]] iterator end();
   [[nodiscard]] reversed_iterator rbegin();
   [[nodiscard]] reversed_iterator rend();
+  [[nodiscard]] size_t size() const;
 
  private:
   [[nodiscard]] typename DataStructure<RealNode_>::Pointer getBegin() override;
@@ -69,6 +70,7 @@ class BaseGraph : public DataStructure<std::pair<Index, Node_>> {
   const list<Edge_>& GetEdgesImpl(Index node);
   unique_ptr<NodeAllocator<Node_>> node_allocator_;
   shared_ptr<EdgeAllocator<Edge_>> edge_allocator_;
+  size_t node_num_{};
 };
 template <node_c Node_, edge_c Edge_>
 BaseGraph<Node_, Edge_>::return_node::~return_node() {}
@@ -107,6 +109,10 @@ typename BaseGraph<Node_, Edge_>::reversed_iterator BaseGraph<Node_, Edge_>::ren
   return node_allocator_.rend();
 }
 template <node_c Node_, edge_c Edge_>
+size_t BaseGraph<Node_, Edge_>::size() const {
+  return node_num_;
+}
+template <node_c Node_, edge_c Edge_>
 typename DataStructure<typename BaseGraph<Node_, Edge_>::RealNode_>::Pointer BaseGraph<Node_, Edge_>::getBegin() {
   return node_allocator_->getBegin();
 }
@@ -118,6 +124,7 @@ template <node_c Node_, edge_c Edge_>
 void BaseGraph<Node_, Edge_>::DeleteNode(Index node) {
   edge_allocator_->DeleteNode(node);
   node_allocator_->DeleteNode(node);
+  node_num_--;
 }
 // note:会将所有的都匹配过来，所以才要专门弄一个函数emplace
 template <node_c Node_, edge_c Edge_>
@@ -167,11 +174,13 @@ typename BaseGraph<Node_, Edge_>::return_node BaseGraph<Node_, Edge_>::GetNode(I
 }
 template <node_c Node_, edge_c Edge_>
 Index BaseGraph<Node_, Edge_>::AddNode(Node_&& node) {
+  node_num_++;
   return node_allocator_->AddNode(std::forward<Node_>(node));
 }
 template <node_c Node_, edge_c Edge_>
 template <typename... Args>
 Index BaseGraph<Node_, Edge_>::AddNode(Args&&... args) {
+  node_num_++;
   return node_allocator_->EmplaceNode(std::forward<Args>(args)...);
 }
 template <node_c Node_, edge_c Edge_>
