@@ -34,7 +34,6 @@ class FibTree : public Trees<FibNode<T>> {
   explicit FibTree(const CmpType<T> &cmp = std::less<T>());
   FibTree(TForwardIterator<T>, TForwardIterator<T>, const CmpType<T> &cmp = std::less<T>());
   ~FibTree() override = default;
-  [[nodiscard]] bool empty() const;
   void push(const T &);
   void pop();
   T top();
@@ -54,10 +53,6 @@ FibTree<T>::FibTree(TForwardIterator<T> first, TForwardIterator<T> last, const C
   for (; first != last; ++first) {
     push(*first);
   }
-}
-template <typename T>
-bool FibTree<T>::empty() const {
-  return Base::roots_.empty();
 }
 template <typename T>
 void FibTree<T>::push(const T &data) {

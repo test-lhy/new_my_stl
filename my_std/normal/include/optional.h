@@ -64,6 +64,9 @@ class optional : public DataStructure<optional_value_t<T>> {
   optional& operator=(const optional<U>& other);
   template <std::convertible_to<T> U>
   optional& operator=(optional<U>&& other);
+  /// 需要更改
+  friend auto operator<=>(const optional& lhs, const optional& rhs) { return lhs.value() <=> rhs.value(); }
+  friend auto operator==(const optional& lhs, const optional& rhs) { return lhs.value() == rhs.value(); }
   auto begin();
   auto begin() const;
   auto end();

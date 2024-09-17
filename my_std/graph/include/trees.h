@@ -43,6 +43,7 @@ class Trees : public BaseGraph<TreeNode<Origin_Node_>, Edge_> {
   [[nodiscard]] bool IsFather(Index father, Index node);
   void CheckNodeExist(Index node) const;
   void SetRoot(Index node);
+  [[nodiscard]] bool empty() const;
 
  protected:
   list<Index> roots_{};
@@ -135,6 +136,10 @@ void Trees<Origin_Node_, Edge_>::SetRoot(Index node) {
   Base::DeleteEdges(GetNode(node).GetFatherIndex(), node);
   GetNode(node).GetNode().SetFather({});
   roots_.push_back(node);
+}
+template <node_c Origin_Node_, edge_c Edge_>
+bool Trees<Origin_Node_, Edge_>::empty()const{
+  return roots_.size()==0;
 }
 }  // namespace lhy
 

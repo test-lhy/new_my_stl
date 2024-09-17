@@ -36,7 +36,7 @@ class BaseGraph : public DataStructure<std::pair<Index, Node_>> {
   friend return_node;
   explicit BaseGraph(NodeAllocatorMode node_allocator_mode = NodeAllocatorMode::NormalNodeAllocatorMode,
                      EdgeAllocatorMode edge_allocator_mode = EdgeAllocatorMode::LinkListEdgeAllocatorMode);
-  virtual ~BaseGraph() = default;
+  ~BaseGraph() override = default;
   template <typename... Args>
   void AddEdge(Args&&... args);
   virtual void AddEdge(Edge_&& edge);
