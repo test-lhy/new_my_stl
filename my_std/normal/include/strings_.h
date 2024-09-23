@@ -20,6 +20,7 @@ class string : public vector<char> {
   string& operator+=(const string&);
   string& operator&=(const string&);
   string& operator|=(const string&);
+  char* c_str() const;
 };
 void getline(std::istream& istream_, string& obj);
 std::istream& operator>>(std::istream& istream_, string& obj);

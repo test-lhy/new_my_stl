@@ -1,7 +1,7 @@
 //
 // Created by lhy on 24-4-6.
 //
-#include "strings.h"
+#include "strings_.h"
 namespace lhy {
 
 template <>
@@ -55,6 +55,7 @@ string& string::operator|=(const string& other) {
   vector::operator|=(other);
   return *this;
 }
+char* string::c_str() const { return begin().getPointer(); }
 void getline(std::istream& istream_, string& obj) {
   obj.clear();
   char temp_char;

@@ -176,7 +176,7 @@ constexpr optional<T>& optional<T>::operator=(const optional& other) {
 template <typename T>
 constexpr optional<T>& optional<T>::operator=(optional&& other) {
   if (value_ != other.value_) {
-    value_ = std::move(other.value_);
+    std::swap(value_, other.value_);
   }
   return *this;
 }
