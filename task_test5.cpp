@@ -37,7 +37,7 @@ int main() {
   // auto t = hello();
   // GetLoop().AddTask(t);
   // GetLoop().RunAll();
-  auto t1 = hello();
+  auto t1 = hello_();
   GetLoop().AddTask(t1);
   GetLoop().RunAll();
   debug(), "主函数中得到hello结果:", t1.handle_.promise().getorthrow();

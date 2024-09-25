@@ -16,6 +16,8 @@
 #include "queue.h"
 namespace lhy {
 template <typename T>
+struct PromiseType;
+template <typename T, typename promise_type_ = PromiseType<T>>
 class Task;
 class Loop {
   class TaskWaiter {
@@ -180,9 +182,44 @@ class PreviousWaiter {
   std::coroutine_handle<> previous_handle_;
 };
 template <typename T>
+struct PromiseType {
+  auto get_return_object() { return Task<T>{std::coroutine_handle<PromiseType>::from_promise(*this)}; }
+  suspend_always initial_suspend() { return {}; }
+  PreviousWaiter final_suspend() noexcept { return {previous_handle_}; }
+  template <typename U>
+  typename Task<U>::Awaiter await_transform(const Task<U>& other) {
+    return typename Task<U>::Awaiter{other.handle_};
+  }
+  auto& await_transform(const SleepAwaiter& other) { return other; }
+  template <typename... Args>
+  auto&& await_transform(WhenAllAwaiter<Args...>&& other) {
+    return other;
+  }
+  template <typename... Args>
+  auto&& await_transform(WhenAnyAwaiter<Args...>&& other) {
+    return other;
+  }
+  void unhandled_exception() {}
+  PreviousWaiter yield_value(T&& value) {
+    value_ = std::move(value);
+    return {previous_handle_};
+  }
+  void return_value(T&& value) { value_ = std::move(value); }
+  std::variant<T, std::exception_ptr>& get_value() { return *value_; }
+  std::optional<std::variant<T, std::exception_ptr>> value_;
+  std::coroutine_handle<> previous_handle_;
+  T& getorthrow() {
+    auto ret = std::get_if<0>(&get_value());
+    if (!ret) {
+      std::rethrow_exception(std::get<1>(get_value()));
+    }
+    return *ret;
+  }
+};
+template <typename T, typename promise_type_>
 class Task {
  public:
-  struct promise_type;
+  using promise_type = promise_type_;
   class Awaiter {
    public:
     explicit Awaiter(std::coroutine_handle<promise_type> handle) : handle_(handle) {}
@@ -198,40 +235,6 @@ class Task {
     std::coroutine_handle<promise_type> handle_;
   };
 
-  struct promise_type {
-    auto get_return_object() { return Task{std::coroutine_handle<promise_type>::from_promise(*this)}; }
-    suspend_always initial_suspend() { return {}; }
-    PreviousWaiter final_suspend() noexcept { return {previous_handle_}; }
-    template <typename U>
-    typename Task<U>::Awaiter await_transform(const Task<U>& other) {
-      return typename Task<U>::Awaiter{other.handle_};
-    }
-    auto& await_transform(const SleepAwaiter& other) { return other; }
-    template <typename... Args>
-    auto&& await_transform(WhenAllAwaiter<Args...>&& other) {
-      return other;
-    }
-    template <typename... Args>
-    auto&& await_transform(WhenAnyAwaiter<Args...>&& other) {
-      return other;
-    }
-    void unhandled_exception() {}
-    PreviousWaiter yield_value(T&& value) {
-      value_ = std::move(value);
-      return {previous_handle_};
-    }
-    void return_value(T&& value) { value_ = std::move(value); }
-    std::variant<T, std::exception_ptr>& get_value() { return *value_; }
-    std::optional<std::variant<T, std::exception_ptr>> value_;
-    std::coroutine_handle<> previous_handle_;
-    T& getorthrow() {
-      auto ret = std::get_if<0>(&get_value());
-      if (!ret) {
-        std::rethrow_exception(std::get<1>(get_value()));
-      }
-      return *ret;
-    }
-  };
   Task() = default;
   explicit Task(const std::coroutine_handle<promise_type> handle) : handle_(handle) {}
   ~Task() {
