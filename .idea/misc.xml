@@ -8,6 +8,7 @@
     <sourceRoots>
       <file path="$PROJECT_DIR$/my_std/databases/include" />
       <file path="$PROJECT_DIR$/my_std/graph/include" />
+      <file path="$PROJECT_DIR$/my_std/network/include" />
       <file path="$PROJECT_DIR$/my_std/normal/include" />
     </sourceRoots>
   </component>
