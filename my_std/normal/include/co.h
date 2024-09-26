@@ -16,6 +16,14 @@
 #include "queue.h"
 namespace lhy {
 template <typename T>
+concept Awaiter = requires(T t) {
+  t.await_ready();
+  t.await_suspend(nullptr);
+  t.await_resume();
+};
+template <typename T>
+concept Awaitable = Awaiter<T> or requires(T t) { t.operator co_await(); };
+template <typename T>
 struct PromiseType;
 template <typename T, typename promise_type_ = PromiseType<T>>
 class Task;
@@ -186,17 +194,8 @@ struct PromiseType {
   auto get_return_object() { return Task<T>{std::coroutine_handle<PromiseType>::from_promise(*this)}; }
   suspend_always initial_suspend() { return {}; }
   PreviousWaiter final_suspend() noexcept { return {previous_handle_}; }
-  template <typename U>
-  typename Task<U>::Awaiter await_transform(const Task<U>& other) {
-    return typename Task<U>::Awaiter{other.handle_};
-  }
-  auto& await_transform(const SleepAwaiter& other) { return other; }
-  template <typename... Args>
-  auto&& await_transform(WhenAllAwaiter<Args...>&& other) {
-    return other;
-  }
-  template <typename... Args>
-  auto&& await_transform(WhenAnyAwaiter<Args...>&& other) {
+  template <Awaitable Awaiter>
+  auto&& await_transform(Awaiter&& other) {
     return other;
   }
   void unhandled_exception() {}
@@ -250,6 +249,7 @@ class Task {
     return *this;
   }
   T& get_value() { return handle_.promise().getorthrow(); }
+  auto operator co_await() const& noexcept { return Awaiter(handle_); }
   std::coroutine_handle<promise_type> handle_;
 };
 }  // namespace lhy
