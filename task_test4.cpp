@@ -8,14 +8,14 @@ using std::chrono_literals::operator""s;
 using namespace lhy;
 Task<int> hello1() {
   debug(), "hello1开始睡5秒";
-  co_await sleep_for(5s);  // 1s 等价于 std::chrono::seconds(1)
+  co_await sleep_for(2s);  // 1s 等价于 std::chrono::seconds(1)
   debug(), "hello1睡醒了", (std::chrono::steady_clock::now() - st_time) / 1s;
   co_return 1;
 }
 
 Task<int> hello2() {
   debug(), "hello2开始睡6秒";
-  co_await sleep_for(6s);  // 2s 等价于 std::chrono::seconds(2)
+  auto ret = co_await sleep_for(3s);  // 2s 等价于 std::chrono::seconds(2)
   debug(), "hello2睡醒了", (std::chrono::steady_clock::now() - st_time) / 1s;
   co_return 2;
 }
@@ -27,8 +27,9 @@ int main() {
   auto t1 = hello1();
   auto t2 = hello2();
   auto t = hello();
-  GetLoop().AddTask(t);
+  GetLoop().AddTask(t1);
+  GetLoop().AddTask(t2);
   GetLoop().RunAll();
-  debug(), "主函数中得到hello1结果:", t.handle_.promise().getorthrow();
+  debug(), "主函数中得到hello1结果:", t1.handle_.promise().getorthrow();
   return 0;
 }

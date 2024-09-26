@@ -24,6 +24,22 @@ concept Awaiter = requires(T t) {
 template <typename T>
 concept Awaitable = Awaiter<T> or requires(T t) { t.operator co_await(); };
 template <typename T>
+concept OnlyAwaitable = Awaitable<T> and (not Awaiter<T>);
+template <typename T>
+class AwaitableTrait {};
+template <OnlyAwaitable T>
+class AwaitableTrait<T> {
+ public:
+  using return_type = decltype(std::declval<T>().operator co_await().await_resume());
+};
+template <Awaiter T>
+class AwaitableTrait<T> {
+ public:
+  using return_type = decltype(std::declval<T>().await_resume());
+};
+template <Awaitable T>
+using AwaitableRetType = std::decay_t<typename AwaitableTrait<T>::return_type>;
+template <typename T>
 struct PromiseType;
 template <typename T, typename promise_type_ = PromiseType<T>>
 class Task;
@@ -62,6 +78,23 @@ class Loop {
       }
     }
   }
+  std::optional<std::chrono::duration<double>> TryRun() {
+    while (!time_queue_.empty() && time_queue_.top().time_point_ <= std::chrono::system_clock::now()) {
+      ready_queue_.push(time_queue_.top().handle_);
+      time_queue_.pop();
+    }
+    while (!ready_queue_.empty()) {
+      auto task = ready_queue_.front();
+      ready_queue_.pop();
+      if (task) {
+        task.resume();
+      }
+    }
+    if (!time_queue_.empty()) {
+      return -(std::chrono::system_clock::now() - time_queue_.top().time_point_);
+    }
+    return {};
+  }
 };
 inline auto& GetLoop() {
   static Loop loop;
@@ -69,20 +102,21 @@ inline auto& GetLoop() {
 }
 class SleepAwaiter {
  public:
+  SleepAwaiter() = default;
   explicit SleepAwaiter(std::chrono::system_clock::time_point time_point) : time_point_(time_point) {}
   [[nodiscard]] bool await_ready() const noexcept { return false; }
   void await_suspend(std::coroutine_handle<> previous_handle) const noexcept {
     GetLoop().AddTask(time_point_, previous_handle);
   }
-  void await_resume() const noexcept {}
+  int await_resume() const noexcept { return 1; }
   std::chrono::system_clock::time_point time_point_;
 };
 inline SleepAwaiter sleep_for(std::chrono::system_clock::duration time) {
   return SleepAwaiter(std::chrono::system_clock::now() + time);
 }
 inline SleepAwaiter sleep_until(std::chrono::system_clock::time_point time_point) { return SleepAwaiter(time_point); }
-template <typename T>
-Task<T> WhenAllAwaiterHelper(Task<T>& task, auto& counter, auto& ret, auto previous_coroutine_handle) {
+template <Awaitable T>
+Task<AwaitableRetType<T>> WhenAllAwaiterHelper(T&& task, auto& counter, auto& ret, auto previous_coroutine_handle) {
   ret = co_await task;
   --counter;
   if (counter == 0) {
@@ -90,25 +124,49 @@ Task<T> WhenAllAwaiterHelper(Task<T>& task, auto& counter, auto& ret, auto previ
   }
   co_return std::move(ret);
 }
-template <size_t Index, size_t MAX_, typename T>
-Task<T> WhenAnyAwaiterHelper(Task<T>& task, auto& ret, auto counter, auto previous_coroutine_handle) {
+template <size_t Index, Awaitable T>
+Task<AwaitableRetType<T>> WhenAnyAwaiterHelper(T&& task, auto& ret, auto counter, auto previous_coroutine_handle) {
   auto ret_ = co_await task;
-  if (*counter == MAX_) {
-    --(*counter);
-    std::get<Index>(ret) = ret_;
-    GetLoop().AddTask(previous_coroutine_handle);
+  if (*counter == -1) {
+    (*counter) = Index;
+    ret.template emplace<Index>(ret_);
+    previous_coroutine_handle.resume();
   }
   co_return ret_;
 }
 template <typename... Args>
 class WhenAllAwaiter {
  public:
-  explicit WhenAllAwaiter(Task<Args>&&... args) : counter_(sizeof...(Args)), args_(std::forward<Task<Args>>(args)...) {}
+  explicit WhenAllAwaiter(Args&&... args) : counter_(sizeof...(Args)), args_(std::forward<Args>(args)...) {}
+  [[nodiscard]] bool await_ready() noexcept { return false; }
+  template <size_t Index>
+  void await_more_one(auto previous_coroutine_handle) noexcept {
+    std::get<Index>(args__) = std::move(
+        WhenAllAwaiterHelper(std::get<Index>(args_), counter_, std::get<Index>(rets_), previous_coroutine_handle));
+    std::get<Index>(args__).handle_.resume();
+  }
+  template <size_t... Index>
+  void await_more(IndexSequence<Index...>, auto previous_coroutine_handle) noexcept {
+    (await_more_one<Index>(previous_coroutine_handle), ...);
+  }
+  void await_suspend(std::coroutine_handle<> previous_handle) noexcept {
+    await_more(IndexSequenceFor<Args...>(), previous_handle);
+  }
+  std::tuple<AwaitableRetType<Args>...> await_resume() noexcept { return std::move(rets_); }
+  int counter_{};
+  std::tuple<AwaitableRetType<Args>...> rets_;
+  std::tuple<Args...> args_;
+  std::tuple<Task<AwaitableRetType<Args>>...> args__;
+};
+template <Awaitable... Args>
+class WhenAnyAwaiter {
+ public:
+  explicit WhenAnyAwaiter(Args&&... args) : counter_(std::make_shared<int>(-1)), args_(std::forward<Args>(args)...) {}
   [[nodiscard]] bool await_ready() noexcept { return false; }
   template <size_t Index>
   void await_more_one(auto previous_coroutine_handle) noexcept {
     std::get<Index>(args__) =
-        WhenAllAwaiterHelper(std::get<Index>(args_), counter_, std::get<Index>(rets_), previous_coroutine_handle);
+        std::move(WhenAnyAwaiterHelper<Index>(std::get<Index>(args_), rets_, counter_, previous_coroutine_handle));
     std::get<Index>(args__).handle_.resume();
   }
   template <size_t... Index>
@@ -118,51 +176,28 @@ class WhenAllAwaiter {
   void await_suspend(std::coroutine_handle<> previous_handle) noexcept {
     await_more(IndexSequenceFor<Args...>(), previous_handle);
   }
-  std::tuple<Args...> await_resume() noexcept { return std::move(rets_); }
-  int counter_{};
-  std::tuple<Args...> rets_;
-  std::tuple<Task<Args>...> args_;
-  std::tuple<Task<Args>...> args__;
-};
-template <typename... Args>
-class WhenAnyAwaiter {
- public:
-  explicit WhenAnyAwaiter(Task<Args>&&... args)
-      : counter_(std::make_shared<int>(sizeof...(Args))), args_(std::forward<Task<Args>>(args)...) {}
-  [[nodiscard]] bool await_ready() noexcept { return false; }
-  template <size_t Index>
-  void await_more_one(auto previous_coroutine_handle) noexcept {
-    debug(), Index;
-    std::get<Index>(args__) = WhenAnyAwaiterHelper<Index, sizeof...(Args)>(std::get<Index>(args_), rets_, counter_,
-                                                                           previous_coroutine_handle);
-    std::get<Index>(args__).handle_.resume();
-  }
-  template <size_t... Index>
-  void await_more(IndexSequence<Index...>, auto previous_coroutine_handle) noexcept {
-    (await_more_one<Index>(previous_coroutine_handle), ...);
-  }
-  void await_suspend(std::coroutine_handle<> previous_handle) noexcept {
-    await_more(IndexSequenceFor<Args...>(), previous_handle);
+  void solve_handle(auto&& arg) {
+    if constexpr (requires { std::declval<decltype(arg)>().handle_; }) {
+      arg.handle_ = {};
+    }
   }
   ~WhenAnyAwaiter() {
-    std::apply([](auto&&... args) { ((args.handle_ = {}), ...); }, args__);
-    std::apply([](auto&&... args) { ((args.handle_ = {}), ...); }, args_);
+    std::apply([this](auto&&... args) { (solve_handle(args), ...); }, args__);
+    std::apply([this](auto&&... args) { (solve_handle(args), ...); }, args_);
   }
-  std::variant<Args...> await_resume() noexcept { return std::move(rets_); }
+  std::variant<AwaitableRetType<Args>...> await_resume() noexcept { return std::move(rets_); }
   std::shared_ptr<int> counter_;
-  std::variant<Args...> rets_;
-  std::tuple<Task<Args>...> args_;
-  std::tuple<Task<Args>...> args__;
+  std::variant<AwaitableRetType<Args>...> rets_{};
+  std::tuple<Args...> args_;
+  std::tuple<Task<AwaitableRetType<Args>>...> args__;
 };
-template <typename... Args>
-Task<std::tuple<Args...>> when_all(Task<Args>&&... args) {
-  std::tuple<Args...> ret = co_await WhenAllAwaiter(std::forward<Task<Args>>(args)...);
-  co_return ret;
+template <Awaitable... Args>
+auto when_all(Args&&... args) {
+  return WhenAllAwaiter(std::forward<Args>(args)...);
 }
-template <typename... Args>
-Task<std::variant<Args...>> when_any(Task<Args>&&... args) {
-  std::variant<Args...> ret = co_await WhenAnyAwaiter(std::forward<Task<Args>>(args)...);
-  co_return ret;
+template <Awaitable... Args>
+auto when_any(Args&&... args) {
+  return WhenAnyAwaiter(std::forward<Args>(args)...);
 }
 class suspend_always {
  public:
