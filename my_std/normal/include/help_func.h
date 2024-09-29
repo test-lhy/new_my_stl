@@ -54,7 +54,7 @@ inline int CheckLinuxError(int err) {
 inline std::string ReadStaticFile(const std::string& path) {
   /// 读文件
   std::ifstream t(path);
-  static std::string content{std::istreambuf_iterator<char>(t), std::istreambuf_iterator<char>()};
+  std::string content{std::istreambuf_iterator<char>(t), std::istreambuf_iterator<char>()};
   return content;
 }
 }
