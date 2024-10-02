@@ -11,7 +11,7 @@
 #include "exception.h"
 #include "help_func.h"
 namespace lhy {
-
+enum class SocketType { TCP, UDP };
 class SocketAddr {
  public:
   SocketAddr(std::string&& host, std::string&& port) {
@@ -28,15 +28,21 @@ class SocketAddr {
     }
     addrinfo_ = addrinfo_->ai_next;
   }
-  int CreateSocket() {
-    auto sockfd_ = CheckLinuxError(socket(addrinfo_->ai_family, addrinfo_->ai_socktype, addrinfo_->ai_protocol));
+  int CreateSocket(const SocketType type = SocketType::TCP) const {
+    int sockfd_;
+    if (type == SocketType::UDP) {
+      sockfd_ = CheckLinuxError(socket(addrinfo_->ai_family, SOCK_DGRAM, IPPROTO_UDP));
+    } else {
+      sockfd_ = CheckLinuxError(socket(addrinfo_->ai_family, addrinfo_->ai_socktype, addrinfo_->ai_protocol));
+    }
     int flag = 1;
     setsockopt(sockfd_, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));
     CheckLinuxError(bind(sockfd_, addrinfo_->ai_addr, addrinfo_->ai_addrlen));
-    CheckLinuxError(listen(sockfd_, SOMAXCONN));
+    if (type == SocketType::TCP) {
+      CheckLinuxError(listen(sockfd_, SOMAXCONN));
+    }
     return sockfd_;
   }
-  void CheckListen() {}
 
   addrinfo* addrinfo_;
 };

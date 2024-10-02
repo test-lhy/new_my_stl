@@ -81,5 +81,5 @@ int main() {
   Router("/") = [](std::map<std::string, std::string>&& query) -> std::string {
     return "HTTP/1.1 302 Found\r\nLocation: /login.html\r\n\r\n";
   };
-  Socket socket("127.0.0.1", "8080", (std::move(base_path)));
+  Socket socket("127.0.0.1", "41234", (std::move(base_path)), SocketType::UDP);
 }
