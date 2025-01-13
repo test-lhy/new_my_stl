@@ -48,7 +48,7 @@ class TIterator {
 template <typename T>
 class TForwardIterator : public TIterator<T> {
  public:
-  using TIterator<T>::OutPointer;
+  using typename TIterator<T>::OutPointer;
   virtual TForwardIterator& operator++() = 0;
   virtual TForwardIterator& operator++(int) = 0;
   [[nodiscard]] virtual TForwardIterator* next() {
@@ -71,7 +71,7 @@ class Iterator : public TIterator<T> {
   using SharedPointer = shared_ptr<U>;
   using OutPointer = typename TIterator<T>::OutPointer;
   using RealPointer = std::variant<Pointer, SharedPointer>;
-  Iterator() : data_(nullptr){};
+  Iterator() : data_(nullptr) {};
   Iterator(Pointer data) : data_(data) {}
   Iterator(SharedPointer data) : data_(data) {}
   Iterator(const Iterator& other) : data_(other.data_) {}
@@ -145,7 +145,7 @@ class ForwardIterator : virtual public Iterator<T, U>, virtual public TForwardIt
   /// typename会自动继承，自然不用显式using，只要我自己类内不用，大概
   using Iterator<T, U>::Iterator;
   /// 必须有一个非拷贝构造的这样的构造函数被声明，Iterator里面的被当成拷贝构造了
-  ForwardIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
+  ForwardIterator(const Iterator<T, U>& other) : Iterator<T, U>(other) {};
   T& operator*() override { return Iterator<T, U>::operator*(); }
   const T& operator*() const override { return Iterator<T, U>::operator*(); }
   typename TIterator<T>::OutPointer operator->() override { return Iterator<T, U>::operator->(); }
@@ -161,7 +161,7 @@ class ReversedForwardIterator : public ForwardIterator<T, U> {
   // : public EnableTforwardIteratorPlus<T, ReversedForwardIterator<T, U>, ForwardIterator<T, U>> {
  public:
   using ForwardIterator<T, U>::ForwardIterator;
-  ReversedForwardIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
+  ReversedForwardIterator(const Iterator<T, U>& other) : Iterator<T, U>(other) {};
   ReversedForwardIterator& operator++() override {
     this->getPointer()--;
     return *this;
@@ -172,7 +172,7 @@ template <typename T, typename U = T>
 class BackwardIterator : virtual public Iterator<T, U> {
  public:
   using lhy::Iterator<T, U>::Iterator;
-  BackwardIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
+  BackwardIterator(const Iterator<T, U>& other) : Iterator<T, U>(other) {};
   virtual BackwardIterator& operator--() {
     this->getPointer()--;
     return *this;
@@ -183,7 +183,7 @@ template <typename T, typename U = T>
 class ReversedBackwardIterator : public BackwardIterator<T, U> {
  public:
   using BackwardIterator<T, U>::BackwardIterator;
-  ReversedBackwardIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
+  ReversedBackwardIterator(const Iterator<T, U>& other) : Iterator<T, U>(other) {};
   ReversedBackwardIterator& operator--() override {
     this->getPointer()++;
     return *this;
@@ -196,7 +196,7 @@ class TwoDirectionIterator : public ForwardIterator<T, U>,
                              public BackwardIterator<T, U> {
  public:
   using lhy::ForwardIterator<T, U>::ForwardIterator;
-  TwoDirectionIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
+  TwoDirectionIterator(const Iterator<T, U>& other) : Iterator<T, U>(other) {};
   TwoDirectionIterator& operator++() override {
     this->getPointer()++;
     return *this;
@@ -213,7 +213,7 @@ class ReversedTwoDirectionIterator : public TwoDirectionIterator<T, U> {
   // : public EnableTforwardIteratorPlus<T, ReversedTwoDirectionIterator<T, U>, TwoDirectionIterator<T, U>> {
  public:
   using TwoDirectionIterator<T, U>::TwoDirectionIterator;
-  ReversedTwoDirectionIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
+  ReversedTwoDirectionIterator(const Iterator<T, U>& other) : Iterator<T, U>(other) {};
   ReversedTwoDirectionIterator& operator++() override {
     this->getPointer()--;
     return *this;
@@ -231,7 +231,7 @@ class NormIterator : public TwoDirectionIterator<T, U> {
  public:
   using lhy::TwoDirectionIterator<T, U>::TwoDirectionIterator;
   using typename Iterator<T, U>::Pointer;
-  NormIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
+  NormIterator(const Iterator<T, U>& other) : Iterator<T, U>(other) {};
   operator Pointer() { return this->getPointer(); }
   operator Pointer() const { return this->getPointer(); }
   NormIterator& operator++() override {
@@ -252,7 +252,7 @@ class ReversedNormIterator : public NormIterator<T, U> {
   // public EnableTforwardIteratorPlus<T, ReversedNormIterator<T, U>, NormIterator<T, U>> {
  public:
   using NormIterator<T, U>::NormIterator;
-  ReversedNormIterator(const Iterator<T, U>& other) : Iterator<T, U>(other){};
+  ReversedNormIterator(const Iterator<T, U>& other) : Iterator<T, U>(other) {};
   ReversedNormIterator& operator++() override {
     this->getPointer()--;
     return *this;

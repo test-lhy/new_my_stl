@@ -29,7 +29,7 @@ class Debug {
     return *this;
   }
 };
-Debug& debug() {
+inline Debug& debug() {
   static Debug debug;
   return debug;
 }

@@ -5,8 +5,8 @@ if (OPENSSL_FOUND)
     message(STATUS "OPENSSL_CRYPTO_LIBRARY = ${OPENSSL_CRYPTO_LIBRARY}")
 endif ()
 
-set(CONCPP_LIB_DIR "/usr/local/mysql/connector-c++-8.2.0/lib64/debug")
-set(CONCPP_INCLUDE_DIR "/usr/local/mysql/connector-c++-8.2.0/include")
+set(CONCPP_LIB_DIR "/usr/local/mysql/connector-c++-9.1.0/lib64/debug")
+set(CONCPP_INCLUDE_DIR "/usr/local/mysql/connector-c++-9.1.0/include")
 
 set(find_name mysqlcppconn8-static)
 set(find_dir "${CONCPP_LIB_DIR}")
