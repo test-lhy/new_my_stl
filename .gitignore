@@ -31,3 +31,5 @@ cmake-build-debug-
 /latex/
 *.png
 /cmake-build-release/*
+cmake*
+.codebuddy
