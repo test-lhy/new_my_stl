@@ -4,7 +4,7 @@
 #include <util.h>
 
 #include <source_location>
-// enum color { a1213123, b, c };
+enum color { a1213123, b, c };
 using namespace lhy;
 int main() {
   int b = 1;
@@ -12,7 +12,7 @@ int main() {
   int& a = b;
   std::cout << get_type<std::decay_t<std::reference_wrapper<int>>>() << '\n';
   std::cout << get_type<int, 1>() << '\n';
-  // std::cout << get_type(a1213123);
-  // std::cout << get_type(color::b);
-  // std::cout << get_type(color::c);
+  std::cout << get_type(a1213123) << '\n';
+  std::cout << get_type(color::b) << '\n';
+  std::cout << get_type(color::c) << '\n';
 }
