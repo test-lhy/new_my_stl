@@ -6,7 +6,18 @@
 #define META_H
 #include "basic.h"
 namespace lhy {
-
+template <typename T>
+class FunctionProperties {};
+template <typename T, typename... Args>
+class FunctionProperties<T(Args...)> {
+ public:
+  using RetType = T;
+};
+template <typename T, typename... Args>
+class FunctionProperties<std::function<T(Args...)>> {
+ public:
+  using RetType = T;
+};
 template <size_t... Index>
 class IndexSequence {};
 template <size_t N, typename = void>
@@ -55,6 +66,17 @@ constexpr void static_for(auto fun) {
   if constexpr (Beg != End) {
     static_for<IndexChangeFunc::template value<Beg>, End, IndexChangeFunc>(fun);
   }
+}
+template <int Beg, int End, ConstexprNumericFunc IndexChangeFunc = IndexAddOne, typename RetType>
+constexpr RetType static_for_with_return(auto fun) {
+  auto ret = fun.template operator()<Beg>();
+  if (ret.has_value()) {
+    return ret;
+  }
+  if constexpr (Beg != End) {
+    return static_for_with_return<IndexChangeFunc::template value<Beg>, End, IndexChangeFunc, RetType>(fun);
+  }
+  return {};
 }
 }  // namespace lhy
 

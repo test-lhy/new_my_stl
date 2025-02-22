@@ -9,7 +9,7 @@
 //
 #define SELF(ME) ME
 /// 减法
-#define MINUS(NUM) MINUS_IMPL_##NUM
+#define MINUS(NUM) CAT(MINUS_IMPL_, NUM)
 /// MINUS macros:
 #define MINUS_IMPL_1() 0
 #define MINUS_IMPL_2() 1
@@ -1013,7 +1013,7 @@
 #define MINUS_IMPL_1000() 999
 
 /// 加法
-#define ADD(NUM) ADD_IMPL_##NUM
+#define ADD(NUM) CAT(ADD_IMPL_, NUM)
 /// ADD macros:
 #define ADD_IMPL_0() 1
 #define ADD_IMPL_1() 2
@@ -2109,10 +2109,27 @@
 #define FOR22EACH_IMPL0(FUNC, FUNC2, ...) FOR22EACH_IMPL##__VA_OPT__(_WITH_ARGS)(FUNC, FUNC2, __VA_ARGS__)
 #define FOR22EACH_IMPL_WITH_ARGS(FUNC, FUNC2, RES, FIRST, x, ...) \
   DEFER(CAT(FOR22EACH_IMPL, __VA_OPT__(_WITH_ARGS1)))(            \
-      FUNC, FUNC2,(IF_ELSE(COUNT_ARGS(RES))(VA)() RES FUNC(FIRST,x),FUNC2(FIRST,x)),FIRST, ## __VA_ARGS__)
+      FUNC, FUNC2, (IF_ELSE(COUNT_ARGS(RES))(VA)() RES FUNC(FIRST, x), FUNC2(FIRST, x)), FIRST, ##__VA_ARGS__)
 #define FOR22EACH_IMPL_WITH_ARGS1(...) DEFER(FOR22EACH_IMPL_WITH_ARGS)(__VA_ARGS__)
-#define FOR22EACH_IMPL(FUNC,FUNC2, RES,FIRST) RES
-#define f1(x,y)template<typename T## y
-#define f2(x,y)typename x## y>
-#endif //MACRO_H
-
+#define FOR22EACH_IMPL(FUNC, FUNC2, RES, FIRST) RES
+// #define FOR_COMMAnum_EACH(FUNC, ...) SELF(VA CAL_SELF_INF(FOR_COMMAnum_EACH_IMPL0(FUNC, , __VA_ARGS__)))
+// #define FOR_COMMAnum_EACH_IMPL0(FUNC, ...) FOR_COMMAnum_EACH_IMPL##__VA_OPT__(_WITH_ARGS)(FUNC, 0, __VA_ARGS__)
+// #define FOR_COMMAnum_EACH_IMPL_WITH_ARGS(FUNC, num, RES, x, ...)                                             \
+//   DEFER(CAT(FOR_COMMAnum_EACH_IMPL, __VA_OPT__(_WITH_ARGS1)))(                                               \
+//       FUNC, ADD(num)(), (IF_ELSE(COUNT_ARGS(RES))(VA)(CAT)(IF_ELSE(COUNT_ARGS(RES))(VA)() RES, FUNC(x, num))), \
+//       ##__VA_ARGS__)
+// #define FOR_COMMAnum_EACH_IMPL_WITH_ARGS1(...) DEFER(FOR_COMMAnum_EACH_IMPL_WITH_ARGS)(__VA_ARGS__)
+// #define FOR_COMMAnum_EACH_IMPL(FUNC, num, RES) RES
+#define IGNORE1VA(a, ...) VA(__VA_ARGS__)
+#define FOR_COMMA22num_EACH(FUNC, FUNC2, ...) \
+  SELF(VA CAL_SELF_INF(FOR_COMMA22num_EACH_IMPL0(FUNC, FUNC2, 0, , __VA_ARGS__)))
+#define FOR_COMMA22num_EACH_IMPL0(FUNC, FUNC2, num, ...) \
+  FOR_COMMA22num_EACH_IMPL##__VA_OPT__(_WITH_ARGS)(FUNC, FUNC2, num, __VA_ARGS__)
+#define FOR_COMMA22num_EACH_IMPL_WITH_ARGS(FUNC, FUNC2, num, RES, x, ...)                                         \
+  DEFER(CAT(FOR_COMMA22num_EACH_IMPL, __VA_OPT__(_WITH_ARGS1)))(                                                  \
+      FUNC, FUNC2, ADD(num)(),                                                                                    \
+      (IF_ELSE(COUNT_ARGS(RES))(VA)(IGNORE1VA)(IF_ELSE(COUNT_ARGS(RES))(VA)() RES, FUNC(x, num), FUNC2(x, num))), \
+      ##__VA_ARGS__)
+#define FOR_COMMA22num_EACH_IMPL_WITH_ARGS1(...) DEFER(FOR_COMMA22num_EACH_IMPL_WITH_ARGS)(__VA_ARGS__)
+#define FOR_COMMA22num_EACH_IMPL(FUNC, FUNC2, num, RES) RES
+#endif  // MACRO_H

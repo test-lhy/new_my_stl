@@ -4,52 +4,11 @@
 #include <macro.h>
 #include <refl_s.h>
 
+#include <cassert>
+#include <functional>
 #include <iostream>
 using namespace lhy;
-namespace lhy {
-template <typename T>
-class FunctionProperties {};
-template <typename T, typename... Args>
-class FunctionProperties<T(Args...)> {
- public:
-  using RetType = T;
-};
-}  // namespace lhy
 
-#define GETTYPE(Class) Class::*
-
-#define CREATE_ROBBER1(Class, KidName)           \
-  template <auto T>                              \
-  class Class##KidName##RetType {};              \
-  constexpr auto GetPtr##Class##KidName##Type(); \
-  template <typename T
-#define CREATE_ROBBER2(Class, KidName)                                                                   \
-  T Class::* M > class Class##KidName##RetType<M> {                                                      \
-   public:                                                                                               \
-    using RealType = T;                                                                                  \
-    friend constexpr auto GetPtr##Class##KidName##Type() { return RealType{}; };                         \
-  };                                                                                                     \
-  template class Class##KidName##RetType<&Class::KidName>;                                               \
-  using Ret##Class##KidName##Type = FunctionProperties<decltype(GetPtr##Class##KidName##Type)>::RetType; \
-  constexpr Ret##Class##KidName##Type Class::* GetPtr##Class##KidName();                                 \
-  template <Ret##Class##KidName##Type Class::* M>                                                        \
-  struct Rob##Class##KidName {                                                                           \
-    friend constexpr Ret##Class##KidName##Type Class::* GetPtr##Class##KidName() { return M; }           \
-  };                                                                                                     \
-  template struct Rob##Class##KidName<&Class::KidName>;
-#define GET_KID(Class, KidName) GetPtr##Class##KidName()
-#define GET_KID_TYPE(Class, KidName) decltype(GET_KID(Class, KidName))
-#define f(x, y) void x##y();
-#define REFL(Class, ...)                                                                    \
-  namespace lhy {                                                                           \
-  FOR22EACH(CREATE_ROBBER1, CREATE_ROBBER2, Class, __VA_ARGS__)                             \
-  template <>                                                                               \
-  class refl_s<Class> {                                                                     \
-   public:                                                                                  \
-    constexpr static std::tuple<FOR_COMMA2_EACH(GET_KID_TYPE, Class, __VA_ARGS__)> members{ \
-        FOR_COMMA2_EACH(GET_KID, Class, __VA_ARGS__)};                                      \
-  };                                                                                        \
-  }
 class base {
  public:
   int a1;
@@ -123,10 +82,28 @@ REFL(base, a1, a2, a3, a4)
 //   void l();
 // };
 
-int main() {
+void test1() {
   auto t = refl_s<base>::members;
   base a;
-  std::cout << a.*(std::get<3>(t)) << '\n';
-  std::cout <<1;
-
+  assert(a.*(std::get<3>(t)) == 0.1);
+}
+void test2() {
+  base a;
+  auto& c = GetMember<int>(a, "a1");
+  c = 5;
+  assert(c == 5);
+  c = 10;
+  assert(c == 10);
+  const base a1{};
+  auto& c1 = GetMember<int>(a1, "a1");
+  static_assert(std::is_same_v<decltype(c1), const int&>);
+  // c = 5;
+  // static_assert(c==5);
+  // c = 10;
+  // static_assert(c==10);
+}
+int main() {
+  test1();
+  test2();
+  std::cout << "all test passed";
 }
