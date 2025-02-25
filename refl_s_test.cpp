@@ -89,21 +89,30 @@ void test1() {
 }
 void test2() {
   base a;
-  auto& c = GetMember<int>(a, "a1");
+  auto& c = GetMember<double>(a, "a4");
+  std::cout << c << std::endl;
   c = 5;
   assert(c == 5);
   c = 10;
   assert(c == 10);
+
   const base a1{};
-  auto& c1 = GetMember<int>(a1, "a1");
-  static_assert(std::is_same_v<decltype(c1), const int&>);
-  // c = 5;
-  // static_assert(c==5);
-  // c = 10;
-  // static_assert(c==10);
+  auto& c1 = GetMember<double>(a1, "a4");
+  static_assert(std::is_same_v<decltype(c1), const double&>);
+}
+void test3() {
+  std::cout << GetMemberAccessSpecifierInString<base>("a1") << std::endl;
+  std::cout << GetMemberAccessSpecifierInString<base>("a2") << std::endl;
+  std::cout << GetMemberAccessSpecifierInString<base>("a3") << std::endl;
+  std::cout << GetMemberAccessSpecifierInString<base>("a4") << std::endl;
+  assert(GetMemberAccessSpecifierInString<base>("a1") == "public");
+  assert(GetMemberAccessSpecifierInString<base>("a2") == "public");
+  assert(GetMemberAccessSpecifierInString<base>("a3") == "protected");
+  assert(GetMemberAccessSpecifierInString<base>("a4") == "private");
 }
 int main() {
   test1();
   test2();
+  test3();
   std::cout << "all test passed";
 }
