@@ -107,7 +107,7 @@ class SerializeImpl<bool> {
  public:
   static std::string operator()(const bool& object) { return object ? "true" : "false"; }
 };
-std::string solvequote(const std::string& in) {
+inline std::string solvequote(const std::string& in) {
   std::string ret;
   for (auto& each : in) {
     if (each == '\"') {
