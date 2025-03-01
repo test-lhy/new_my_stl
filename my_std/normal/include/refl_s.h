@@ -50,6 +50,268 @@ template <typename>
 class AccessSpecifierHelper {};
 template <typename>
 class AccessSpecifierGetter {};
+template <typename T>
+class SerializeImpl;
+class Serialize {
+  // 单例类
+ public:
+  Serialize(const Serialize&) = delete;
+  Serialize(Serialize&&) = delete;
+  Serialize& operator=(const Serialize&) = delete;
+  Serialize& operator=(Serialize&&) = delete;
+  ~Serialize() = default;
+  template <typename T>
+  static std::string operator()(const T& object) {
+    return SerializeImpl<T>::operator()(object);
+  }
+  static Serialize& GetInstance() {
+    static Serialize instance;
+    return instance;
+  }
+
+ private:
+  Serialize() = default;
+};
+inline auto& serialize = Serialize::GetInstance();
+template <typename T>
+class SerializeImpl {
+ public:
+  static std::string operator()(const T& object) {
+    std::stringstream out;
+    out << "{";
+    static_for<0, refl_s<T>::member_num - 1, IndexAddOne>([&out, &object]<int I>() {
+      auto& [name, num] = refl_s<T>::member_names[I];
+      out << "\"";
+      out << name;
+      out << "\"";
+      out << ":";
+      if constexpr (std::get<I>(refl_s<T>::member_static)) {
+        out << serialize(std::forward<decltype(*std::get<I>(refl_s<T>::members))>(*std::get<I>(refl_s<T>::members)));
+      } else {
+        out << serialize(
+            std::forward<decltype(object.*std::get<I>(refl_s<T>::members))>(object.*std::get<I>(refl_s<T>::members)));
+      }
+      if (I != refl_s<T>::member_num - 1) {
+        out << ",";
+      }
+    });
+    out << "}";
+    return out.str();
+  }
+};
+template <typename T>
+  requires std::is_pointer_v<T>
+class SerializeImpl<T> {};
+template <>
+class SerializeImpl<bool> {
+ public:
+  static std::string operator()(const bool& object) { return object ? "true" : "false"; }
+};
+std::string solvequote(const std::string& in) {
+  std::string ret;
+  for (auto& each : in) {
+    if (each == '\"') {
+      ret += '\\';
+    }
+    ret += each;
+  }
+  return ret;
+}
+template <>
+class SerializeImpl<std::string> {
+ public:
+  static std::string operator()(const std::string& object) { return "\"" + solvequote(object) + "\""; }
+};
+template <typename T>
+  requires(not std::is_same_v<T, bool> and not std::is_same_v<T, std::string> and requires(T x) { std::cout << x; })
+class SerializeImpl<T> {
+ public:
+  static std::string operator()(const T& object) {
+    std::stringstream out;
+    out << object;
+    return out.str();
+  }
+};
+// 提取字符串中去除多余的空格
+inline std::string_view trim(const std::string_view str) {
+  const auto start = str.find_first_not_of(" \t\n\r");
+  const auto end = str.find_last_not_of(" \t\n\r");
+  if (start == std::string::npos || end == std::string::npos) {
+    return "";
+  }
+  return str.substr(start, end - start + 1);
+}
+
+inline std::string_view trim_front(std::string_view str, char specific_char) {
+  while (true) {
+    if (str.front() == '\t' || str.front() == ' ' || str.front() == '\n' || str.front() == '\r') {
+      str = str.substr(1, str.length() - 1);
+    } else if (str.front() == specific_char) {
+      str = str.substr(1, str.length() - 1);
+      return str;
+    } else if (str.empty()) {
+      return str;
+    }
+  }
+}
+inline std::string_view trim_end(std::string_view str, char specific_char) {
+  while (true) {
+    if (str.back() == '\t' || str.back() == ' ' || str.back() == '\n' || str.back() == '\r') {
+      str = str.substr(0, str.length() - 1);
+    } else if (str.back() == specific_char) {
+      str = str.substr(0, str.length() - 1);
+      return str;
+    } else if (str.empty()) {
+      return str;
+    }
+  }
+}
+inline std::vector<std::string_view> split(const std::string_view str, char specific_char,
+                                           const std::vector<std::pair<char, char>>& ignore_string = {},
+                                           int max_split = 1000000) {
+  /// 不太记得这个flag是干嘛的了
+  std::vector<std::string_view> ret;
+  int split_count = 0;
+  bool count = false;
+  bool flag = false;
+  int start = 0;
+  char solve_char;
+  for (int i = 0; i < str.length(); i++) {
+    auto& each = str[i];
+    if (each == '\\') {
+      flag = true;
+    } else {
+      if (auto pos = std::ranges::find_if(
+              ignore_string, [&each](const std::pair<char, char>& element) { return element.first == each; });
+          flag == false && count == false && pos != ignore_string.end()) {
+        solve_char = pos->second;
+        count = true;
+      } else if (flag == false && count == true && each == solve_char) {
+        count = false;
+      } else if (count == false && each == specific_char) {
+        ret.push_back(str.substr(start, i - start));
+        split_count++;
+        start = i;
+        if (split_count == max_split) {
+          ret.emplace_back(str.substr(i + 1, str.length() - i - 1));
+          return ret;
+        }
+        continue;
+      }
+      flag = false;
+    }
+  }
+  if (start != str.length()) {
+    ret.push_back(str.substr(start, str.length() - start));
+  }
+  return ret;
+}
+template <typename T>
+class DeSerializeImpl;
+class DeSerialize {
+  // 单例类
+ public:
+  DeSerialize(const DeSerialize&) = delete;
+  DeSerialize(DeSerialize&&) = delete;
+  DeSerialize& operator=(const DeSerialize&) = delete;
+  DeSerialize& operator=(DeSerialize&&) = delete;
+  ~DeSerialize() = default;
+  template <typename T>
+  static void operator()(T& object, std::string_view in) {
+    DeSerializeImpl<T>::operator()(object, in);
+  }
+  static DeSerialize& GetInstance() {
+    static DeSerialize instance;
+    return instance;
+  }
+
+ private:
+  DeSerialize() = default;
+};
+inline auto& deserialize = DeSerialize::GetInstance();
+// 提取 JSON 键值对
+template <typename T>
+class DeSerializeImpl {
+ public:
+  static void operator()(T& object, std::string_view json) {
+    json = trim(json);
+
+    // 确保是一个对象（花括号包裹的）
+    if (json.front() != '{' || json.back() != '}') {
+      throw std::runtime_error("Not a JSON object");
+    }
+    json = trim_end(json, '}');
+    json = trim_front(json, '{');
+    int count = 0;
+    while (true) {
+      json = trim_front(json, '"');
+      auto name = split(json, '"')[0];
+      json = split(json, ':', {}, 1)[1];
+      json = trim(json);
+      auto splits = split(json, ',', {{'\"', '\"'}, {'{', '}'}}, 1);
+      auto value = trim(splits[0]);
+      bool exist{};
+      static_for<0, refl_s<T>::member_num - 1, IndexAddOne>([&object, &name, &value, &exist]<int I>() {
+        if (refl_s<T>::member_names[I].first == name) {
+          if constexpr (std::get<I>(refl_s<T>::member_static)) {
+            deserialize(*std::get<I>(refl_s<T>::members), value);
+          } else {
+            deserialize(object.*std::get<I>(refl_s<T>::members), value);
+          }
+          exist = true;
+        }
+      });
+      if (!exist) {
+        throw std::runtime_error("deserialize with wrong type");
+      }
+      count++;
+      if (splits.size() == 1) {
+        break;
+      }
+      json = trim(splits[1]);
+    }
+    if (count != refl_s<T>::member_num) {
+      throw std::runtime_error("deserialize with wrong type");
+    }
+  }
+};
+template <typename T>
+  requires std::is_pointer_v<T>
+class DeSerializeImpl<T> {};
+template <>
+class DeSerializeImpl<bool> {
+ public:
+  static void operator()(bool& object, const std::string_view json) {
+    if (json != "true" && json != "false") {
+      throw std::runtime_error("deserialize with wrong type");
+    }
+    object = (json == "true");
+  }
+};
+template <>
+class DeSerializeImpl<std::string> {
+ public:
+  static void operator()(std::string& object, const std::string_view json) {
+    if (json.front() != '\"' || json.back() != '\"') {
+      throw std::runtime_error("deserialize with wrong type");
+    }
+    object = json.substr(1, json.length() - 2);
+  }
+};
+template <typename T>
+  requires(not std::is_same_v<T, bool> and not std::is_same_v<T, std::string> and requires(T x) { std::cout << x; })
+class DeSerializeImpl<T> {
+ public:
+  static void operator()(T& object, const std::string_view json) {
+    std::stringstream in{std::string{json}};
+    std::stringstream out;
+    in >> object;
+    out << object;
+    if (out.str() != json) {
+      throw std::runtime_error("deserialize with wrong type");
+    }
+  }
+};
 }  // namespace lhy
 // static对象必须是已经定义的了,不管是类内inline还是类外define
 #define CONCEPT_OF_KID_ACCESS(Class, KidName) \
@@ -130,6 +392,7 @@ class AccessSpecifierGetter {};
   };
 #define GET_KID(Class, KidName) GetPtr##Class##KidName()
 #define GET_KID_TYPE(Class, KidName) decltype(GET_KID(Class, KidName))
+#define GET_KID_REAL_TYPE(Class, KidName) Ret##Class##KidName##Type
 #define GET_KID_NAME_AND_NUM1(KidName, num) \
   {                                         \
     #KidName
@@ -153,12 +416,14 @@ class AccessSpecifierGetter {};
    public:                                                                                                             \
     constexpr static std::tuple<FOR_COMMA2_EACH(GET_KID_TYPE, Class, __VA_ARGS__)> members{                            \
         FOR_COMMA2_EACH(GET_KID, Class, __VA_ARGS__)};                                                                 \
+    constexpr static std::tuple<FOR_COMMA2_EACH(GET_KID_TYPE, Class, __VA_ARGS__)> members_real_type{};                \
     constexpr static std::array<std::pair<std::string, int>, COUNT_ARGS(__VA_ARGS__)> member_names{                    \
         {FOR_COMMA22num_EACH(GET_KID_NAME_AND_NUM1, GET_KID_NAME_AND_NUM2, __VA_ARGS__)}};                             \
     constexpr static std::array<bool, COUNT_ARGS(__VA_ARGS__)> member_static{                                          \
         FOR_COMMA2_EACH(GET_KID_STATIC, Class, __VA_ARGS__)};                                                          \
     constexpr static std::array<AccessSpecifier, COUNT_ARGS(__VA_ARGS__)> member_access_specifier{                     \
         FOR_COMMA2_EACH(GET_KID_ACCESS_SPECIFIER, Class, __VA_ARGS__)};                                                \
+    constexpr static int member_num{COUNT_ARGS(__VA_ARGS__)};                                                          \
     template <int Index>                                                                                               \
     constexpr static decltype(auto) GetStaticMemberReal() {                                                            \
       if constexpr (std::get<Index>(member_static)) {                                                                  \

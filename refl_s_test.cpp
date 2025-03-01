@@ -4,6 +4,7 @@
 #include <macro.h>
 #include <refl_s.h>
 
+#include <algorithm>
 #include <cassert>
 #include <functional>
 #include <iostream>
@@ -44,6 +45,9 @@ class node2 {
   void h();
   inline static int m{114514};
   static int m1() { return 1; };
+  std::string n;
+  base n1;
+  int n2[10];
 
  protected:
   inline static int m2{114514};
@@ -55,7 +59,7 @@ class node2 {
   int k;
   void l();
 };
-REFL(node2, m, m2, m3)
+REFL(node2, a, b, c, d, e, f, g, n, j, k, m, m2, m3, n1)
 
 void test1() {
   auto t = refl_s<base>::members;
@@ -110,11 +114,36 @@ void test5() {
   assert(GetMemberAccessSpecifierInString<node2>("m2") == "protected");
   assert(GetMemberAccessSpecifierInString<node2>("m3") == "private");
 }
+void test6() {
+  node2 a;
+  GetMember<int>(a, "a") = 1;
+  GetMember<int>(a, "b") = 2;
+  GetMember<int>(a, "c") = 3;
+  GetMember<float>(a, "d") = 4.4;
+  GetMember<char>(a, "e") = 'a';
+  GetMember<double>(a, "f") = 5.5;
+  GetMember<bool>(a, "g") = true;
+  GetMember<int>(a, "m") = 6;
+  GetMember<int>(a, "m2") = 7;
+  GetMember<int>(a, "j") = 8;
+  GetMember<int>(a, "k") = 9;
+  GetMember<std::string>(a, "n") = "10";
+  auto& n1 = GetMember<base>(a, "n1");
+  GetMember<int>(n1, "a1") = 11;
+  GetMember<int>(n1, "a2") = 12;
+  GetMember<int>(n1, "a3") = 13;
+  GetMember<double>(n1, "a4") = 14;
+  std::cout << serialize(a) << std::endl;
+  node2 a2;
+  deserialize(a2, serialize(a));
+  std::cout << serialize(a2) << std::endl;
+}
 int main() {
   test1();
   test2();
   test3();
   test4();
   test5();
+  test6();
   std::cout << "all test passed";
 }
