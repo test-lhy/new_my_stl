@@ -313,10 +313,9 @@ class DeSerializeImpl<T> {
   }
 };
 }  // namespace lhy
-// static对象必须是已经定义的了,不管是类内inline还是类外define
-#define CONCEPT_OF_KID_ACCESS(Class, KidName) \
-  template <typename T>                       \
-  concept kid_access_##Class##_##KidName = requires() { T::KidName; };
+#ifdef __clang__
+#define CREATE_SPECIFIC_ACCESS_SPECIFIER_GETTER(Class, KidName) \
+  constexpr static bool is_protected_##KidName = AccessSpecifierHelperHelper##Class##KidName<Class>::Check_##KidName();
 #define CREATE_SPECIFIC_ACCESS_SPECIFIER_GETTER_HELPER(Class, KidName) \
   template <typename T>                                                \
   class AccessSpecifierHelperHelper##Class##KidName : public T {       \
@@ -331,9 +330,24 @@ class DeSerializeImpl<T> {
       return true;                                                     \
     }                                                                  \
   };
-
+#elif defined(__GNUC__)
 #define CREATE_SPECIFIC_ACCESS_SPECIFIER_GETTER(Class, KidName) \
-  constexpr static bool is_protected_##KidName = AccessSpecifierHelperHelper##Class##KidName<Class>::Check_##KidName();
+  constexpr static bool is_protected_##KidName =                \
+      static_cast<AccessSpecifierHelperHelper##Class##KidName<Class>*>(nullptr)->Check_##KidName();
+#define CREATE_SPECIFIC_ACCESS_SPECIFIER_GETTER_HELPER(Class, KidName) \
+  template <typename T>                                                \
+  class AccessSpecifierHelperHelper##Class##KidName : public T {       \
+   public:                                                             \
+    constexpr bool Check_##KidName() {                                 \
+      return requires() { T::KidName; };                               \
+    }                                                                  \
+  };
+#else
+#endif
+// static对象必须是已经定义的了,不管是类内inline还是类外define
+#define CONCEPT_OF_KID_ACCESS(Class, KidName) \
+  template <typename T>                       \
+  concept kid_access_##Class##_##KidName = requires() { T::KidName; };
 #define CREATE_ACCESS_SPECIFIER_GETTER(Class, ...)                        \
   template <>                                                             \
   class AccessSpecifierHelper<Class> {                                    \
