@@ -176,6 +176,7 @@ constexpr optional<T>& optional<T>::operator=(const optional& other) {
 template <typename T>
 constexpr optional<T>& optional<T>::operator=(optional&& other) {
   if (value_ != other.value_) {
+    reset();
     std::swap(value_, other.value_);
   }
   return *this;

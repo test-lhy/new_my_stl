@@ -8,6 +8,7 @@
 #include <string>
 
 #include "strings.h"
+#include "strings_.h"
 #include "vector.h"
 using namespace lhy;
 void test_constructors() {
@@ -112,7 +113,6 @@ int main() {
   test_iterators();
   test_swap_reset_emplace();
 
-
-    std::cout << "All tests passed!\n";
-    return 0;
+  std::cout << "All tests passed!\n";
+  return 0;
 }
