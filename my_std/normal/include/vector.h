@@ -109,7 +109,7 @@ vector<T>::vector(T const* other) : vector() {
   }
 }
 template <typename T>
-vector<T>::vector() : vector(0ll) {}
+vector<T>::vector() : vector(static_cast<size_t>(0)) {}
 template <typename T>
 vector<T>::vector(iterator start, iterator end) : vector() {
   for (auto element = start; element != end; ++element) {
