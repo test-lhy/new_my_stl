@@ -33,11 +33,11 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_include_directories(
             ${LIB}
             PUBLIC include
-            PUBLIC /usr/include/mysql-cppconn
+            PUBLIC /usr/local/mysql/connector-c++-9.2.0/include
     )
     target_link_libraries(
             ${LIB}
-            PUBLIC /usr/lib/x86_64-linux-gnu/libmysqlcppconnx.so
+            PUBLIC /usr/local/mysql/connector-c++-9.2.0/lib64/debug/libmysqlcppconnx.so
     )
 else ()
     message(FATAL_ERROR "Unsupported operating system: ${CMAKE_SYSTEM_NAME}")
