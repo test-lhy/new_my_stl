@@ -401,7 +401,7 @@ class DeSerializeImpl<T> {
   }
 #define GET_KID_STATIC(Class, KidName) Class##KidName##_is_static
 #define GET_KID_ACCESS_SPECIFIER(Class, KidName) AccessSpecifierGetter<Class>::access_specifier_##KidName
-//很奇怪，在mac上就可以用std::array<std::string>但是，ubuntu上就不行
+// 很奇怪，在mac上就可以用std::array<std::string>但是，ubuntu上就不行
 #define REFL(Class, ...)                                                                                         \
   namespace lhy {                                                                                                \
   namespace detail {                                                                                             \
