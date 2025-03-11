@@ -401,122 +401,124 @@ class DeSerializeImpl<T> {
   }
 #define GET_KID_STATIC(Class, KidName) Class##KidName##_is_static
 #define GET_KID_ACCESS_SPECIFIER(Class, KidName) AccessSpecifierGetter<Class>::access_specifier_##KidName
-#define REFL(Class, ...)                                                                                               \
-  namespace lhy {                                                                                                      \
-  namespace detail {                                                                                                   \
-  FOR2EACH(CONCEPT_OF_KID_ACCESS, Class, __VA_ARGS__)                                                                  \
-  }                                                                                                                    \
-  FOR2EACH(CREATE_SPECIFIC_ACCESS_SPECIFIER_GETTER_HELPER, Class, __VA_ARGS__)                                         \
-  CREATE_ACCESS_SPECIFIER_GETTER(Class, __VA_ARGS__)                                                                   \
-  CREATE_ACCESS_SPECIFIER(Class, __VA_ARGS__)                                                                          \
-  FOR22EACH(CREATE_ROBBER1, CREATE_ROBBER2, Class, __VA_ARGS__)                                                        \
-  FOR22EACH(CREATE_ROBBER_ANOTHER1, CREATE_ROBBER_ANOTHER2, Class, __VA_ARGS__)                                        \
-  template <>                                                                                                          \
-  class refl_s<Class> {                                                                                                \
-   public:                                                                                                             \
-    constexpr static std::tuple<FOR_COMMA2_EACH(GET_KID_TYPE, Class, __VA_ARGS__)> members{                            \
-        FOR_COMMA2_EACH(GET_KID, Class, __VA_ARGS__)};                                                                 \
-    constexpr static std::tuple<FOR_COMMA2_EACH(GET_KID_TYPE, Class, __VA_ARGS__)> members_real_type{};                \
-    constexpr static std::array<std::pair<std::string, int>, COUNT_ARGS(__VA_ARGS__)> member_names{                    \
-        {FOR_COMMA22num_EACH(GET_KID_NAME_AND_NUM1, GET_KID_NAME_AND_NUM2, __VA_ARGS__)}};                             \
-    constexpr static std::array<bool, COUNT_ARGS(__VA_ARGS__)> member_static{                                          \
-        FOR_COMMA2_EACH(GET_KID_STATIC, Class, __VA_ARGS__)};                                                          \
-    constexpr static std::array<AccessSpecifier, COUNT_ARGS(__VA_ARGS__)> member_access_specifier{                     \
-        FOR_COMMA2_EACH(GET_KID_ACCESS_SPECIFIER, Class, __VA_ARGS__)};                                                \
-    constexpr static int member_num{COUNT_ARGS(__VA_ARGS__)};                                                          \
-    template <int Index>                                                                                               \
-    constexpr static decltype(auto) GetStaticMemberReal() {                                                            \
-      if constexpr (std::get<Index>(member_static)) {                                                                  \
-        return *std::get<Index>(members);                                                                              \
-      } else {                                                                                                         \
-        throw std::runtime_error("member isn't static");                                                               \
-        static Class a;                                                                                                \
-        return a.*std::get<Index>(members);                                                                            \
-      }                                                                                                                \
-    }                                                                                                                  \
-    template <int Index>                                                                                               \
-    constexpr static decltype(auto) GetMemberReal(Class& object) {                                                     \
-      if constexpr (std::get<Index>(member_static)) {                                                                  \
-        return *std::get<Index>(members);                                                                              \
-      } else {                                                                                                         \
-        return object.*std::get<Index>(members);                                                                       \
-      }                                                                                                                \
-    }                                                                                                                  \
-    template <int Index>                                                                                               \
-    constexpr static decltype(auto) GetMemberReal(const Class& object) {                                               \
-      if constexpr (std::get<Index>(member_static)) {                                                                  \
-        return *std::get<Index>(members);                                                                              \
-      } else {                                                                                                         \
-        return object.*std::get<Index>(members);                                                                       \
-      }                                                                                                                \
-    }                                                                                                                  \
-    constexpr static bool GetMemberIsStatic(const std::string& name) {                                                 \
-      const int member_index = GetMemberIndex(name);                                                                   \
-      return *static_for_with_return<0, MINUS(COUNT_ARGS(__VA_ARGS__))(), IndexAddOne, std::optional<bool>>(           \
-          [&member_index]<int I>() -> std::optional<bool> {                                                            \
-            if (I == member_index) {                                                                                   \
-              return std::get<I>(member_static);                                                                       \
-            }                                                                                                          \
-            return {};                                                                                                 \
-          });                                                                                                          \
-    }                                                                                                                  \
-    constexpr static int GetMemberIndex(const std::string& name) {                                                     \
-      const std::array<std::pair<std::string, int>, COUNT_ARGS(__VA_ARGS__)>::const_iterator result =                  \
-          std::ranges::find_if(member_names,                                                                           \
-                               [&name](const std::pair<std::string, int>& element) { return element.first == name; }); \
-      if (result == member_names.end()) {                                                                              \
-        throw std::runtime_error("member not found");                                                                  \
-      }                                                                                                                \
-      return result->second;                                                                                           \
-    }                                                                                                                  \
-    constexpr static std::any GetStaticMember(const std::string& name) {                                               \
-      const int member_index = GetMemberIndex(name);                                                                   \
-      if (member_static[member_index] == 0) {                                                                          \
-        throw std::runtime_error("member isn't static");                                                               \
-      }                                                                                                                \
-      return static_for_with_return<0, MINUS(COUNT_ARGS(__VA_ARGS__))(), IndexAddOne, std::any>(                       \
-          [&member_index]<int I>() -> std::any {                                                                       \
-            if (I == member_index) {                                                                                   \
-              return std::reference_wrapper<std::decay_t<decltype(GetStaticMemberReal<I>())>>(                         \
-                  GetStaticMemberReal<I>());                                                                           \
-            }                                                                                                          \
-            return {};                                                                                                 \
-          });                                                                                                          \
-    }                                                                                                                  \
-    constexpr static std::any GetMember(Class& object, const std::string& name) {                                      \
-      const int member_index = GetMemberIndex(name);                                                                   \
-      return static_for_with_return<0, MINUS(COUNT_ARGS(__VA_ARGS__))(), IndexAddOne, std::any>(                       \
-          [&member_index, &object]<int I>() -> std::any {                                                              \
-            if (I == member_index) {                                                                                   \
-              return std::reference_wrapper<std::decay_t<decltype(GetMemberReal<I>(object))>>(                         \
-                  GetMemberReal<I>(object));                                                                           \
-            }                                                                                                          \
-            return {};                                                                                                 \
-          });                                                                                                          \
-    }                                                                                                                  \
-    constexpr static std::any GetMember(const Class& object, const std::string& name) {                                \
-      const int member_index = GetMemberIndex(name);                                                                   \
-      return static_for_with_return<0, MINUS(COUNT_ARGS(__VA_ARGS__))(), IndexAddOne, std::any>(                       \
-          [&member_index, &object]<int I>() -> std::any {                                                              \
-            if (I == member_index) {                                                                                   \
-              return std::reference_wrapper<std::add_const_t<std::decay_t<decltype(GetMemberReal<I>(object))>>>(       \
-                  GetMemberReal<I>(object));                                                                           \
-            }                                                                                                          \
-            return {};                                                                                                 \
-          });                                                                                                          \
-    }                                                                                                                  \
-    constexpr static AccessSpecifier GetMemberAccessSpecifier(const std::string& name) {                               \
-      const int member_index = GetMemberIndex(name);                                                                   \
-      return *static_for_with_return<0, MINUS(COUNT_ARGS(__VA_ARGS__))(), IndexAddOne,                                 \
-                                     std::optional<AccessSpecifier>>(                                                  \
-          [&member_index]<int I>() -> std::optional<AccessSpecifier> {                                                 \
-            if (I == member_index) {                                                                                   \
-              return std::get<I>(member_access_specifier);                                                             \
-            }                                                                                                          \
-            return {};                                                                                                 \
-          });                                                                                                          \
-    }                                                                                                                  \
-  };                                                                                                                   \
+//很奇怪，在mac上就可以用std::array<std::string>但是，ubuntu上就不行
+#define REFL(Class, ...)                                                                                         \
+  namespace lhy {                                                                                                \
+  namespace detail {                                                                                             \
+  FOR2EACH(CONCEPT_OF_KID_ACCESS, Class, __VA_ARGS__)                                                            \
+  }                                                                                                              \
+  FOR2EACH(CREATE_SPECIFIC_ACCESS_SPECIFIER_GETTER_HELPER, Class, __VA_ARGS__)                                   \
+  CREATE_ACCESS_SPECIFIER_GETTER(Class, __VA_ARGS__)                                                             \
+  CREATE_ACCESS_SPECIFIER(Class, __VA_ARGS__)                                                                    \
+  FOR22EACH(CREATE_ROBBER1, CREATE_ROBBER2, Class, __VA_ARGS__)                                                  \
+  FOR22EACH(CREATE_ROBBER_ANOTHER1, CREATE_ROBBER_ANOTHER2, Class, __VA_ARGS__)                                  \
+  template <>                                                                                                    \
+  class refl_s<Class> {                                                                                          \
+   public:                                                                                                       \
+    constexpr static std::tuple<FOR_COMMA2_EACH(GET_KID_TYPE, Class, __VA_ARGS__)> members{                      \
+        FOR_COMMA2_EACH(GET_KID, Class, __VA_ARGS__)};                                                           \
+    constexpr static std::tuple<FOR_COMMA2_EACH(GET_KID_TYPE, Class, __VA_ARGS__)> members_real_type{};          \
+    constexpr static std::array<std::pair<const char*, int>, COUNT_ARGS(__VA_ARGS__)> member_names{              \
+        {FOR_COMMA22num_EACH(GET_KID_NAME_AND_NUM1, GET_KID_NAME_AND_NUM2, __VA_ARGS__)}};                       \
+    constexpr static std::array<bool, COUNT_ARGS(__VA_ARGS__)> member_static{                                    \
+        FOR_COMMA2_EACH(GET_KID_STATIC, Class, __VA_ARGS__)};                                                    \
+    constexpr static std::array<AccessSpecifier, COUNT_ARGS(__VA_ARGS__)> member_access_specifier{               \
+        FOR_COMMA2_EACH(GET_KID_ACCESS_SPECIFIER, Class, __VA_ARGS__)};                                          \
+    constexpr static int member_num{COUNT_ARGS(__VA_ARGS__)};                                                    \
+    template <int Index>                                                                                         \
+    constexpr static decltype(auto) GetStaticMemberReal() {                                                      \
+      if constexpr (std::get<Index>(member_static)) {                                                            \
+        return *std::get<Index>(members);                                                                        \
+      } else {                                                                                                   \
+        throw std::runtime_error("member isn't static");                                                         \
+        static Class a;                                                                                          \
+        return a.*std::get<Index>(members);                                                                      \
+      }                                                                                                          \
+    }                                                                                                            \
+    template <int Index>                                                                                         \
+    constexpr static decltype(auto) GetMemberReal(Class& object) {                                               \
+      if constexpr (std::get<Index>(member_static)) {                                                            \
+        return *std::get<Index>(members);                                                                        \
+      } else {                                                                                                   \
+        return object.*std::get<Index>(members);                                                                 \
+      }                                                                                                          \
+    }                                                                                                            \
+    template <int Index>                                                                                         \
+    constexpr static decltype(auto) GetMemberReal(const Class& object) {                                         \
+      if constexpr (std::get<Index>(member_static)) {                                                            \
+        return *std::get<Index>(members);                                                                        \
+      } else {                                                                                                   \
+        return object.*std::get<Index>(members);                                                                 \
+      }                                                                                                          \
+    }                                                                                                            \
+    constexpr static bool GetMemberIsStatic(const std::string& name) {                                           \
+      const int member_index = GetMemberIndex(name);                                                             \
+      return *static_for_with_return<0, MINUS(COUNT_ARGS(__VA_ARGS__))(), IndexAddOne, std::optional<bool>>(     \
+          [&member_index]<int I>() -> std::optional<bool> {                                                      \
+            if (I == member_index) {                                                                             \
+              return std::get<I>(member_static);                                                                 \
+            }                                                                                                    \
+            return {};                                                                                           \
+          });                                                                                                    \
+    }                                                                                                            \
+    constexpr static int GetMemberIndex(const std::string& name) {                                               \
+      const std::array<std::pair<const char*, int>, COUNT_ARGS(__VA_ARGS__)>::const_iterator result =            \
+          std::ranges::find_if(member_names, [&name](const std::pair<const char*, int>& element) {               \
+            return std::string(element.first) == name;                                                           \
+          });                                                                                                    \
+      if (result == member_names.end()) {                                                                        \
+        throw std::runtime_error("member not found");                                                            \
+      }                                                                                                          \
+      return result->second;                                                                                     \
+    }                                                                                                            \
+    constexpr static std::any GetStaticMember(const std::string& name) {                                         \
+      const int member_index = GetMemberIndex(name);                                                             \
+      if (member_static[member_index] == 0) {                                                                    \
+        throw std::runtime_error("member isn't static");                                                         \
+      }                                                                                                          \
+      return static_for_with_return<0, MINUS(COUNT_ARGS(__VA_ARGS__))(), IndexAddOne, std::any>(                 \
+          [&member_index]<int I>() -> std::any {                                                                 \
+            if (I == member_index) {                                                                             \
+              return std::reference_wrapper<std::decay_t<decltype(GetStaticMemberReal<I>())>>(                   \
+                  GetStaticMemberReal<I>());                                                                     \
+            }                                                                                                    \
+            return {};                                                                                           \
+          });                                                                                                    \
+    }                                                                                                            \
+    constexpr static std::any GetMember(Class& object, const std::string& name) {                                \
+      const int member_index = GetMemberIndex(name);                                                             \
+      return static_for_with_return<0, MINUS(COUNT_ARGS(__VA_ARGS__))(), IndexAddOne, std::any>(                 \
+          [&member_index, &object]<int I>() -> std::any {                                                        \
+            if (I == member_index) {                                                                             \
+              return std::reference_wrapper<std::decay_t<decltype(GetMemberReal<I>(object))>>(                   \
+                  GetMemberReal<I>(object));                                                                     \
+            }                                                                                                    \
+            return {};                                                                                           \
+          });                                                                                                    \
+    }                                                                                                            \
+    constexpr static std::any GetMember(const Class& object, const std::string& name) {                          \
+      const int member_index = GetMemberIndex(name);                                                             \
+      return static_for_with_return<0, MINUS(COUNT_ARGS(__VA_ARGS__))(), IndexAddOne, std::any>(                 \
+          [&member_index, &object]<int I>() -> std::any {                                                        \
+            if (I == member_index) {                                                                             \
+              return std::reference_wrapper<std::add_const_t<std::decay_t<decltype(GetMemberReal<I>(object))>>>( \
+                  GetMemberReal<I>(object));                                                                     \
+            }                                                                                                    \
+            return {};                                                                                           \
+          });                                                                                                    \
+    }                                                                                                            \
+    constexpr static AccessSpecifier GetMemberAccessSpecifier(const std::string& name) {                         \
+      const int member_index = GetMemberIndex(name);                                                             \
+      return *static_for_with_return<0, MINUS(COUNT_ARGS(__VA_ARGS__))(), IndexAddOne,                           \
+                                     std::optional<AccessSpecifier>>(                                            \
+          [&member_index]<int I>() -> std::optional<AccessSpecifier> {                                           \
+            if (I == member_index) {                                                                             \
+              return std::get<I>(member_access_specifier);                                                       \
+            }                                                                                                    \
+            return {};                                                                                           \
+          });                                                                                                    \
+    }                                                                                                            \
+  };                                                                                                             \
   }
 
 #endif  // REFL_S_H
