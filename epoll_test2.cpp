@@ -40,7 +40,7 @@ int main() {
   auto t = async_main();
   t.handle_.resume();
   while (!t.handle_.done()) {
-    lhy::GetEpollLoop().TryRun();
+    lhy::GetEpollLoop().TryRun(10);
   }
 
   return 0;

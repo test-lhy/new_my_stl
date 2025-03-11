@@ -77,7 +77,7 @@ void FibTree<T>::pop() {
   }
   Base::DeleteNode(*min_);
   Base::roots_.erase(*min_);
-  if (empty()) {
+  if (Base::empty()) {
     min_.reset();
   } else {
     min_ = *Base::roots_.begin();
@@ -86,7 +86,7 @@ void FibTree<T>::pop() {
 }
 template <typename T>
 T FibTree<T>::top() {
-  if (empty()) {
+  if (Base::empty()) {
     throw logic_error("empty tree");
   }
   return Base::GetNode(*min_).GetNode().GetWeight().data_;
