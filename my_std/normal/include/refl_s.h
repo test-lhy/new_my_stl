@@ -172,26 +172,24 @@ inline std::vector<std::string_view> split(const std::string_view str, char spec
   /// 不太记得这个flag是干嘛的了
   std::vector<std::string_view> ret;
   int split_count = 0;
-  bool count = false;
   bool flag = false;
   int start = 0;
-  char solve_char;
+  std::vector<char> solve_char;
   for (int i = 0; i < str.length(); i++) {
     auto& each = str[i];
     if (each == '\\') {
       flag = true;
     } else {
-      if (auto pos = std::ranges::find_if(
-              ignore_string, [&each](const std::pair<char, char>& element) { return element.first == each; });
-          flag == false && count == false && pos != ignore_string.end()) {
-        solve_char = pos->second;
-        count = true;
-      } else if (flag == false && count == true && each == solve_char) {
-        count = false;
-      } else if (count == false && each == specific_char) {
+      if (flag == false && !solve_char.empty() && each == solve_char.back()) {
+        solve_char.pop_back();
+      } else if (auto pos = std::ranges::find_if(
+                     ignore_string, [&each](const std::pair<char, char>& element) { return element.first == each; });
+                 flag == false && pos != ignore_string.end()) {
+        solve_char.emplace_back(pos->second);
+      } else if (solve_char.empty() && each == specific_char) {
         ret.push_back(str.substr(start, i - start));
         split_count++;
-        start = i;
+        start = i + 1;
         if (split_count == max_split) {
           ret.emplace_back(str.substr(i + 1, str.length() - i - 1));
           return ret;
@@ -203,6 +201,9 @@ inline std::vector<std::string_view> split(const std::string_view str, char spec
   }
   if (start != str.length()) {
     ret.push_back(str.substr(start, str.length() - start));
+  }
+  if (ret.empty()) {
+    ret.push_back(str);
   }
   return ret;
 }

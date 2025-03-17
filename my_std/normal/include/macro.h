@@ -2019,10 +2019,10 @@
 #define PRECAT(x, y) x##y
 #define CAT(x, y) PRECAT(x, y)
 /// BOOL，当匹配不上的时候，就是CAT一整个作为一个参数，但如果匹配上了，那么就是两个参数
-#define PROBE0 1, 0
+#define PROBE0() 1, 0
 #define GET_SECOND(x, n, ...) n
 #define CHECK(...) GET_SECOND(__VA_ARGS__)
-#define BOOL(x) CHECK(CAT(PROBE, x), 1)
+#define BOOL(x) CHECK(CAT(PROBE, x)(), 1)
 /// 条件
 #define IF_ELSE(cond) CAT(IF_, BOOL(cond))
 #define IF_0(x) _IF_0_ELSE
@@ -2132,4 +2132,21 @@
       ##__VA_ARGS__)
 #define FOR_COMMA22num_EACH_IMPL_WITH_ARGS1(...) DEFER(FOR_COMMA22num_EACH_IMPL_WITH_ARGS)(__VA_ARGS__)
 #define FOR_COMMA22num_EACH_IMPL(FUNC, FUNC2, num, RES) RES
+// #define CAL_SELF_CHECK(x, ...) CAL_SELF_CHECK_IMPL##__VA_OPT__(_OPT)(x, __VA_ARGS__)
+// #define CAL_SELF_CHECK_IMPL(x) SELF(x)
+// #define CAL_SELF_CHECK_IMPL_OPT(...) __VA_ARGS__
+// #define CAL_SELF_CHECK_INF_0(ME) CAL_SELF_CHECK(CAL_SELF_CHECK(ME))
+// #define CAL_SELF_CHECK_INF_1(ME) CAL_SELF_CHECK_INF_0(CAL_SELF_CHECK_INF_0(ME))
+// #define CAL_SELF_CHECK_INF_2(ME) CAL_SELF_CHECK_INF_1(CAL_SELF_CHECK_INF_1(ME))
+// #define CAL_SELF_CHECK_INF(ME) CAL_SELF_CHECK_INF_2(CAL_SELF_CHECK_INF_2(ME))
+// #define DO_LAST(FUNC, ...) DO_LAST_IMPL0(FUNC, , __VA_ARGS__)
+// #define DO_LAST_IMPL0(FUNC, ...) CAL_SELF_CHECK(CAL_SELF_CHECK(DO_LAST_IMPL##__VA_OPT__(_WITH_ARGS)(FUNC,
+// __VA_ARGS__)))
+// #define DO_LAST_IMPL_WITH_ARGS(FUNC, RES, x, x_, ...) \
+//   DEFER(CAT(DO_LAST_IMPL, __VA_OPT__(_WITH_ARGS1)))(  \
+//       FUNC, (IF_ELSE(COUNT_ARGS(RES))(VA)(CAT)(IF_ELSE(COUNT_ARGS(RES))(VA)() RES, x)), x_, ##__VA_ARGS__)
+// #define DO_LAST_IMPL_WITH_ARGS1(...) DEFER(DO_LAST_IMPL_WITH_ARGS)(__VA_ARGS__)
+// #define DO_LAST_IMPL(FUNC, RES, x_) RES, FUNC(x_)
+// #define f(x) void x();
+// DO_LAST(f, 1, 2, 3, 4)
 #endif  // MACRO_H
