@@ -2204,6 +2204,6 @@
 #define ADD_NORM_0(x) 0, x
 #define ADD_NORM_1_IMPL_0() 0, 1
 #define ADD_NORM_1_IMPL_1() 1, 0
-#define REMOVE_PRE_ZERO(x, ...) VA_(IF_ELSE(x)(VA)(MAKE_EMPTY)(x, )##__VA_ARGS__)
+#define REMOVE_PRE_ZERO(x, ...) VA_(IF_ELSE(x)(VA)(MAKE_EMPTY)(x, )__VA_ARGS__)
 #define ADD_N(N, ...) FOR_N2(ADD_, N, __VA_ARGS__)
 #endif  // MACRO_H
