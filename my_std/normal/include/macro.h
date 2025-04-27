@@ -2191,7 +2191,6 @@
 #define DO_LAST_TWO_IMPL_WITH_ARGS1(...) DEFER(DO_LAST_TWO_IMPL_WITH_ARGS)(__VA_ARGS__)
 #define DO_LAST_TWO_IMPL(FUNC, RES, x_, y_) RES, FUNC(x_, y_)
 #define DO_LAST_TWO_INF(...) SELF(DEFER(DO_LAST_TWO_NORM)(FOR_N(DO_LAST_TWO, 10, __VA_ARGS__)))
-#define f(x) void x();
 #define ADD_LAST(...) DO_LAST(ADD_IMPL_LAST, __VA_ARGS__)
 #define ADD_IMPL_LAST(x) ADD_IMPL_LAST_IMPL_##x()
 #define ADD_IMPL_LAST_IMPL_0() (0, 1)
