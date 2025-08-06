@@ -8,10 +8,13 @@
             <mapping deploy="/tmp/tmp.dRO2dRXg3r" local="$PROJECT_DIR$" />
           </mappings>
           <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-docker" />
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-release-x86" />
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-x86" />
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-release" />
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-orb" />
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-release-docker" />
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-gcc" />
             <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug-" />
           </excludedPaths>

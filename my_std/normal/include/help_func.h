@@ -47,7 +47,7 @@ inline std::string urlDecode(const std::string& url) {
 }
 inline int CheckLinuxError(int err) {
   if (err == -1) {
-    debug(), "error:", strerror(errno);
+    // debug(), "error:", strerror(errno);
   }
   return err;
 }
@@ -57,5 +57,5 @@ inline std::string ReadStaticFile(const std::string& path) {
   std::string content{std::istreambuf_iterator<char>(t), std::istreambuf_iterator<char>()};
   return content;
 }
-}
-#endif //HELP_FUNC_H
+}  // namespace lhy
+#endif  // HELP_FUNC_H

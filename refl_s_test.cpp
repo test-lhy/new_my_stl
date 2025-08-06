@@ -10,7 +10,12 @@
 #include <iostream>
 using namespace lhy;
 
-class base {
+class base1 {
+ public:
+  int a5;
+  // int f3();
+};
+class base : public base1 {
  public:
   int a1;
   int a2;

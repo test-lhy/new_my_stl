@@ -33,7 +33,7 @@ class SocketAddr {
     if (type == SocketType::UDP) {
       sockfd_ = CheckLinuxError(socket(addrinfo_->ai_family, SOCK_DGRAM, IPPROTO_UDP));
     } else {
-      sockfd_ = CheckLinuxError(socket(addrinfo_->ai_family, addrinfo_->ai_socktype, addrinfo_->ai_protocol));
+      sockfd_ = CheckLinuxError(socket(addrinfo_->ai_family, SOCK_STREAM, IPPROTO_TCP));
     }
     int flag = 1;
     setsockopt(sockfd_, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));

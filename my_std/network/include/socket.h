@@ -42,28 +42,38 @@ class Socket {
         const auto client_fd =
             CheckLinuxError(accept(sockfd_, socket_addr_.addrinfo_->ai_addr, &socket_addr_.addrinfo_->ai_addrlen));
         threads_.emplace_back([=]() {
-          char buf[1024];
-          std::string req;
-          auto n = CheckLinuxError(read(client_fd, buf, sizeof(buf)));
-          req = std::string(buf, n);
-          /// 解析一下html
-          auto response = HtmlSolver(req);
-          if (!response.starts_with("HTTP/1.1")) {
-            response =
-                "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: " + std::to_string(response.size()) +
-                "\r\n\r\n" + response;
+          while (true) {
+            char buf[1024];
+            std::string req;
+            auto n = CheckLinuxError(read(client_fd, buf, sizeof(buf)));
+            if (n < 0) {
+              break;
+            }
+            req = std::string(buf, n);
+            /// 解析一下html
+            auto response = HtmlSolver(req);
+            if (!response.starts_with("HTTP/1.1")) {
+              response =
+                  "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: " + std::to_string(response.size()) +
+                  "\r\n\r\n" + response;
+            }
+            CheckLinuxError(write(client_fd, response.c_str(), response.size()));
           }
-          CheckLinuxError(write(client_fd, response.c_str(), response.size()));
-          CheckLinuxError(close(client_fd));
+          close(client_fd);
         });
       }
+    }
+  }
+  ~Socket() {
+    for (auto& t : threads_) {
+      t.join();
     }
   }
 
  private:
   int sockfd_;
   SocketAddr socket_addr_;
-  std::vector<std::jthread> threads_{};
+  std::vector<std::thread> threads_{};
 };
 }  // namespace lhy
 #endif  // SOCKET_H
