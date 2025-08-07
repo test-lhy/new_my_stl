@@ -130,10 +130,10 @@ void ConMutexList<T>::push_back(T&& value) {
 }
 template <typename T>
 void ConMutexList<T>::pop_back() {
+  std::unique_lock lk(mutex_);
   if (empty()) {
     throw std::out_of_range("list is empty");
   }
-  std::unique_lock lk(mutex_);
   auto now = tail_->last_.lock()->last_.lock();
   tail_->last_ = now;
   now->next_ = tail_;
@@ -161,10 +161,10 @@ void ConMutexList<T>::push_front(T&& value) {
 }
 template <typename T>
 void ConMutexList<T>::pop_front() {
+  std::unique_lock lk(mutex_);
   if (empty()) {
     throw std::out_of_range("list is empty");
   }
-  std::unique_lock lk(mutex_);
   auto now = head_->next_->next_;
   head_->next_ = now;
   now->last_ = head_;
@@ -181,15 +181,14 @@ bool ConMutexList<T>::empty() const {
 }
 template <typename T>
 void ConMutexList<T>::clear() {
+  std::unique_lock lk(mutex_);
   if (!empty()) {
-    std::unique_lock lk(mutex_);
     auto now = tail_->last_.lock()->last_.lock();
     while (now != head_) {
       now->next_.reset();
       now = now->last_.lock();
     }
   }
-  std::unique_lock lk(mutex_);
   head_->next_ = tail_;
   tail_->last_ = head_;
   size_ = 0;

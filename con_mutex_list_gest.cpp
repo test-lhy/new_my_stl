@@ -609,6 +609,13 @@ void thread_push_back(ConMutexList<int>& list, int start_val, int count) {
   }
 }
 
+// 辅助函数：在一个线程中执行多次 push_front
+void thread_push_front(ConMutexList<int>& list, int start_val, int count) {
+  for (int i = 0; i < count; ++i) {
+    list.push_front(start_val + i);
+  }
+}
+
 // 辅助函数：在一个线程中执行多次 pop_back
 void thread_pop_back(ConMutexList<int>& list, int count, std::atomic<int>& popped_count) {
   for (int i = 0; i < count; ++i) {
@@ -621,10 +628,63 @@ void thread_pop_back(ConMutexList<int>& list, int count, std::atomic<int>& poppe
   }
 }
 
+// 辅助函数：在一个线程中执行多次 pop_front
+void thread_pop_front(ConMutexList<int>& list, int count, std::atomic<int>& popped_count) {
+  for (int i = 0; i < count; ++i) {
+    try {
+      list.pop_front();
+      popped_count++;
+    } catch (const std::out_of_range& e) {
+      // Ignore, list might become empty
+    }
+  }
+}
+
+// 辅助函数：在一个线程中执行多次 push_back 和 at
+void thread_push_back_and_at(ConMutexList<int>& list, int start_val, int count, std::map<int, int>& pushed_elements,
+                             std::mutex& map_mutex) {
+  for (int i = 0; i < count; ++i) {
+    int val = start_val + i;
+    list.push_back(val);
+    {
+      std::lock_guard<std::mutex> lock(map_mutex);
+      pushed_elements[val] = val;
+    }
+
+    // Attempt to read a random element
+    if (list.size() > 0) {
+      int idx = rand() % list.size();
+      try {
+        int retrieved_val = list.at(idx);
+        // In a concurrent scenario, the element might have been popped or list changed.
+        // A simple check is to ensure it's within the range of pushed elements.
+        // More robust verification would require a snapshot or more complex synchronization.
+        // For now, we ensure it's a value that *could* have been pushed.
+        std::lock_guard<std::mutex> lock(map_mutex);
+        ASSERT_TRUE(pushed_elements.count(retrieved_val) > 0 || list.size() == 0);
+      } catch (const std::out_of_range& e) {
+        // Expected if list becomes empty or index goes out of range due to concurrent pops
+      }
+    }
+  }
+}
+
+// 辅助函数：在一个线程中执行 clear
+void thread_clear(ConMutexList<int>& list) { list.clear(); }
+
+// 辅助函数：在一个线程中执行 for_each
+void thread_for_each(ConMutexList<int>& list, std::vector<int>& collected_elements, std::mutex& collect_mutex) {
+  list.for_each([&](int& x) {
+    std::lock_guard<std::mutex> lock(collect_mutex);
+    collected_elements.push_back(x);
+    return;
+  });
+}
+
 TEST(ConMutexListConcurrencyTest, ConcurrentPushBack) {
   ConMutexList<int> list;
   const int num_threads = 4;
-  const int elements_per_thread = 1000;
+  const int elements_per_thread = 100000;  // Increased data
   std::vector<std::thread> threads;
 
   for (int i = 0; i < num_threads; ++i) {
@@ -658,11 +718,76 @@ TEST(ConMutexListConcurrencyTest, ConcurrentPushBack) {
   }
 }
 
+TEST(ConMutexListConcurrencyTest, ConcurrentPushFront) {
+  ConMutexList<int> list;
+  const int num_threads = 4;
+  const int elements_per_thread = 100000;  // Increased data
+  std::vector<std::thread> threads;
+
+  for (int i = 0; i < num_threads; ++i) {
+    threads.emplace_back(thread_push_front, std::ref(list), i * elements_per_thread, elements_per_thread);
+  }
+
+  for (auto& t : threads) {
+    t.join();
+  }
+
+  // 验证最终大小
+  ASSERT_EQ(list.size(), num_threads * elements_per_thread);
+
+  // 验证内容完整性
+  // 获取所有元素，排序后验证是否包含所有预期值且没有重复
+  std::vector<int> all_elements;
+  list.for_each([&all_elements](int& x) {
+    all_elements.push_back(x);
+    return;
+  });
+  ASSERT_EQ(all_elements.size(), num_threads * elements_per_thread);
+  std::ranges::sort(all_elements);
+
+  std::vector<int> expected_elements;
+  for (int i = 0; i < num_threads; ++i) {
+    for (int j = 0; j < elements_per_thread; ++j) {
+      expected_elements.push_back(i * elements_per_thread + j);
+    }
+  }
+  std::ranges::sort(expected_elements);
+
+  ASSERT_EQ(all_elements, expected_elements);
+}
+
+TEST(ConMutexListConcurrencyTest, ConcurrentPopFront) {
+  ConMutexList<int> list;
+  const int num_pop_threads = 4;
+  const int elements_to_pop_per_thread = 100000;  // Increased data
+  const int total_elements = num_pop_threads * elements_to_pop_per_thread;
+  std::atomic<int> popped_count(0);
+  std::vector<std::thread> threads;
+
+  // Fill the list with elements
+  for (int i = 0; i < total_elements; ++i) {
+    list.push_back(i);
+  }
+
+  // Pop threads
+  for (int i = 0; i < num_pop_threads; ++i) {
+    threads.emplace_back(thread_pop_front, std::ref(list), elements_to_pop_per_thread, std::ref(popped_count));
+  }
+
+  for (auto& t : threads) {
+    t.join();
+  }
+
+  // 验证最终大小和弹出数量
+  ASSERT_EQ(list.size() + popped_count, total_elements);
+  ASSERT_GE(list.size(), 0);
+}
+
 TEST(ConMutexListConcurrencyTest, ConcurrentPushAndPop) {
   ConMutexList<int> list;
   const int num_push_threads = 2;
   const int num_pop_threads = 2;
-  const int elements_per_push_thread = 1000;
+  const int elements_per_push_thread = 100000;  // Increased data
   std::atomic<int> popped_count(0);
   std::vector<std::thread> threads;
 
@@ -688,6 +813,78 @@ TEST(ConMutexListConcurrencyTest, ConcurrentPushAndPop) {
   ASSERT_GE(list.size(), 0);
 }
 
+TEST(ConMutexListConcurrencyTest, ConcurrentClear) {
+  ConMutexList<int> list;
+  const int num_threads = 4;
+  const int elements_to_fill = 100000;  // Increased data
+  std::vector<std::thread> threads;
+
+  // Fill the list with elements
+  for (int i = 0; i < elements_to_fill; ++i) {
+    list.push_back(i);
+  }
+  ASSERT_EQ(list.size(), elements_to_fill);
+
+  // Clear threads
+  for (int i = 0; i < num_threads; ++i) {
+    threads.emplace_back(thread_clear, std::ref(list));
+  }
+
+  for (auto& t : threads) {
+    t.join();
+  }
+
+  // Verify the list is empty
+  ASSERT_TRUE(list.empty());
+  ASSERT_EQ(list.size(), 0);
+}
+
+TEST(ConMutexListConcurrencyTest, ConcurrentForEach) {
+  ConMutexList<int> list;
+  const int num_threads = 4;
+  const int elements_to_fill = 100000;  // Increased data
+  std::vector<std::thread> threads;
+  std::vector<int> collected_elements_per_thread[num_threads];
+  std::mutex collect_mutex;
+
+  // Fill the list with elements
+  for (int i = 0; i < elements_to_fill; ++i) {
+    list.push_back(i);
+  }
+
+  // ForEach threads
+  for (int i = 0; i < num_threads; ++i) {
+    threads.emplace_back(thread_for_each, std::ref(list), std::ref(collected_elements_per_thread[i]),
+                         std::ref(collect_mutex));
+  }
+
+  for (auto& t : threads) {
+    t.join();
+  }
+
+  // Verify all elements were collected by all threads
+  // Sum up all collected elements from all threads
+  std::vector<int> all_collected_elements;
+  for (int i = 0; i < num_threads; ++i) {
+    all_collected_elements.insert(all_collected_elements.end(), collected_elements_per_thread[i].begin(),
+                                  collected_elements_per_thread[i].end());
+  }
+
+  // Since each thread iterates over the *entire* list, the total collected elements
+  // should be num_threads * elements_to_fill
+  ASSERT_EQ(all_collected_elements.size(), num_threads * elements_to_fill);
+
+  // Further verification: each element from 0 to elements_to_fill-1 should appear num_threads times
+  std::map<int, int> counts;
+  for (int val : all_collected_elements) {
+    counts[val]++;
+  }
+
+  for (int i = 0; i < elements_to_fill; ++i) {
+    ASSERT_EQ(counts[i], num_threads) << "Element " << i << " count mismatch";
+  }
+}
+
 // 性能测试
 // 辅助函数：测量 push_back 性能
 void measure_push_back_performance(ConMutexList<int>& list, int num_elements) {
@@ -707,6 +904,20 @@ void measure_pop_back_performance(ConMutexList<int>& list, int num_elements) {
   }
 }
 
+// 辅助函数：在一个线程中执行多次 at
+void thread_at(ConMutexList<int>& list, int count) {
+  for (int i = 0; i < count; ++i) {
+    if (list.size() > 0) {
+      try {
+        // Access a random element, or just the first/last for simplicity
+        list.at(0);
+      } catch (const std::out_of_range& e) {
+        // Ignore, list might become empty
+      }
+    }
+  }
+}
+
 TEST(ConMutexListPerformanceTest, SingleThreadPushBackPerformance) {
   ConMutexList<int> list;
   const int num_elements = 100000;
@@ -721,7 +932,7 @@ TEST(ConMutexListPerformanceTest, SingleThreadPushBackPerformance) {
 TEST(ConMutexListPerformanceTest, MultiThreadPushBackPerformance) {
   ConMutexList<int> list;
   const int num_threads = 4;
-  const int elements_per_thread = 25000;  // Total 100,000 elements
+  const int elements_per_thread = 100000;  // Total 100,000 elements
   std::vector<std::thread> threads;
 
   auto start = std::chrono::high_resolution_clock::now();
@@ -781,6 +992,161 @@ TEST(ConMutexListPerformanceTest, MultiThreadPopBackPerformance) {
   // but should be close to 0 if all elements are popped.
   // More robust check would involve tracking popped elements.
   ASSERT_LE(list.size(), 0);  // Simplified check for remaining elements
+}
+
+TEST(ConMutexListPerformanceTest, MultiThreadReadWritePerformance) {
+  ConMutexList<int> list;
+  const int num_threads = 8;                 // 4 push_back, 4 at
+  const int operations_per_thread = 100000;  // Increased data
+  std::vector<std::thread> threads;
+
+  // Initial fill for 'at' operations to have something to read
+  for (int i = 0; i < operations_per_thread; ++i) {
+    list.push_back(i);
+  }
+
+  auto start = std::chrono::high_resolution_clock::now();
+  for (int i = 0; i < num_threads / 2; ++i) {
+    threads.emplace_back(thread_push_back, std::ref(list), i * operations_per_thread, operations_per_thread);
+    threads.emplace_back(thread_at, std::ref(list), operations_per_thread);
+  }
+
+  for (auto& t : threads) {
+    t.join();
+  }
+  auto end = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> diff = end - start;
+  std::cout << "Multi-thread Read/Write " << operations_per_thread * num_threads << " operations (" << num_threads
+            << " threads): " << diff.count() << " s\n";
+
+  // Basic sanity check for final size
+  ASSERT_GE(list.size(), 0);
+}
+
+TEST(ConMutexListPerformanceTest, MultiThreadPushFrontPopBackPerformance) {
+  ConMutexList<int> list;
+  const int num_elements = 100000;
+  const int num_threads = 4;
+  std::atomic<int> pushed_count(0);
+  std::atomic<int> popped_count(0);
+  std::vector<std::thread> threads;
+
+  // Fill the list initially
+  for (int i = 0; i < num_elements; ++i) {
+    list.push_back(i);
+  }
+
+  auto start = std::chrono::high_resolution_clock::now();
+  for (int i = 0; i < num_threads; ++i) {
+    // Half threads push_front, half threads pop_back
+    if (i % 2 == 0) {
+      threads.emplace_back([&]() {
+        for (int j = 0; j < num_elements / num_threads; ++j) {
+          list.push_front(j);
+          pushed_count++;
+        }
+      });
+    } else {
+      threads.emplace_back([&]() {
+        for (int j = 0; j < num_elements / num_threads; ++j) {
+          try {
+            list.pop_back();
+            popped_count++;
+          } catch (const std::out_of_range& e) {
+            // Ignore
+          }
+        }
+      });
+    }
+  }
+
+  for (auto& t : threads) {
+    t.join();
+  }
+  auto end = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> diff = end - start;
+  std::cout << "Multi-thread PushFront/PopBack " << num_elements << " initial, " << pushed_count << " pushed, "
+            << popped_count << " popped (" << num_threads << " threads): " << diff.count() << " s\n";
+
+  // The final size should be initial_elements + pushed_count - popped_count
+  ASSERT_EQ(list.size(), num_elements + pushed_count - popped_count);
+  ASSERT_GE(list.size(), 0);
+}
+
+// 辅助函数：在一个线程中执行混合操作
+void thread_mixed_operations(ConMutexList<int>& list, int operations_count, int thread_id) {
+  std::srand(std::time(0) + thread_id);  // Seed for random operations
+
+  for (int i = 0; i < operations_count; ++i) {
+    int op_type = std::rand() % 7;  // 0: push_back, 1: push_front, 2: pop_back, 3: pop_front, 4: at, 5: empty, 6: size
+
+    switch (op_type) {
+      case 0:  // push_back
+        list.push_back(thread_id * operations_count + i);
+        break;
+      case 1:  // push_front
+        list.push_front(thread_id * operations_count + i);
+        break;
+      case 2:  // pop_back
+        try {
+          list.pop_back();
+        } catch (const std::out_of_range& e) {
+          // Ignore
+        }
+        break;
+      case 3:  // pop_front
+        try {
+          list.pop_front();
+        } catch (const std::out_of_range& e) {
+          // Ignore
+        }
+        break;
+      case 4:  // at
+        if (list.size() > 0) {
+          try {
+            int idx = std::rand() % list.size();
+            list.at(idx);
+          } catch (const std::out_of_range& e) {
+            // Ignore
+          }
+        }
+        break;
+      case 5:  // empty
+        list.empty();
+        break;
+      case 6:  // size
+        list.size();
+        break;
+    }
+  }
+}
+
+TEST(ConMutexListPerformanceTest, MultiThreadMixedOperationsStressTest) {
+  ConMutexList<int> list;
+  const int num_threads = 8;
+  const int operations_per_thread = 30000;
+  std::vector<std::thread> threads;
+
+  // Initial fill to ensure some elements are present for pop/at operations
+  for (int i = 0; i < operations_per_thread; ++i) {
+    list.push_back(i);
+  }
+
+  auto start = std::chrono::high_resolution_clock::now();
+  for (int i = 0; i < num_threads; ++i) {
+    threads.emplace_back(thread_mixed_operations, std::ref(list), operations_per_thread, i);
+  }
+
+  for (auto& t : threads) {
+    t.join();
+  }
+  auto end = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> diff = end - start;
+  std::cout << "Multi-thread Mixed Operations Stress Test " << num_threads * operations_per_thread << " operations ("
+            << num_threads << " threads): " << diff.count() << " s\n";
+
+  // Basic sanity check for final size
+  ASSERT_GE(list.size(), 0);
 }
 
 // 主函数，用于运行所有测试
