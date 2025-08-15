@@ -3,8 +3,8 @@
 //
 #include <sstream>
 
+#include "span.h"
 #include "vector.h"
-
 using namespace lhy;
 using std::cin;
 using std::cout;

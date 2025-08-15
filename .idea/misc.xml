@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="CMakePythonSetting">
+    <option name="pythonIntegrationState" value="YES" />
+  </component>
   <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
   <component name="CidrRootsConfiguration">
     <sourceRoots>
+      <file path="$PROJECT_DIR$/my_std/databases/include" />
       <file path="$PROJECT_DIR$/my_std/graph/include" />
+      <file path="$PROJECT_DIR$/my_std/network/include" />
       <file path="$PROJECT_DIR$/my_std/normal/include" />
     </sourceRoots>
   </component>
+  <component name="WestSettings"><![CDATA[{}]]></component>
 </project>

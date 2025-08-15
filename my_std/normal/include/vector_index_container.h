@@ -51,14 +51,14 @@ class VectorIndexContainer<T>::BaseIterator {
         iterator_pointer_(&base_reversed_iterator_) {}
   void add() {
     if (!CheckRange()) {
-      throw std::logic_error("out of range");
+      throw logic_error("out of range");
     }
     iterator_pointer_->operator++();
     CheckIterator();
   }
   void sub() {
     if (!CheckRange()) {
-      throw std::logic_error("out of range");
+      throw logic_error("out of range");
     }
     iterator_pointer_->operator--();
     CheckIterator();
@@ -138,10 +138,10 @@ class VectorIndexContainer<T>::reversed_iterator : public IndexContainerImpl<T>:
 template <typename T>
 void VectorIndexContainer<T>::erase(Index index) {
   if (index >= container_.size()) {
-    throw std::logic_error("out of range");
+    throw logic_error("out of range");
   }
   if (container_[index].second != Used) {
-    throw std::logic_error("can't delete an element that does not exist");
+    throw logic_error("can't delete an element that does not exist");
   }
   container_[index].second = UsedBefore;
 }

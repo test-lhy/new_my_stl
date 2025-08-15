@@ -6,7 +6,6 @@
 #define MY_STL_SORT_H
 #include <algorithm>
 #include <cmath>
-#include <functional>
 #include <list>
 #include <stdexcept>
 
@@ -14,11 +13,12 @@
 #include "basic.h"
 #include "data_structure.h"
 #include "list.h"
-#include "mmath.h"
+#include "meta.h"
 #include "priority_queue.h"
 #include "random.h"
 #include "shared_ptr.h"
 #include "type_traits.h"
+#include "util.h"
 #include "vector.h"
 
 namespace lhy {
@@ -147,7 +147,7 @@ void GetWinner(shared_ptr<std::pair<T, int>[]> temp_array, Index index, size_t s
 template <typename T>
 void TournamentSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& compare_function, const T& INF) {
   size_t front_size = pow(2, ceil(log2(end - start))) - 1;
-  auto temp_array = make_shared<std::pair<T, int>[]>(front_size + end - start);
+  auto temp_array = make_shared_for_overwrite<std::pair<T, int>[]>(front_size + end - start);
   for (Index i = 0; i < end - start; ++i) {
     temp_array[front_size + i] = {start[i], i};
   }
@@ -247,7 +247,7 @@ void QuickSort(NormIterator<T> start, NormIterator<T> end, const CmpType<T>& com
 template <typename T>
 void Merge(NormIterator<T> start, NormIterator<T> other_start, NormIterator<T> end,
            const CmpType<T>& compare_function) {
-  auto temp_array = make_shared<T[]>(end - start);
+  auto temp_array = make_shared_for_overwrite<T[]>(end - start);
   for (Index i = 0; i < end - start; ++i) {
     temp_array[i] = start[i];
   }
@@ -315,7 +315,7 @@ void CountSort(NormIterator<T> start, NormIterator<T> end) {
     maxT = std::max(*element, maxT);
     minT = std::min(*element, minT);
   }
-  auto cnt = make_shared<int[]>(maxT - minT + 1);
+  auto cnt = make_shared_for_overwrite<int[]>(maxT - minT + 1);
   for (Index i = minT; i <= maxT; ++i) {
     cnt[i - minT] = 0;
   }
@@ -340,7 +340,7 @@ void BucketSort(NormIterator<T> start, NormIterator<T> end) {
     maxT = std::max(*element, maxT);
     minT = std::min(*element, minT);
   }
-  auto cnt = make_shared<int[]>(maxT - minT + 1);
+  auto cnt = make_shared_for_overwrite<int[]>(maxT - minT + 1);
   for (Index i = minT; i <= maxT; ++i) {
     cnt[i - minT] = 0;
   }
@@ -355,29 +355,46 @@ void BucketSort(NormIterator<T> start, NormIterator<T> end) {
     }
   }
 }
-// template <typename... T>
-// void RadixSort(std::tuple<T...>* start, std::tuple<T...>* end, SortType sort_type) {
-//   using TupleWithIndex = std::pair<std::tuple<T...>, Index>;
-//   auto* temp_array = new TupleWithIndex[end - start];
-//   for (Index i = 0; i < end - start; ++i) {
-//     temp_array[i] = {start[i], i};
-//   }
-//   for (Index i = 0; i < start->size(); ++i) {
-//     for (Index j = 0; j < end - start; ++j) {
-//       temp_array[j].second = j;
-//     }
-//     Sort(start, end, sort_type, [i](const TupleWithIndex& a, const TupleWithIndex& b) -> bool {
-//       if (std::get<i>(a.first) == std::get<i>(b.first)) {
-//         return a.second < b.second;
-//       } else {
-//         return std::get<i>(a.first) < std::get<i>(b.first);
-//       }
-//     });
-//   }
-//   for (Index i = 0; i < end - start; ++i) {
-//     start[i] = temp_array[i].first;
-//   }
-// }
+template <typename... T>
+void RadixSort(std::tuple<T...>* start, std::tuple<T...>* end, SortType sort_type) {
+  using TupleWithIndex = std::pair<std::tuple<T...>, Index>;
+  auto* temp_array = new TupleWithIndex[end - start];
+  const auto tuple_size = std::tuple_size_v<std::tuple<T...>>;
+  for (Index i = 0; i < end - start; ++i) {
+    temp_array[i] = {start[i], i};
+  }
+  static_for<tuple_size - 1, -1, IndexMinusOne>([&]<int i_>() {
+    for (Index j = 0; j < end - start; ++j) {
+      temp_array[j].second = j;
+    }
+    Sort<TupleWithIndex>(temp_array, temp_array + (end - start), sort_type,
+                         [&](const TupleWithIndex& a, const TupleWithIndex& b) -> bool {
+                           if (std::get<i_>(a.first) == std::get<i_>(b.first)) {
+                             return a.second < b.second;
+                           }
+                           return std::get<i_>(a.first) < std::get<i_>(b.first);
+                         });
+    // Sort<TupleWithIndex>(temp_array, temp_array + (end - start), sort_type,
+    //                      [&](const TupleWithIndex& a, const TupleWithIndex& b) -> bool {
+    // 纯烂，因为这里直接就相当于暴力存换枚举i了
+    //                        bool ret{};
+    //                        static_for<tuple_size - 1, -1, IndexMinusOne>([&]<int i_>() {  // constexpr
+    //                          count++;
+    //                          if (i == i_) {
+    //                            if (std::get<i_>(a.first) == std::get<i_>(b.first)) {
+    //                              ret = a.second < b.second;
+    //                              return;
+    //                            }
+    //                            ret = std::get<i_>(a.first) < std::get<i_>(b.first);
+    //                          }
+    //                        });
+    //                        return ret;
+    //                      });
+  });
+  for (Index i = 0; i < end - start; ++i) {
+    start[i] = temp_array[i].first;
+  }
+}
 template <typename T>
 T GetApproximateMedian(
     NormIterator<T> start, NormIterator<T> end,
@@ -462,7 +479,7 @@ void Sort(NormIterator<T> start, NormIterator<T> end, SortType sort_type, const 
   } else if (sort_type == SortType::TIM_SORT) {
     TimSort(start, end, compare_function);
   } else {
-    throw std::logic_error("no such sort algorithm");
+    throw logic_error("no such sort algorithm");
   }
 }
 template <not_int_type T, typename GapGeneration = ShellNormalGapGeneration>
@@ -474,13 +491,13 @@ void Sort(NormIterator<T> start, NormIterator<T> end, SortType sort_type, const 
   } else if (sort_type == SortType::MERGE_SORT) {
     MergeSort(start, end, compare_function);
   } else if (sort_type == SortType::COUNT_SORT) {
-    throw std::logic_error("this type can't use Count_Sort");
+    throw logic_error("this type can't use Count_Sort");
   } else if (sort_type == SortType::HEAP_SORT) {
     HeapSort(start, end, compare_function);
   } else if (sort_type == SortType::INTRO_SORT) {
     QuickSort(start, end, compare_function, 0, std::log2(end - start));
   } else if (sort_type == SortType::BUCKET_SORT) {
-    throw std::logic_error("this type can't use Bucket_Sort");
+    throw logic_error("this type can't use Bucket_Sort");
   } else if (sort_type == SortType::SHELL_SORT) {
     GapGeneration gap_generation;
     ShellSort(start, end, compare_function, &gap_generation);
@@ -490,7 +507,7 @@ void Sort(NormIterator<T> start, NormIterator<T> end, SortType sort_type, const 
   } else if (sort_type == SortType::TIM_SORT) {
     TimSort(start, end, compare_function);
   } else {
-    throw std::logic_error("no such sort algorithm");
+    throw logic_error("no such sort algorithm");
   }
 }
 }  // namespace lhy

@@ -8,6 +8,7 @@
 
 #include "algorithm.h"
 #include "random.h"
+#include "span.h"
 #include "vector.h"
 
 using namespace lhy;

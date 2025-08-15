@@ -5,6 +5,7 @@
 #ifndef MY_STL_HASH_H
 #define MY_STL_HASH_H
 #include "basic.h"
+#include "exception.h"
 #include "list.h"
 #include "type_traits.h"
 #include "vector.h"
@@ -35,13 +36,14 @@ class Hash {
   ~Hash();
   [[nodiscard]] U& operator[](const T& key);
   [[nodiscard]] bool equal(const T&, const T&) const;  // note:指hash函数得出的结果相等
-  [[nodiscard]] bool exist(const T& key) const;
+  [[nodiscard]] bool contains(const T& key) const;
   void insert(const T& key, const U& value);
+  void erase(const T& key);
   void hash_func_set(HashFuncType<T>& hash_func) { hash_func_ = hash_func; };
   void mod_value_set(size_t mod_value) { mod_value_ = mod_value; }
 
  private:
-  size_t mod_value_ = 196613;
+  size_t mod_value_ = 389;
   vector<list<Element>> hash_table_;
   HashFuncType<T> hash_func_;
 };
@@ -81,7 +83,7 @@ bool Hash<T, U>::equal(const T& a, const T& b) const {
 }
 
 template <hashable T, typename U>
-bool Hash<T, U>::exist(const T& key) const {
+bool Hash<T, U>::contains(const T& key) const {
   const list<Element>& hash_list = hash_table_[hash_func_(key, mod_value_)];
   auto answer = hash_list.find({key, U()});
   if (answer != hash_list.end()) {
@@ -94,6 +96,10 @@ template <hashable T, typename U>
 void Hash<T, U>::insert(const T& key, const U& value) {
   hash_table_[hash_func_(key, mod_value_)].push_back({key, value});
 }
+template <hashable T, typename U>
+void Hash<T, U>::erase(const T& key) {
+  hash_table_[hash_func_(key, mod_value_)].clear();
+}
 size_t GetModValue(const size_t& size) {
   auto iter = kmod_values.begin();
   size_t up_limit = 32;
@@ -102,7 +108,7 @@ size_t GetModValue(const size_t& size) {
     ++iter;
   }
   if (iter == kmod_values.end()) {
-    throw std::invalid_argument("size too large");
+    throw invalid_argument("size too large");
   }
   return *iter;
 }

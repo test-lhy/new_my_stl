@@ -10,8 +10,8 @@ namespace lhy {
 template <typename T>
 class stack : public DataStructure<T> {
  public:
-  using iterator = vector<T>::iterator;
-  using reversed_iterator = vector<T>::iterator;
+  using iterator = typename vector<T>::iterator;
+  using reversed_iterator = typename vector<T>::iterator;
   using typename DataStructure<T>::Pointer;
   stack();
   stack(const stack<T>&);

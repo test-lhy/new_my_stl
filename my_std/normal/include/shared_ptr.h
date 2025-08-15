@@ -5,19 +5,30 @@
 #ifndef SHARED_PTR_H
 #define SHARED_PTR_H
 #include <format>
+#include <memory>
+#include <ranges>
 #include <type_traits>
 
 #include "basic.h"
+#include "exception.h"
 #include "ptrController.h"
 #include "ptr_base.h"
 #include "unique_ptr.h"
 
 namespace lhy {
+template <typename Deprived>
+class enable_shared_from_this;
+template <typename T>
+void enable_shared_from_this_owner_helper(T* self, ptrController* controller);
+
 template <typename T>
 class weak_ptr;
 // note:T和ControlledT都是非指针的
 template <typename T, typename ControlledT = T>
 class shared_ptr {
+  template <not_array_c T_, class... Args, typename Alloc>
+  friend shared_ptr<T_> make_shared(Args&&... args);
+
  public:
   template <typename T_, typename ControlledT_>
   friend class shared_ptr;
@@ -71,6 +82,9 @@ class shared_ptr {
   void Copy(const shared_ptr<U>& other);
   RealT get_value_{};
   ptrController* controller_{};
+  template <typename T1>
+  friend shared_ptr<T1> enable_shared_from_this_helper(typename shared_ptr<T1>::RealT get_value,
+                                                       ptrController* controller);
 };
 
 template <typename T, typename ControlledT>
@@ -89,6 +103,7 @@ void shared_ptr<T, ControlledT>::reset(RealT ptr, Deleter<RealT> deleter) {
   }
   get_value_ = ptr;
   controller_ = new ptrControllerImpl<RealT>(ptr, deleter);
+  enable_shared_from_this_owner_helper(get_value_, controller_);
 }
 template <typename T, typename ControlledT>
 shared_ptr<T, ControlledT>::shared_ptr(const shared_ptr& other) {
@@ -151,7 +166,7 @@ template <typename T, typename ControlledT>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>
 shared_ptr<T, ControlledT>::shared_ptr(const weak_ptr<U>& other) {
   if (other.expired()) {
-    throw std::logic_error("weak_ptr has been expired");
+    throw logic_error("weak_ptr has been expired");
   }
   controller_ = other.controller_;
   get_value_ = other.get_value_;
@@ -163,6 +178,7 @@ shared_ptr<T, ControlledT>::shared_ptr(unique_ptr<U>&& other) {
   if (other) {
     controller_ = new ptrControllerImpl<typename unique_ptr<U>::RealT>(other.get(), other.get_deleter());
     get_value_ = other.release();
+    enable_shared_from_this_owner_helper(get_value_, controller_);
   }
 }
 template <typename T, typename ControlledT>
@@ -188,8 +204,8 @@ template <typename T, typename ControlledT>
 template <convertiable_pointer_c<typename ptrType<T>::Type> U>
 void shared_ptr<T, ControlledT>::swap(shared_ptr<U>&& other) {
   std::swap(other.controller_, controller_);
-  auto temp = dynamic_cast<RealT>(other.get_value_);
-  other.get_value_ = dynamic_cast<typename shared_ptr<U>::RealT>(get_value_);
+  auto temp = reinterpret_cast<RealT>(other.get_value_);
+  other.get_value_ = reinterpret_cast<typename shared_ptr<U>::RealT>(get_value_);
   get_value_ = temp;
 }
 template <typename T, typename ControlledT>
@@ -249,7 +265,7 @@ void shared_ptr<T, ControlledT>::reset() {
     controller_ = nullptr;
   }
 }
-// note:make_shared在一般的实现中是只进行一次内存分配，因此被管理的对象的new并没有进行分配内存，因此也不能使用delete来进行销毁，而要通过析构函数进行销毁
+// note:make_shared在一般的实现中是只进行一次内存分配，因此被管理的对象的new并没有进行分配内存，因此也不能使用delete来进行销毁，而要通过析构函数进行销毁，似乎有点难以实现，暂时先不实现
 // 当控制块要被销毁的时候，整个内存才会被整体释放
 template <not_array_c T, class... Args>
 shared_ptr<T> make_shared(Args&&... args) {
@@ -257,19 +273,55 @@ shared_ptr<T> make_shared(Args&&... args) {
 }
 template <array_c T>
 shared_ptr<T> make_shared(size_t N) {
-  return shared_ptr<T>(new std::remove_extent_t<T>[N]);
-}
-template <bounded_array_c T>
-shared_ptr<T> make_shared() {
-  return shared_ptr<T>(new std::remove_extent_t<T>[std::extent_v<T>]);
-}
-template <array_c T>
-shared_ptr<T> make_shared_for_overwrite(size_t N) {
   return shared_ptr<T>(new std::remove_extent_t<T>[N]());
 }
 template <bounded_array_c T>
-shared_ptr<T> make_shared_for_overwrite() {
+shared_ptr<T> make_shared() {
   return shared_ptr<T>(new std::remove_extent_t<T>[std::extent_v<T>]());
+}
+template <array_c T>
+shared_ptr<T> make_shared_for_overwrite(size_t N) {
+  return shared_ptr<T>(new std::remove_extent_t<T>[N]);
+}
+template <bounded_array_c T>
+shared_ptr<T> make_shared_for_overwrite() {
+  return shared_ptr<T>(new std::remove_extent_t<T>[std::extent_v<T>]);
+}
+template <typename T>
+shared_ptr<T> enable_shared_from_this_helper(typename shared_ptr<T>::RealT get_value, ptrController* controller) {
+  shared_ptr<T> ret;
+  ret.controller_ = controller;
+  ret.get_value_ = get_value;
+  ret.controller_->IncreaseShared();
+  return ret;
+}
+template <typename Deprived>
+class enable_shared_from_this {
+  class Private {
+   public:
+    Private() = default;
+  };
+
+ public:
+  shared_ptr<Deprived> shared_from_this() {
+    if (!controller_) {
+      throw bad_weak_ptr();
+    }
+    return enable_shared_from_this_helper<Deprived>(reinterpret_cast<Deprived*>(this), controller_);
+  }
+  enable_shared_from_this(Private = Private()) {}
+
+ private:
+  ptrController* controller_{};
+  template <typename T>
+  friend void enable_shared_from_this_owner_helper(T* self, ptrController* controller);
+
+};
+template<typename T>
+void enable_shared_from_this_owner_helper(T* self, ptrController* controller) {
+  if constexpr (std::is_base_of_v<enable_shared_from_this<T>, T>) {
+    self->controller_ = controller;
+  }
 }
 }  // namespace lhy
 

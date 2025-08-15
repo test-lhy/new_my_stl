@@ -80,8 +80,8 @@ class vector : public DataStructure<T> {
   [[nodiscard]] bool check_volume() const;
   void check_index(const Index&) const;
   void extend_volume();
-  Pointer getBegin() override { return make_shared<iterator>(begin()); }
-  Pointer getEnd() override { return make_shared<iterator>(end()); }
+  Pointer getBegin() override { return lhy::make_shared<iterator>(begin()); }
+  Pointer getEnd() override { return lhy::make_shared<iterator>(end()); }
 };
 std::string str(const vector<char>& obj);
 // todo:研究这里到底应该右值引用还是直接值返回，编译器是否有优化
@@ -91,18 +91,10 @@ template <typename T>
 vector<T> operator&(vector<T> a, const vector<T>& b);
 template <typename T>
 vector<T> operator|(vector<T> a, const vector<T>& b);
-template <char_type T>
+template <typename T>
 void getline(std::istream& istream_, vector<T>& obj);
-template <not_char_type T>
-void getline(std::istream& istream_, vector<T>& obj);
-template <char_type T>
+template <typename T>
 std::istream& operator>>(std::istream& istream_, vector<T>& obj);
-template <not_char_type T>
-std::istream& operator>>(std::istream& istream_, vector<T>& obj);
-template <char_type T>
-std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj);
-template <not_char_type T>
-std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj);
 template <typename T>
 vector<T>::vector(vector&& other) {
   std::swap(start_, other.start_);
@@ -117,7 +109,7 @@ vector<T>::vector(T const* other) : vector() {
   }
 }
 template <typename T>
-vector<T>::vector() : vector(0l) {}
+vector<T>::vector() : vector(static_cast<size_t>(0)) {}
 template <typename T>
 vector<T>::vector(iterator start, iterator end) : vector() {
   for (auto element = start; element != end; ++element) {
@@ -126,7 +118,7 @@ vector<T>::vector(iterator start, iterator end) : vector() {
 }
 template <typename T>
 vector<T>::vector(const size_t size) {
-  start_ = make_unique<T[]>(size + 2);
+  start_ = make_unique_for_overwrite<T[]>(size + 2);
   end_ = begin() + size;
   volume_ = size + 1;
 }
@@ -155,6 +147,7 @@ vector<T>& vector<T>::operator=(const vector& other) {
 }
 template <typename T>
 vector<T>& vector<T>::operator=(vector&& other) noexcept {
+  /// 好像这么写确实有点问题，好像移动要保证出来是nullptr？
   std::swap(this->start_, other.start_);
   std::swap(this->end_, other.end_);
   std::swap(this->volume_, other.volume_);
@@ -241,14 +234,14 @@ const T& vector<T>::At(const Index& index) const {
 template <typename T>
 T& vector<T>::front() {
   if (empty()) {
-    throw std::range_error("no element in vector");
+    throw range_error("no element in vector");
   }
   return *begin();
 }
 template <typename T>
 T& vector<T>::back() {
   if (empty()) {
-    throw std::range_error("no element in vector");
+    throw range_error("no element in vector");
   }
   return *rbegin();
 }
@@ -271,14 +264,14 @@ typename vector<T>::reversed_iterator vector<T>::rend() {
 template <typename T>
 T& vector<T>::front() const {
   if (empty()) {
-    throw std::range_error("no element in vector");
+    throw range_error("no element in vector");
   }
   return *begin();
 }
 template <typename T>
 T& vector<T>::back() const {
   if (empty()) {
-    throw std::range_error("no element in vector");
+    throw range_error("no element in vector");
   }
   return *rbegin();
 }
@@ -309,7 +302,7 @@ typename vector<T>::iterator vector<T>::cend() const {
 // todo:这里的clear感觉有问题
 template <typename T>
 void vector<T>::clear() {
-  start_ = make_unique<T[]>(1);
+  start_ = make_unique_for_overwrite<T[]>(1);
   end_ = begin();
   volume_ = 1;
 }
@@ -364,22 +357,22 @@ vector<T>::vector(T* other) : vector() {
 template <typename T>
 void vector<T>::pop() {
   if (size() == 0) {
-    throw std::range_error("nothing left to pop");
+    throw range_error("nothing left to pop");
   }
   --end_;
 }
 template <typename T>
 void vector<T>::reserve(size_t size) {
   if (size < this->size()) {
-    throw std::logic_error("the size of the vector cannot be bigger than the reserve size");
+    throw logic_error("the size of the vector cannot be bigger than the reserve size");
   }
-  unique_ptr<T[]> start_substitute = make_unique<T[]>(size);
+  unique_ptr<T[]> start_substitute = make_unique_for_overwrite<T[]>(size);
   const size_t ex_size = this->size();
   end_ = start_substitute.get() + size;
   volume_ = size;
   // note:用不了std::move，因为是不同大小
   for (int i = 0; i < ex_size; ++i) {
-    start_substitute[i] = start_[i];
+    start_substitute[i] = std::move(start_[i]);
   }
   start_.swap(start_substitute);
 }
@@ -395,15 +388,15 @@ bool vector<T>::check_volume() const {
 template <typename T>
 void vector<T>::check_index(const Index& index) const {
   if (index < 0 || index >= size()) {
-    throw std::logic_error("out of range");
+    throw logic_error("out of range");
   }
 }
 template <typename T>
 void vector<T>::extend_volume() {
-  unique_ptr<T[]> start_substitute = make_unique<T[]>(volume_ * 2);
+  unique_ptr<T[]> start_substitute = make_unique_for_overwrite<T[]>(volume_ * 2);
   end_ = start_substitute.get() + volume_;
   for (int i = 0; i < volume_; ++i) {
-    start_substitute[i] = start_[i];
+    start_substitute[i] = std::move(start_[i]);
   }
   volume_ *= 2;
   start_.swap(start_substitute);
@@ -420,37 +413,11 @@ template <typename T>
 vector<T> operator|(vector<T> a, const vector<T>& b) {
   return a |= b;
 }
-template <char_type T>
+template <typename T>
 void getline(std::istream& istream_, vector<T>& obj) {
-  obj.clear();
-  char temp_char;
-  while ((temp_char = static_cast<char>(istream_.get())) == '\n')
-    ;
-  istream_.unget();
-  while ((temp_char = static_cast<char>(istream_.get())) != EOF && temp_char != '\n') {
-    obj.push_back(temp_char);
-  }
+  throw logic_error("non-char-vector is not allowed to read through getline");
 }
-template <not_char_type T>
-void getline(std::istream& istream_, vector<T>& obj) {
-  throw std::logic_error("non-char-vector is not allowed to read through getline");
-}
-template <char_type T>
-std::istream& operator>>(std::istream& istream_, vector<T>& obj) {
-  obj.clear();
-  char temp_char;
-  while ((temp_char = static_cast<char>(istream_.get())) == ' ' || temp_char == '\n')
-    ;
-  istream_.unget();
-  while ((temp_char = static_cast<char>(istream_.get())) != EOF && temp_char != ' ' && temp_char != '\n') {
-    obj.push_back(temp_char);
-  };
-  if (temp_char == ' ') {
-    istream_.unget();
-  }
-  return istream_;
-}
-template <not_char_type T>
+template <typename T>
 std::istream& operator>>(std::istream& istream_, vector<T>& obj) {
   vector<char> temp;
   getline(istream_, temp);
@@ -460,34 +427,6 @@ std::istream& operator>>(std::istream& istream_, vector<T>& obj) {
     obj.push_back(std::move(temp_each));
   }
   return istream_;
-}
-template <char_type T>
-std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj) {
-  for (auto& each : obj) {
-    ostream_ << each;
-  }
-  return ostream_;
-}
-template <not_char_type T>
-std::ostream& operator<<(std::ostream& ostream_, vector<T>& obj) {
-  for (auto& each : obj) {
-    ostream_ << each << '\n';
-  }
-  return ostream_;
-}
-template <char_type T>
-std::ostream& operator<<(std::ostream& ostream_, const vector<T>& obj) {
-  for (auto& each : obj) {
-    ostream_ << each;
-  }
-  return ostream_;
-}
-template <not_char_type T>
-std::ostream& operator<<(std::ostream& ostream_, const vector<T>& obj) {
-  for (auto& each : obj) {
-    ostream_ << each << '\n';
-  }
-  return ostream_;
 }
 }  // namespace lhy
 #endif

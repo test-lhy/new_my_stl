@@ -13,9 +13,8 @@ class Weighted : public ObjectType {
   Weighted() = default;
   template <typename... Args>
   // note:只能放在最前面
-  explicit Weighted(WeightType&& weight, Args&&... args) : ObjectType(std::forward<Args>(args)...), weight_(weight){};
-  explicit Weighted(ObjectType&& other, WeightType&& weight)
-      : ObjectType(std::forward<ObjectType>(other)), weight_(weight){};
+  Weighted(WeightType&& weight, Args&&... args) : ObjectType(std::forward<Args>(args)...), weight_(weight){};
+  Weighted(ObjectType&& other, WeightType&& weight) : ObjectType(std::forward<ObjectType>(other)), weight_(weight){};
   friend bool operator==(const Weighted& lhs, const Weighted& rhs) {
     return static_cast<const ObjectType&>(lhs) == static_cast<const ObjectType&>(rhs) && lhs.weight_ == rhs.weight_;
   }

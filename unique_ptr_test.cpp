@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -109,7 +110,7 @@ void test_unique_ptr() {
     std::vector<lhy::unique_ptr<TestClass>> vec3;
     vec3 = std::move(vec2);
   } catch (...) {
-    assert(false); // 如果发生异常,测试失败
+    assert(false);  // 如果发生异常,测试失败
   }
 
   std::cout << "All tests passed!" << std::endl;
@@ -117,5 +118,7 @@ void test_unique_ptr() {
 
 int main() {
   test_unique_ptr();
+  lhy::unique_ptr<int> a=lhy::make_unique<int>(1);
+  lhy::unique_ptr<int> b=lhy::make_unique<int>(std::move(a));
   return 0;
 }
